@@ -33,8 +33,22 @@ public class Window extends JFrame implements ActionListener {
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         openingPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        openingPoint.setFont(new Font("Arial",Font.BOLD, 26));
+        openingPoint.setForeground(Color.white);
+        openingPoint.setBackground(Color.blue);
+        openingPoint.setFocusPainted(false);
+
         timingPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        timingPoint.setFont(new Font("Arial",Font.BOLD, 26));
+        timingPoint.setForeground(Color.white);
+        timingPoint.setBackground(Color.blue);
+        timingPoint.setFocusPainted(false);
+
         actionPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        actionPoint.setFont(new Font("Arial",Font.BOLD, 26));
+        actionPoint.setForeground(Color.white);
+        actionPoint.setBackground(Color.blue);
+        actionPoint.setFocusPainted(false);
 
         openingPoint.addActionListener(this);
         timingPoint.addActionListener(this);
@@ -80,7 +94,8 @@ public class Window extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==exit){
-            this.dispose();
+            System.exit(0);
+//            this.dispose();
         }
         if (e.getSource()==goDown){
             this.setState(JFrame.ICONIFIED);

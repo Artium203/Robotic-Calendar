@@ -8,8 +8,10 @@ import java.awt.event.WindowEvent;
 import java.security.Security;
 
 public class Window extends JFrame implements ActionListener {
+    private static Container panel;
+    private static JPanel infoPanel;
     private static  JButton openingPoint = new JButton("Calendar");
-    Calendar calendar;
+    CalendarForProject calendar;
     private static  JButton timingPoint = new JButton("Set Time");
     TimeSet timer;
     private static  JButton actionPoint = new JButton("Make A Move");
@@ -31,6 +33,7 @@ public class Window extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
+
 
         openingPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         openingPoint.setFont(new Font("Arial",Font.BOLD, 26));
@@ -72,15 +75,28 @@ public class Window extends JFrame implements ActionListener {
         panel2.add(goDown);
         panel2.add(exit);
 
+        panel = this.getContentPane(); //Get content pane
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+
         this.add(panel1);
         this.add(panel2);
+        infoPanel = new JPanel();
+        infoPanel.setLayout(new FlowLayout());
+        infoPanel.setBackground(Color.red);
+        infoPanel.setVisible(false);
+
 
         this.timer = new TimeSet(windowWidth,windowHeight);
         this.add(timer);
-        this.calendar = new Calendar(windowWidth,windowHeight);
-        this.add(calendar);
+        this.calendar = new CalendarForProject(windowWidth,windowHeight);
         this.action =new MAM(windowWidth,windowHeight);
         this.add(action);
+        infoPanel.setPreferredSize(new Dimension((windowWidth/2)-17,windowHeight-(windowHeight/10)-11));
+        panel.add(calendar);
+        panel.add(infoPanel);
+
+
 
 
 
@@ -102,6 +118,7 @@ public class Window extends JFrame implements ActionListener {
         }
         timer.setVisible(e.getSource() == timingPoint);
         calendar.setVisible(e.getSource() == openingPoint);
+        infoPanel.setVisible(e.getSource() == openingPoint);
         action.setVisible(e.getSource() == actionPoint);
     }
 }

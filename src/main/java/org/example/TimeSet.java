@@ -284,7 +284,6 @@ public class TimeSet extends JPanel implements KeyListener {
         e.getSource();
         if(secondEnd.getText().length() >= 2){
             System.out.println("here");
-
             e.consume();
         }
     }

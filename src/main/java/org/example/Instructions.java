@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Instructions extends JPanel {
-    private static JButton startButton = new JButton("start");
+    private static final JButton startButton = new JButton("start");
     private JTextArea textArea;
 
     public Instructions(int windowWidth, int windowHeight){

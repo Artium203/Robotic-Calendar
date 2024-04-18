@@ -6,9 +6,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import javax.xml.crypto.Data;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class TimeSet extends JPanel {
+public class TimeSet extends JPanel implements KeyListener {
     private static String user;
 
     private static int chosenDay;
@@ -125,7 +129,7 @@ public class TimeSet extends JPanel {
 
         dragOption = new JRadioButton();
         dragOption.setText("Drag");     //פעולת גרירה
-        dragOption.setBounds(150,500,80 , 60);
+        dragOption.setPreferredSize(new Dimension(80 , 60));
         dragOption.setFont(new Font("Arial" , Font.BOLD , 17));
         dragOption.setFocusPainted(false);
 
@@ -247,7 +251,7 @@ public class TimeSet extends JPanel {
         rect2 = (Graphics2D) g;
         oldStroke = rect2.getStroke();
         rect2.setStroke(borderStroke);
-        rect2.drawRect(10, 400, 430, 320);
+        rect2.drawRect(box2.getX(), box2.getY(), 430, 320);
         rect2.setStroke(oldStroke);
 
 

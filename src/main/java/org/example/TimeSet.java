@@ -1,18 +1,11 @@
 package org.example;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class TimeSet extends JPanel implements KeyListener {
+public class TimeSet extends JPanel {
     private static String user;
 
     private static int chosenDay;
@@ -52,7 +45,6 @@ public class TimeSet extends JPanel implements KeyListener {
 
     public TimeSet(int windowWidth,int windowHeight){
 
-        this.addKeyListener(this);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
         this.setVisible(false);
@@ -77,7 +69,7 @@ public class TimeSet extends JPanel implements KeyListener {
 
 
         textForDate = new JLabel();
-        textForDate.setText("Choose a date for instruction: ");
+        textForDate.setText("   Choose a date for instruction:");
         textForDate.setPreferredSize(new Dimension(450,80));
         textForDate.setFont(new Font("Arial" , Font.BOLD , 22));
         add(textForDate);
@@ -148,57 +140,58 @@ public class TimeSet extends JPanel implements KeyListener {
         hoursStart = new JTextField(2);
         hoursStart.setPreferredSize(new Dimension(20 , 20));
         hoursStart.setActionCommand("Hours Start");
-        limitJTextField(hoursStart);
+        limitJTextField(hoursStart, 23);
 
 
         hoursEnd = new JTextField(2);
         hoursEnd.setPreferredSize(new Dimension(20 , 20));
         hoursEnd.setActionCommand("Hours End");
-        limitJTextField(hoursEnd);
+        limitJTextField(hoursEnd, 23);
 
         minutesStart = new JTextField(2);
         minutesStart.setPreferredSize(new Dimension(20 , 20));
         minutesStart.setActionCommand("Minutes Start");
-        limitJTextField(minutesStart);
+        limitJTextField(minutesStart, 59);
 
 
         minutesEnd = new JTextField(2);
         minutesEnd.setPreferredSize(new Dimension(20 , 20));
-        limitJTextField(minutesEnd);
+        limitJTextField(minutesEnd, 59);
 
 
         secondStart = new JTextField(2);
         secondStart.setPreferredSize(new Dimension(20 , 20));
-        limitJTextField(secondStart);
+        limitJTextField(secondStart, 59);
 
 
         secondEnd = new JTextField(2);
         secondEnd.setSelectionEnd(1);
         secondEnd.setPreferredSize(new Dimension(20 , 20));
-        limitJTextField(secondEnd);
+        limitJTextField(secondEnd, 59);
 
 
-
-        this.add(box1);
         box1.add(textForDate);
         box1.add(yearBox);
         box1.add(monthBox);
         box1.add(dayBox);
-        this.add(box3);
+        this.add(box1);
+
         box3.add(hoursStart);
         box3.add(hoursEnd);
         box3.add(minutesStart);
         box3.add(minutesEnd);
         box3.add(secondStart);
         box3.add(secondEnd);
+        this.add(box3);
+
         this.add(box5);
-        this.add(box2);
+
         box2.add(textForInstruction);
         box2.add(dragOption);
         box2.add(pressOption);
+        this.add(box2);
+
         this.add(box4);
-
-
 
 
 
@@ -239,44 +232,43 @@ public class TimeSet extends JPanel implements KeyListener {
     }
 
     public void updateDayBox(){
-        for (int i = 0; i <= nod; i++) {
+        for (int i = 1; i <= nod; i++) {
             dayBox.addItem(i);
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        e.getSource();
-        if(secondEnd.getText().length() >= 2){
-            System.out.println("here");
-            e.consume();
-        }
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-    public void limitJTextField(JTextField textField){
+    public void limitJTextField(JTextField textField, int maxValue){
         AbstractDocument document = (AbstractDocument) textField.getDocument();
         document.setDocumentFilter(new DocumentFilter() {
             @Override
             public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-                if ((fb.getDocument().getLength() + string.length()) <= 2) {
-                    super.insertString(fb, offset, string, attr);
+                if (isNumeric(string) && (fb.getDocument().getLength() + string.length()) <= 2) {
+                    String newText = fb.getDocument().getText(0, fb.getDocument().getLength()) + string;
+                    if (isValid(newText)) {
+                        super.insertString(fb, offset, string, attr);
+                    }
                 }
             }
 
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                if ((fb.getDocument().getLength() + text.length() - length) <= 2) {
-                    super.replace(fb, offset, length, text, attrs);
+                // Allow only numeric characters and check text length
+                if (isNumeric(text) && (fb.getDocument().getLength() + text.length() - length) <= 2) {
+                    String newText = fb.getDocument().getText(0, offset) + text + fb.getDocument().getText(offset + length, fb.getDocument().getLength() - offset - length);
+                    if (isValid(newText)) {
+                        super.replace(fb, offset, length, text, attrs);
+                    }
                 }
+            }
+
+            private boolean isNumeric(String text) {
+                return text != null && text.matches("\\d");
+            }
+
+            private boolean isValid(String text) {
+                if (text.length() == 0) return true;
+                int numberInput = Integer.parseInt(text);
+                return numberInput >= 0 && numberInput <= maxValue;
             }
         });
     }

@@ -148,70 +148,34 @@ public class TimeSet extends JPanel implements KeyListener {
         hoursStart = new JTextField(2);
         hoursStart.setPreferredSize(new Dimension(20 , 20));
         hoursStart.setActionCommand("Hours Start");
+        limitJTextField(hoursStart);
 
 
         hoursEnd = new JTextField(2);
         hoursEnd.setPreferredSize(new Dimension(20 , 20));
         hoursEnd.setActionCommand("Hours End");
+        limitJTextField(hoursEnd);
 
         minutesStart = new JTextField(2);
         minutesStart.setPreferredSize(new Dimension(20 , 20));
         minutesStart.setActionCommand("Minutes Start");
+        limitJTextField(minutesStart);
 
 
         minutesEnd = new JTextField(2);
-        
         minutesEnd.setPreferredSize(new Dimension(20 , 20));
+        limitJTextField(minutesEnd);
 
 
         secondStart = new JTextField(2);
-
         secondStart.setPreferredSize(new Dimension(20 , 20));
+        limitJTextField(secondStart);
 
 
         secondEnd = new JTextField(2);
         secondEnd.setSelectionEnd(1);
         secondEnd.setPreferredSize(new Dimension(20 , 20));
-
-
-
-
-//        secondEnd.getDocument().addDocumentListener(new DocumentListener() {
-//            @Override
-//            public void insertUpdate(DocumentEvent e) {
-//                if (secondEnd.getText().length() == 2) {
-//                    secondEnd.setEnabled(false);
-//                    secondEnd.setSelectionEnd(1);
-//
-//
-//                }
-//            }
-//
-//
-//
-//            @Override
-//            public void removeUpdate(DocumentEvent e) {
-//                // No action needed
-//                if (secondEnd.getText().length() == 2) {
-//
-//                    secondEnd.setEnabled(true);
-////                    secondEnd.setInputVerifier();
-//                    secondEnd.setSelectionEnd(1);
-//                }
-//            }
-//
-//            @Override
-//            public void changedUpdate(DocumentEvent e) {
-//                // No action needed
-//            }
-//        });
-
-
-
-
-
-
-
+        limitJTextField(secondEnd);
 
 
 
@@ -273,8 +237,9 @@ public class TimeSet extends JPanel implements KeyListener {
     public static int getChosenYear() {
         return chosenYear;
     }
+
     public void updateDayBox(){
-        for (int i = 1; i <= nod; i++) {
+        for (int i = 0; i <= nod; i++) {
             dayBox.addItem(i);
         }
     }
@@ -297,10 +262,22 @@ public class TimeSet extends JPanel implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
     }
+    public void limitJTextField(JTextField textField){
+        AbstractDocument document = (AbstractDocument) textField.getDocument();
+        document.setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                if ((fb.getDocument().getLength() + string.length()) <= 2) {
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
 
-
-
-
-    
-
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if ((fb.getDocument().getLength() + text.length() - length) <= 2) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+    }
 }

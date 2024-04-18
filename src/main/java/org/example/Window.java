@@ -8,13 +8,16 @@ import java.awt.event.WindowEvent;
 import java.security.Security;
 
 public class Window extends JFrame implements ActionListener {
+    private static Container panel;
+
+    private InfoPanel infoPanel;
+    private Instructions instructions;
     private static  JButton openingPoint = new JButton("Calendar");
-    Calendar calendar;
+    private CalendarForProject calendar;
     private static  JButton timingPoint = new JButton("Set Time");
     TimeSet timer;
     private static  JButton actionPoint = new JButton("Make A Move");
     MAM action;
-    private static  JButton startPoint = new JButton();
     private static  JButton exit = new JButton(new ImageIcon("src/Resources/x.png"));
     private static  JButton goDown = new JButton(new ImageIcon("src/Resources/hide.png"));
     private static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -32,9 +35,24 @@ public class Window extends JFrame implements ActionListener {
         this.setUndecorated(true);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+
         openingPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        openingPoint.setFont(new Font("Arial",Font.BOLD, 26));
+        openingPoint.setForeground(Color.white);
+        openingPoint.setBackground(Color.blue);
+        openingPoint.setFocusPainted(false);
+
         timingPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        timingPoint.setFont(new Font("Arial",Font.BOLD, 26));
+        timingPoint.setForeground(Color.white);
+        timingPoint.setBackground(Color.blue);
+        timingPoint.setFocusPainted(false);
+
         actionPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        actionPoint.setFont(new Font("Arial",Font.BOLD, 26));
+        actionPoint.setForeground(Color.white);
+        actionPoint.setBackground(Color.blue);
+        actionPoint.setFocusPainted(false);
 
         openingPoint.addActionListener(this);
         timingPoint.addActionListener(this);
@@ -58,15 +76,24 @@ public class Window extends JFrame implements ActionListener {
         panel2.add(goDown);
         panel2.add(exit);
 
+        panel = this.getContentPane(); //Get content pane
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+
         this.add(panel1);
         this.add(panel2);
-
+        infoPanel = new InfoPanel(windowWidth,windowHeight);
         this.timer = new TimeSet(windowWidth,windowHeight);
         this.add(timer);
-        this.calendar = new Calendar(windowWidth,windowHeight);
-        this.add(calendar);
+        this.calendar = new CalendarForProject(windowWidth,windowHeight);
         this.action =new MAM(windowWidth,windowHeight);
         this.add(action);
+        instructions = new Instructions(windowWidth,windowHeight);
+        panel.add(calendar);
+        panel.add(infoPanel);
+        panel.add(instructions);
+
+
 
 
 
@@ -80,13 +107,16 @@ public class Window extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==exit){
-            this.dispose();
+            System.exit(0);
+//            this.dispose();
         }
         if (e.getSource()==goDown){
             this.setState(JFrame.ICONIFIED);
         }
         timer.setVisible(e.getSource() == timingPoint);
         calendar.setVisible(e.getSource() == openingPoint);
+        infoPanel.setVisible(e.getSource() == openingPoint);
+        instructions.setVisible(e.getSource() == openingPoint);
         action.setVisible(e.getSource() == actionPoint);
     }
 }

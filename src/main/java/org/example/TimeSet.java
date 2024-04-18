@@ -38,6 +38,16 @@ public class TimeSet extends JPanel {
     private JTextField hoursEnd;
     private JTextField minutesEnd;
     private JTextField secondEnd;
+    private JLabel hoursStartLabel;
+    private JLabel minutesStartLabel;
+    private JLabel secondsStartLabel;
+    private JLabel hoursEndLabel;
+    private JLabel minutesEndLabel;
+    private JLabel secondsEndLabel;
+    private JLabel StartText;
+    private JLabel endText;
+    private JLabel spaceText;
+
 
 
 
@@ -50,13 +60,17 @@ public class TimeSet extends JPanel {
         this.setVisible(false);
         this.setBackground(Color.gray);
         box1 = new JPanel();
-        box1.setPreferredSize(new Dimension(430, 320));
+        box1.setLayout(new FlowLayout(FlowLayout.LEFT));
+        box1.setPreferredSize(new Dimension(335, 300));
 
         box2 = new JPanel();
-        box2.setPreferredSize(new Dimension(430, 320));
+        box2.setLayout(new FlowLayout(FlowLayout.CENTER));
+        box2.setPreferredSize(new Dimension(350, 300));
+        box2.setBackground(Color.white);
 
         box3 = new JPanel();
-        box3.setPreferredSize(new Dimension(430, 320));
+        box3.setLayout(new FlowLayout(FlowLayout.CENTER));
+        box3.setPreferredSize(new Dimension(400, 320));
         box3.setBackground(Color.DARK_GRAY);
 
         box4 = new JPanel();
@@ -64,12 +78,12 @@ public class TimeSet extends JPanel {
         box4.setBackground(Color.DARK_GRAY);
 
         box5 = new JPanel();
-        box5.setPreferredSize(new Dimension(330, windowHeight-50));
+        box5.setPreferredSize(new Dimension(420, windowHeight-50));
         box5.setBackground(Color.DARK_GRAY);
 
 
         textForDate = new JLabel();
-        textForDate.setText("   Choose a date for instruction:");
+        textForDate.setText("Choose a date for instruction:");
         textForDate.setPreferredSize(new Dimension(450,80));
         textForDate.setFont(new Font("Arial" , Font.BOLD , 22));
         add(textForDate);
@@ -114,9 +128,9 @@ public class TimeSet extends JPanel {
 
 
         textForInstruction = new JLabel();
-        textForInstruction.setText("Choose one of the following actions: ");
-        textForInstruction.setBounds(20,400,450,80);
-        textForInstruction.setFont(new Font("Arial" , Font.BOLD , 22));
+        textForInstruction.setText("Choose one of the following actions:");
+        textForInstruction.setBounds(0,400,250,70);
+        textForInstruction.setFont(new Font("Arial" , Font.BOLD , 18));
 
 
         dragOption = new JRadioButton();
@@ -138,36 +152,98 @@ public class TimeSet extends JPanel {
 
 
         hoursStart = new JTextField(2);
-        hoursStart.setPreferredSize(new Dimension(20 , 20));
+        hoursStart.setPreferredSize(new Dimension(30 , 20));
         hoursStart.setActionCommand("Hours Start");
         limitJTextField(hoursStart, 23);
 
 
         hoursEnd = new JTextField(2);
-        hoursEnd.setPreferredSize(new Dimension(20 , 20));
+        hoursEnd.setPreferredSize(new Dimension(30 , 20));
         hoursEnd.setActionCommand("Hours End");
         limitJTextField(hoursEnd, 23);
 
         minutesStart = new JTextField(2);
-        minutesStart.setPreferredSize(new Dimension(20 , 20));
+        minutesStart.setPreferredSize(new Dimension(30 , 20));
         minutesStart.setActionCommand("Minutes Start");
         limitJTextField(minutesStart, 59);
 
 
         minutesEnd = new JTextField(2);
-        minutesEnd.setPreferredSize(new Dimension(20 , 20));
+        minutesEnd.setPreferredSize(new Dimension(30 , 20));
         limitJTextField(minutesEnd, 59);
 
 
         secondStart = new JTextField(2);
-        secondStart.setPreferredSize(new Dimension(20 , 20));
+        secondStart.setPreferredSize(new Dimension(30 , 20));
         limitJTextField(secondStart, 59);
 
 
         secondEnd = new JTextField(2);
         secondEnd.setSelectionEnd(1);
-        secondEnd.setPreferredSize(new Dimension(20 , 20));
+        secondEnd.setPreferredSize(new Dimension(30 , 20));
         limitJTextField(secondEnd, 59);
+
+        StartText = new JLabel();
+        StartText.setText(" Choose time the robot will start the instruction:");
+        StartText.setPreferredSize(new Dimension(400 , 40));
+        StartText.setFont(new Font("Arial" , Font.BOLD , 17));
+        StartText.setForeground(Color.white);
+
+        hoursStartLabel = new JLabel();
+        hoursStartLabel.setText("Hour:");
+        hoursStartLabel.setPreferredSize(new Dimension(45 , 50));
+        hoursStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+        hoursStartLabel.setForeground(Color.white);
+
+
+        minutesStartLabel = new JLabel();
+        minutesStartLabel.setText("Minute:");
+        minutesStartLabel.setPreferredSize(new Dimension(60 , 50));
+        minutesStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+        minutesStartLabel.setForeground(Color.white);
+
+
+        secondsStartLabel = new JLabel();
+        secondsStartLabel.setText("Second:");
+        secondsStartLabel.setPreferredSize(new Dimension(70 , 50));
+        secondsStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+        secondsStartLabel.setForeground(Color.white);
+
+        spaceText = new JLabel();
+        spaceText.setText("                                         ");
+        spaceText.setPreferredSize(new Dimension(400 , 60));
+
+
+        endText = new JLabel();
+        endText.setText(" Choose time the robot will finish the instruction:");
+        endText.setPreferredSize(new Dimension(400 , 40));
+        endText.setFont(new Font("Arial" , Font.BOLD , 17));
+        endText.setForeground(Color.white);
+
+
+
+        hoursEndLabel = new JLabel();
+        hoursEndLabel.setText("Hour:");
+        hoursEndLabel.setPreferredSize(new Dimension(45 , 50));
+        hoursEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+        hoursEndLabel.setForeground(Color.white);
+
+
+        minutesEndLabel = new JLabel();
+        minutesEndLabel.setText("Minute:");
+        minutesEndLabel.setPreferredSize(new Dimension(60 , 50));
+        minutesEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+        minutesEndLabel.setForeground(Color.white);
+
+
+        secondsEndLabel = new JLabel();
+        secondsEndLabel.setText("Second:");
+        secondsEndLabel.setPreferredSize(new Dimension(70 , 60));
+        secondsEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+        secondsEndLabel.setForeground(Color.white);
+
+
+
 
 
         box1.add(textForDate);
@@ -176,22 +252,35 @@ public class TimeSet extends JPanel {
         box1.add(dayBox);
         this.add(box1);
 
+        box3.add(StartText);
+        box3.add(hoursStartLabel);
         box3.add(hoursStart);
-        box3.add(hoursEnd);
+        box3.add(minutesStartLabel);
         box3.add(minutesStart);
-        box3.add(minutesEnd);
+        box3.add(secondsStartLabel);
         box3.add(secondStart);
+        box3.add(spaceText);
+        box3.add(endText);
+        box3.add(hoursEndLabel);
+        box3.add(hoursEnd);
+        box3.add(minutesEndLabel);
+        box3.add(minutesEnd);
+        box3.add(secondsEndLabel);
         box3.add(secondEnd);
         this.add(box3);
-
-        this.add(box5);
 
         box2.add(textForInstruction);
         box2.add(dragOption);
         box2.add(pressOption);
         this.add(box2);
 
+        this.add(box5);
+
         this.add(box4);
+
+
+
+
 
 
 
@@ -202,13 +291,13 @@ public class TimeSet extends JPanel {
         Stroke oldStroke = rect1.getStroke();
         Stroke borderStroke = new BasicStroke(5); // ניתן לשנות את המספר לקבע רוחב מסגרת שונה
         rect1.setStroke(borderStroke);
-        rect1.drawRect(box1.getX(), box1.getY(), 430, 320);
+        rect1.drawRect(box1.getX(), box1.getY(), box1.getWidth(), box1.getHeight());
         rect1.setStroke(oldStroke);
 
         rect2 = (Graphics2D) g;
         oldStroke = rect2.getStroke();
         rect2.setStroke(borderStroke);
-        rect2.drawRect(box2.getX(), box2.getY(), 430, 320);
+        rect2.drawRect(box2.getX(), box2.getY(), box2.getWidth(), box2.getHeight());
         rect2.setStroke(oldStroke);
 
 

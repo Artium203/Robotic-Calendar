@@ -9,14 +9,15 @@ import java.security.Security;
 
 public class Window extends JFrame implements ActionListener {
     private static Container panel;
-    private static JPanel infoPanel;
+
+    private InfoPanel infoPanel;
+    private Instructions instructions;
     private static  JButton openingPoint = new JButton("Calendar");
-    CalendarForProject calendar;
+    private CalendarForProject calendar;
     private static  JButton timingPoint = new JButton("Set Time");
     TimeSet timer;
     private static  JButton actionPoint = new JButton("Make A Move");
     MAM action;
-    private static  JButton startPoint = new JButton();
     private static  JButton exit = new JButton(new ImageIcon("src/Resources/x.png"));
     private static  JButton goDown = new JButton(new ImageIcon("src/Resources/hide.png"));
     private static Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -81,20 +82,16 @@ public class Window extends JFrame implements ActionListener {
 
         this.add(panel1);
         this.add(panel2);
-        infoPanel = new JPanel();
-        infoPanel.setLayout(new FlowLayout());
-        infoPanel.setBackground(Color.red);
-        infoPanel.setVisible(false);
-
-
+        infoPanel = new InfoPanel(windowWidth,windowHeight);
         this.timer = new TimeSet(windowWidth,windowHeight);
         this.add(timer);
         this.calendar = new CalendarForProject(windowWidth,windowHeight);
         this.action =new MAM(windowWidth,windowHeight);
         this.add(action);
-        infoPanel.setPreferredSize(new Dimension((windowWidth/2)-17,windowHeight-(windowHeight/10)-11));
+        instructions = new Instructions(windowWidth,windowHeight);
         panel.add(calendar);
         panel.add(infoPanel);
+        panel.add(instructions);
 
 
 
@@ -119,6 +116,7 @@ public class Window extends JFrame implements ActionListener {
         timer.setVisible(e.getSource() == timingPoint);
         calendar.setVisible(e.getSource() == openingPoint);
         infoPanel.setVisible(e.getSource() == openingPoint);
+        instructions.setVisible(e.getSource() == openingPoint);
         action.setVisible(e.getSource() == actionPoint);
     }
 }

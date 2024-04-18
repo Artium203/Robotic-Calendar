@@ -30,7 +30,7 @@ public class CalendarForProject extends JPanel {
 
       this.setLayout(new BorderLayout());
       this.setVisible(false);
-      this.setPreferredSize(new Dimension(windowWidth/2,windowHeight-(windowHeight/10)-11));
+      this.setPreferredSize(new Dimension(windowWidth/2,windowHeight/2));
       this.setBackground(Color.blue);
 
       //Look and feel
@@ -134,7 +134,7 @@ public class CalendarForProject extends JPanel {
          int row = ((i+som-2)/7);
          int column  =  (i+som-2)%7;
          if (i == chosenDay && lblMonth.getText().contains(months[chosenMonth-1]) && chosenYear==year){
-            mtblCalendar.setValueAt("ror", row, column);
+            mtblCalendar.setValueAt(i, row, column);
          }else {
             mtblCalendar.setValueAt(i, row, column);
          }

@@ -2,7 +2,6 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class TimeSet extends JPanel {
@@ -18,6 +17,15 @@ public class TimeSet extends JPanel {
     private JComboBox<Integer> dayBox;
     private JButton button;
 
+    private JRadioButton dragOption;
+    private JRadioButton pressOption;
+    private ButtonGroup bg;
+    private JLabel textForInstruction;
+    private JLabel textForDate;
+    private Graphics2D rect1;
+    private Graphics2D rect2;
+
+
 //    private JRadioButton
 
 
@@ -28,15 +36,20 @@ public class TimeSet extends JPanel {
         this.setVisible(false);
         this.setBackground(Color.gray);
         button = new JButton();
-        button.setBounds( 300,100,70,70);
+        button.setBounds( 300,200,70,70);
 
+        textForDate = new JLabel();
+        textForDate.setText("Choose a date for instruction: ");
+        textForDate.setBounds(20,50,450,80);
+        textForDate.setFont(new Font("Arial" , Font.BOLD , 22));
+        add(textForDate);
 
         yearBox = new JComboBox<>(new Integer[]{0,2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032 , 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040});
         monthBox = new JComboBox<>(new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
         dayBox = new JComboBox<>();
-        yearBox.setBounds(50 , 100 , 80 , 50);
-        monthBox.setBounds(yearBox.getX() + 110, 100, 80 , 50);
-        dayBox.setBounds(monthBox.getX() + 110, 100, 80, 50);
+        yearBox.setBounds(30 , 200 , 80 , 50);
+        monthBox.setBounds(yearBox.getX() + 110, 200, 80 , 50);
+        dayBox.setBounds(monthBox.getX() + 110, 200, 80, 50);
 
         dayBox.setFont(new Font("Arial" , Font.BOLD , 20));
         monthBox.setFont(new Font("Arial" , Font.BOLD , 20));
@@ -72,7 +85,63 @@ public class TimeSet extends JPanel {
 
 
 
+        textForInstruction = new JLabel();
+        textForInstruction.setText("Choose one of the following actions: ");
+        textForInstruction.setBounds(20,400,450,80);
+        textForInstruction.setFont(new Font("Arial" , Font.BOLD , 22));
+        add(textForInstruction);
+
+        dragOption = new JRadioButton();
+        dragOption.setText("Drag");     //פעולת גרירה
+        dragOption.setBounds(150,500,80 , 60);
+        dragOption.setFont(new Font("Arial" , Font.BOLD , 17));
+        dragOption.setFocusPainted(false);
+        add(dragOption);
+
+        pressOption = new JRadioButton();
+        pressOption.setText("Press");     //פעולת לחיצה
+        pressOption.setBounds(150,570,80 , 60);
+        pressOption.setFont(new Font("Arial" , Font.BOLD , 17));
+        pressOption.setFocusPainted(false);
+        add(pressOption);
+
+        bg = new ButtonGroup();  // על מנת שתהיה למשתמש רק אופציה אחת לבחירה, נשתמש בדבר הבא
+        bg.add(dragOption);
+        bg.add(pressOption);
+
+
+
+
+
+
+
+
+
+
     }
+
+    public void drawRectangles(Graphics g) {
+        rect1 = (Graphics2D) g;
+        Stroke oldStroke = rect1.getStroke();
+        Stroke borderStroke = new BasicStroke(5); // ניתן לשנות את המספר לקבע רוחב מסגרת שונה
+        rect1.setStroke(borderStroke);
+        rect1.drawRect(10, 40, 430, 320);
+        rect1.setStroke(oldStroke);
+
+        rect2 = (Graphics2D) g;
+        oldStroke = rect2.getStroke();
+        rect2.setStroke(borderStroke);
+        rect2.drawRect(10, 400, 430, 320);
+        rect2.setStroke(oldStroke);
+
+
+    }
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        drawRectangles(g);
+    }
+
     public static int getChosenDay() {
         return chosenDay;
     }

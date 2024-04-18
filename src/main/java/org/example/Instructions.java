@@ -17,7 +17,7 @@ public class Instructions extends JPanel {
         textArea.setEnabled(false);
         textArea.setAutoscrolls(true);
         textArea.setPreferredSize(new Dimension((((windowWidth-16)/2)+(windowWidth-16)/7)+clearSpace,(windowHeight/2)-(windowHeight/10)-25));
-        textArea.setText("Instructions here");
+        textArea.setText("Instructions here. Will be placed after checkups");
         startButton.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
         startButton.setBackground(Color.DARK_GRAY);
         this.add(textArea);

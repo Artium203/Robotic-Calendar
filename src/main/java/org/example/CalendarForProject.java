@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Time;
 import java.util.GregorianCalendar;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -15,11 +16,13 @@ import java.awt.event.*;
 import java.util.*;
 
 public class CalendarForProject extends JPanel {
-
    private static JLabel lblMonth;
+
+   //User's map of dates input and the given time
    private static int chosenYear= 2024;
    private static int chosenMonth=5;
    private static int chosenDay= 17;
+   private static Time time;
    private static JButton btnPrev, btnNext;
    private static JTable tblCalendar;
    private static DefaultTableModel mtblCalendar; //Table model

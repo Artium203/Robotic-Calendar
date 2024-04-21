@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MAM extends JPanel {
-
+    //In future wait
     public MAM(int windowWidth,int windowHeight){
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT));

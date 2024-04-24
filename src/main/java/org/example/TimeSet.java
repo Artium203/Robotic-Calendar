@@ -211,57 +211,68 @@ public class TimeSet extends JPanel {
 
 
 
-        StartText = new JLabel();
-        StartText.setText(" Choose time the robot will start the instruction:");
-        StartText.setPreferredSize(new Dimension(400 , 40));
-        StartText.setFont(new Font("Arial" , Font.BOLD , 17));
-        StartText.setForeground(Color.white);
+//        StartText = new JLabel();
+//        StartText.setText(" Choose time the robot will start the instruction:");
+//        StartText.setPreferredSize(new Dimension(400 , 40));
+//        StartText.setFont(new Font("Arial" , Font.BOLD , 17));
+//        StartText.setForeground(Color.white);
+//
+//        hoursStartLabel = new JLabel();
+//        hoursStartLabel.setText("Hour:");
+//        hoursStartLabel.setPreferredSize(new Dimension(45 , 50));
+//        hoursStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+//        hoursStartLabel.setForeground(Color.white);
+//
+//        minutesStartLabel = new JLabel();
+//        minutesStartLabel.setText("Minute:");
+//        minutesStartLabel.setPreferredSize(new Dimension(60 , 50));
+//        minutesStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+//        minutesStartLabel.setForeground(Color.white);
+//
+//        secondsStartLabel = new JLabel();
+//        secondsStartLabel.setText("Second:");
+//        secondsStartLabel.setPreferredSize(new Dimension(70 , 50));
+//        secondsStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+//        secondsStartLabel.setForeground(Color.white);
+//
+//        spaceText = new JLabel();
+//        spaceText.setText("                                         ");
+//        spaceText.setPreferredSize(new Dimension(400 , 60));
+//
+//        endText = new JLabel();
+//        endText.setText(" Choose time the robot will finish the instruction:");
+//        endText.setPreferredSize(new Dimension(400 , 40));
+//        endText.setFont(new Font("Arial" , Font.BOLD , 17));
+//        endText.setForeground(Color.white);
+//
+//        hoursEndLabel = new JLabel();
+//        hoursEndLabel.setText("Hour:");
+//        hoursEndLabel.setPreferredSize(new Dimension(45 , 50));
+//        hoursEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+//        hoursEndLabel.setForeground(Color.white);
+//
+//        minutesEndLabel = new JLabel();
+//        minutesEndLabel.setText("Minute:");
+//        minutesEndLabel.setPreferredSize(new Dimension(60 , 50));
+//        minutesEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+//        minutesEndLabel.setForeground(Color.white);
+//
+//        secondsEndLabel = new JLabel();
+//        secondsEndLabel.setText("Second:");
+//        secondsEndLabel.setPreferredSize(new Dimension(70 , 60));
+//        secondsEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
+//        secondsEndLabel.setForeground(Color.white);
 
-        hoursStartLabel = new JLabel();
-        hoursStartLabel.setText("Hour:");
-        hoursStartLabel.setPreferredSize(new Dimension(45 , 50));
-        hoursStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-        hoursStartLabel.setForeground(Color.white);
-
-        minutesStartLabel = new JLabel();
-        minutesStartLabel.setText("Minute:");
-        minutesStartLabel.setPreferredSize(new Dimension(60 , 50));
-        minutesStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-        minutesStartLabel.setForeground(Color.white);
-
-        secondsStartLabel = new JLabel();
-        secondsStartLabel.setText("Second:");
-        secondsStartLabel.setPreferredSize(new Dimension(70 , 50));
-        secondsStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-        secondsStartLabel.setForeground(Color.white);
-
-        spaceText = new JLabel();
-        spaceText.setText("                                         ");
-        spaceText.setPreferredSize(new Dimension(400 , 60));
-
-        endText = new JLabel();
-        endText.setText(" Choose time the robot will finish the instruction:");
-        endText.setPreferredSize(new Dimension(400 , 40));
-        endText.setFont(new Font("Arial" , Font.BOLD , 17));
-        endText.setForeground(Color.white);
-
-        hoursEndLabel = new JLabel();
-        hoursEndLabel.setText("Hour:");
-        hoursEndLabel.setPreferredSize(new Dimension(45 , 50));
-        hoursEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-        hoursEndLabel.setForeground(Color.white);
-
-        minutesEndLabel = new JLabel();
-        minutesEndLabel.setText("Minute:");
-        minutesEndLabel.setPreferredSize(new Dimension(60 , 50));
-        minutesEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-        minutesEndLabel.setForeground(Color.white);
-
-        secondsEndLabel = new JLabel();
-        secondsEndLabel.setText("Second:");
-        secondsEndLabel.setPreferredSize(new Dimension(70 , 60));
-        secondsEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-        secondsEndLabel.setForeground(Color.white);
+        StartText = createLabel(" Choose time the robot will start the instruction:", 400, 40);
+        hoursStartLabel = createLabel("Hour:", 45, 50);
+        minutesStartLabel = createLabel("Minute:", 60, 50);
+        secondsStartLabel = createLabel("Second:", 70, 50);
+        spaceText = createLabel("                                         ", 400, 60);
+        endText = createLabel(" Choose time the robot will finish the instruction:", 400, 40);
+        hoursEndLabel = createLabel("Hour:", 45, 50);
+        minutesEndLabel = createLabel("Minute:", 60, 50);
+        secondsEndLabel = createLabel("Second:", 70, 60);
+        //I changed here ^ the type of how you implement the font so please feel free to adjust it
 
         actionList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -385,6 +396,14 @@ public class TimeSet extends JPanel {
         JLabel label = new JLabel(text);
         label.setBounds(x, y, width, height);
         label.setFont(font);
+        return label;
+    }
+
+    private JLabel createLabel(String text, int width, int height) {
+        JLabel label = new JLabel(text);
+        label.setPreferredSize(new Dimension(width, height));
+        label.setFont(new Font("Arial", Font.BOLD, 17));
+        label.setForeground(Color.white);
         return label;
     }
 

@@ -14,7 +14,7 @@ public class Window extends JFrame implements ActionListener {
     private Instructions instructions; // Shows information of how to use the app
     private List<String> listOfAction =new ArrayList<>();
     private static final JButton infoPoint = new JButton("Calendar"); // Button that transitions to the calendar of actions/explanation
-    private CalendarForProject calendar; // The calendar of years/months/days that may or may not added actions to it
+    private CalendarForProject calendar; // The calendar of years/months/days that may or may not add actions to it
     private static final JButton timingPoint = new JButton("Set Time"); // Button that transitions to the timing of action (10 actions counts as 1)
     private static TimeSet timer; // Sets the time and actions of user's input
     private static final JButton actionPoint = new JButton("Make A Move"); // Button that transitions to the MAM (Make A Move)

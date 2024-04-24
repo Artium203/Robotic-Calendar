@@ -38,7 +38,7 @@ public class TimeSet extends JPanel {
     private final JLabel textForInstruction; //Simple explanation
     private final JLabel textForDate;//Simple explanation
 
-    //Feces around the user's input
+    //Fences around the user's input
     private Graphics2D rect1;
     private Graphics2D rect2;
     private Graphics2D rect3;
@@ -73,13 +73,8 @@ public class TimeSet extends JPanel {
     private final JLabel endText;
     private final JLabel spaceText;
 
-
-
-
-
-
     public TimeSet(int windowWidth,int windowHeight, JButton confirm){
-        //Pane's sets
+        //Panel layout and dimensions
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
         this.setVisible(false);
@@ -91,6 +86,8 @@ public class TimeSet extends JPanel {
         boxOfBoxes.setPreferredSize(new Dimension(windowWidth/2+(windowWidth-((windowWidth/2)+(windowWidth/3)+150)),windowHeight-(windowHeight/10)-20));
         boxOfBoxes.setBackground(Color.cyan);
 
+
+        //Sub panel section
         //Date box sets
         dateBox = new JPanel();
         dateBox.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -120,55 +117,29 @@ public class TimeSet extends JPanel {
         listBox.setBackground(Color.GREEN);
 
 
-        //Sets for date
-        textForDate = new JLabel();
-        textForDate.setText("Choose a date for instruction:");
-        textForDate.setPreferredSize(new Dimension(450,80));
+        // Date selection components
+        textForDate = new JLabel("Choose a date for instruction:");
+        textForDate.setPreferredSize(new Dimension(450, 80));
         textForDate.setFont(new Font("Arial" , Font.BOLD , 22));
         add(textForDate);
+
         yearBox = new JComboBox<>(new Integer[]{0,2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032 , 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040});
+        yearBox.setPreferredSize(new Dimension(80 , 50));        yearBox.setFont(new Font("Arial", Font.BOLD, 20));
+
         monthBox = new JComboBox<>(new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
-        dayBox = new JComboBox<>();
-
-        yearBox.setPreferredSize(new Dimension(80 , 50));
-        monthBox.setPreferredSize(new Dimension(80 , 50));
-        dayBox.setPreferredSize(new Dimension(80 , 50));
-
-        dayBox.setFont(new Font("Arial" , Font.BOLD , 20));
-        monthBox.setFont(new Font("Arial" , Font.BOLD , 20));
-        yearBox.setFont(new Font("Arial", Font.BOLD, 20));
-
-
+        monthBox.setPreferredSize(new Dimension(80 , 50));        monthBox.setFont(new Font("Arial" , Font.BOLD , 20));
         monthBox.setVisible(false);
+
+        dayBox = new JComboBox<>();
+        dayBox.setPreferredSize(new Dimension(80 , 50));        dayBox.setFont(new Font("Arial" , Font.BOLD , 20));
         dayBox.setVisible(false);
 
+
         //Actions for the choices of the date
-        yearBox.addActionListener(e -> {
-            if (!yearBox.getSelectedItem().equals("0")){
-                monthBox.setVisible(true);
-                chosenYear = (int) yearBox.getSelectedItem();
-            }
-        });
-        monthBox.addActionListener(e -> {
-            if (!monthBox.getSelectedItem().equals("0") && !yearBox.getSelectedItem().equals("0")){
-                chosenMonth = (int) monthBox.getSelectedItem()-1;
-                GregorianCalendar cal2 = new GregorianCalendar(chosenYear, chosenMonth,1);
-                nod = cal2.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
-                updateDayBox();
-                dayBox.setVisible(true);
-            }
-            if (dayBox.getItemCount() != 0) {
-                dayBox.removeAllItems();
-                GregorianCalendar cal2 = new GregorianCalendar(chosenYear, chosenMonth,1);
-                nod = cal2.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
-                updateDayBox();
-            }
-        });
-        dayBox.addActionListener(e -> {
-            if (dayBox.getItemCount() != 0){
-                chosenDay = (int) dayBox.getSelectedItem();
-            }
-        });
+
+        yearBox.addActionListener(e -> yearSelection());
+        monthBox.addActionListener(e -> monthSelection());
+        dayBox.addActionListener(e -> daySelection());
 
 
         //Sets of action (on a mouse)
@@ -199,33 +170,46 @@ public class TimeSet extends JPanel {
 
 
         //Sets of starting/ending time
-        hoursStart = new JTextField(2);
-        hoursStart.setPreferredSize(new Dimension(30 , 20));
-        hoursStart.setActionCommand("Hours Start");
-        limitJTextField(hoursStart, 23);
+//        hoursStart = new JTextField(2);
+//        hoursStart.setPreferredSize(new Dimension(30 , 20));
+//        hoursStart.setActionCommand("Hours Start");
+//        limitJTextField(hoursStart, 23);
+//
+//        hoursEnd = new JTextField(2);
+//        hoursEnd.setPreferredSize(new Dimension(30 , 20));
+//        hoursEnd.setActionCommand("Hours End");
+//        limitJTextField(hoursEnd, 23);
+//
+//        minutesStart = new JTextField(2);
+//        minutesStart.setPreferredSize(new Dimension(30 , 20));
+//        minutesStart.setActionCommand("Minutes Start");
+//        limitJTextField(minutesStart, 59);
+//
+//        minutesEnd = new JTextField(2);
+//        minutesEnd.setPreferredSize(new Dimension(30 , 20));
+//        limitJTextField(minutesEnd, 59);
+//
+//        secondStart = new JTextField(2);
+//        secondStart.setPreferredSize(new Dimension(30 , 20));
+//        limitJTextField(secondStart, 59);
+//
+//        secondEnd = new JTextField(2);
+//        secondEnd.setSelectionEnd(1);
+//        secondEnd.setPreferredSize(new Dimension(30 , 20));
+//        limitJTextField(secondEnd, 59);
 
-        hoursEnd = new JTextField(2);
-        hoursEnd.setPreferredSize(new Dimension(30 , 20));
-        hoursEnd.setActionCommand("Hours End");
-        limitJTextField(hoursEnd, 23);
+        hoursStart = createTextField(2, "Hours Start", 30, 20, 23);
+        hoursEnd = createTextField(2, "Hours End", 30, 20, 23);
 
-        minutesStart = new JTextField(2);
-        minutesStart.setPreferredSize(new Dimension(30 , 20));
-        minutesStart.setActionCommand("Minutes Start");
-        limitJTextField(minutesStart, 59);
+        minutesStart = createTextField(2, "Minutes Start", 30, 20, 59);
+        minutesEnd = createTextField(2, null, 30, 20, 59);
 
-        minutesEnd = new JTextField(2);
-        minutesEnd.setPreferredSize(new Dimension(30 , 20));
-        limitJTextField(minutesEnd, 59);
+        secondStart = createTextField(2, null, 30, 20, 59);
+        secondEnd = createTextField(2, null, 30, 20, 59);
 
-        secondStart = new JTextField(2);
-        secondStart.setPreferredSize(new Dimension(30 , 20));
-        limitJTextField(secondStart, 59);
 
-        secondEnd = new JTextField(2);
-        secondEnd.setSelectionEnd(1);
-        secondEnd.setPreferredSize(new Dimension(30 , 20));
-        limitJTextField(secondEnd, 59);
+
+
 
         StartText = new JLabel();
         StartText.setText(" Choose time the robot will start the instruction:");
@@ -368,37 +352,98 @@ public class TimeSet extends JPanel {
         addOrRemoveBox.add(removeFromList);
         this.add(listBox);
 
-
-
     }
+
+    private void yearSelection() {
+        if(!Objects.equals(yearBox.getSelectedItem(), 0)) {
+            monthBox.setVisible(true);
+            chosenYear = (int) yearBox.getSelectedItem();
+        }
+    }
+    private void monthSelection() {
+        if (!Objects.equals(monthBox.getSelectedItem(), 0) && !Objects.equals(yearBox.getSelectedItem(), 0)) {
+            chosenMonth = (int) monthBox.getSelectedItem() - 1;
+            GregorianCalendar cal2 = new GregorianCalendar(chosenYear, chosenMonth,1);
+            nod = cal2.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+            updateDayBox();
+            dayBox.setVisible(true);
+        }
+        if (dayBox.getItemCount() != 0) {
+            dayBox.removeAllItems();
+            GregorianCalendar cal2 = new GregorianCalendar(chosenYear, chosenMonth,1);
+            nod = cal2.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+            updateDayBox();
+        }
+    }
+    private void daySelection() {
+        if (dayBox.getItemCount() != 0) {
+            chosenDay = (int) dayBox.getSelectedItem();
+        }
+    }
+
+    private JLabel createTextLabel(String text, int x, int y , int width, int height, Font font){
+        JLabel label = new JLabel(text);
+        label.setBounds(x, y, width, height);
+        label.setFont(font);
+        return label;
+    }
+
+    private JRadioButton createTextRadioButton(String text, int width, int height, Font font){
+        JRadioButton jRadioButton = new JRadioButton(text);
+        jRadioButton.setPreferredSize(new Dimension(width, height));
+        jRadioButton.setFont(font);
+        jRadioButton.setFocusPainted(false);
+        return jRadioButton;
+    }
+
+    private JTextField createTextField(int col, String command, int width, int height, int limit){
+        JTextField jTextField = new JTextField(col);
+        jTextField.setPreferredSize(new Dimension(width, height));
+        if(command != null){
+            jTextField.setActionCommand(command);
+        }
+        limitJTextField(jTextField, limit);
+        return jTextField;
+    }
+
     //Making/Drawing the fences
     public void drawRectangles(Graphics g) {
-        rect1 = (Graphics2D) g;
-        Stroke oldStroke = rect1.getStroke();
-        Stroke borderStroke = new BasicStroke(6); // ניתן לשנות את המספר לקבע רוחב מסגרת שונה
-        rect1.setStroke(borderStroke);
-        rect1.drawRect(dateBox.getX()+2, dateBox.getY()+1, dateBox.getWidth(), dateBox.getHeight());
-        rect1.setStroke(oldStroke);
 
-        rect2 = (Graphics2D) g;
-        oldStroke = rect2.getStroke();
-        rect2.setStroke(borderStroke);
-        rect2.drawRect(performanceBox.getX()+2, performanceBox.getY()+2, performanceBox.getWidth(), performanceBox.getHeight());
-        rect2.setStroke(oldStroke);
+        Graphics2D graphics2D = (Graphics2D) g; // Makes the graphics be more advanced as Graphics2D to make implementations in 2D
+        Stroke borderStroke = new BasicStroke(6);
 
-        rect3 = (Graphics2D) g;
-        oldStroke = rect3.getStroke();
-        rect3.setStroke(borderStroke);
-        rect3.drawRect(timeBox.getX()+4, timeBox.getY()+2, timeBox.getWidth(), timeBox.getHeight());
-        rect3.setStroke(oldStroke);
+        JPanel[] panels = {dateBox, performanceBox, timeBox, addOrRemoveBox};
+        for(JPanel panel : panels) {
+            Stroke boringStroke = graphics2D.getStroke();
 
-        rect4 = (Graphics2D) g;
-        oldStroke = rect4.getStroke();
-        rect4.setStroke(borderStroke);
-        rect4.drawRect(addOrRemoveBox.getX()+4, addOrRemoveBox.getY()+2, addOrRemoveBox.getWidth(), addOrRemoveBox.getHeight());
-        rect4.setStroke(oldStroke);
-
-
+            graphics2D.setStroke(borderStroke);
+            graphics2D.drawRect(panel.getX() + 2, panel.getY() + 1, panel.getWidth(), panel.getHeight());
+            graphics2D.setStroke(boringStroke);
+        }
+//        rect1 = (Graphics2D) g;
+//        Stroke oldStroke = rect1.getStroke();
+//        Stroke borderStroke = new BasicStroke(6); // ניתן לשנות את המספר לקבע רוחב מסגרת שונה
+//        rect1.setStroke(borderStroke);
+//        rect1.drawRect(dateBox.getX()+2, dateBox.getY()+1, dateBox.getWidth(), dateBox.getHeight());
+//        rect1.setStroke(oldStroke);
+//
+//        rect2 = (Graphics2D) g;
+//        oldStroke = rect2.getStroke();
+//        rect2.setStroke(borderStroke);
+//        rect2.drawRect(performanceBox.getX()+2, performanceBox.getY()+2, performanceBox.getWidth(), performanceBox.getHeight());
+//        rect2.setStroke(oldStroke);
+//
+//        rect3 = (Graphics2D) g;
+//        oldStroke = rect3.getStroke();
+//        rect3.setStroke(borderStroke);
+//        rect3.drawRect(timeBox.getX()+4, timeBox.getY()+2, timeBox.getWidth(), timeBox.getHeight());
+//        rect3.setStroke(oldStroke);
+//
+//        rect4 = (Graphics2D) g;
+//        oldStroke = rect4.getStroke();
+//        rect4.setStroke(borderStroke);
+//        rect4.drawRect(addOrRemoveBox.getX()+4, addOrRemoveBox.getY()+2, addOrRemoveBox.getWidth(), addOrRemoveBox.getHeight());
+//        rect4.setStroke(oldStroke);
     }
     public void paint(Graphics g) {
         super.paint(g);
@@ -436,7 +481,6 @@ public class TimeSet extends JPanel {
         for (int i = 1; i <= nod; i++) {
             dayBox.addItem(i);
         }
-
     }
 
     //Limits the amount of text for time writing (so no illegal term would catch)
@@ -453,9 +497,9 @@ public class TimeSet extends JPanel {
                 }
             }
 
+            // Allow only numeric characters and check text length
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                // Allow only numeric characters and check text length
                 if (isNumeric(text) && (fb.getDocument().getLength() + text.length() - length) <= 2) {
                     String newText = fb.getDocument().getText(0, offset) + text + fb.getDocument().getText(offset + length, fb.getDocument().getLength() - offset - length);
                     if (isValid(newText)) {
@@ -464,10 +508,12 @@ public class TimeSet extends JPanel {
                 }
             }
 
+            //checks whether the String contains only numbers
             private boolean isNumeric(String text) {
                 return text != null && text.matches("\\d");
             }
 
+            // Checks whether the String passes the wanting limitation
             private boolean isValid(String text) {
                 if (text.length() == 0) return true;
                 int numberInput = Integer.parseInt(text);

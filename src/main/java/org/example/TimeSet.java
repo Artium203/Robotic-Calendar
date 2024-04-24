@@ -3,10 +3,16 @@ package org.example;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class TimeSet extends JPanel {
-    private static String dateAndTime;// Will be used to put on a list
+
+    private static List<String> actionToList;// Will be used to put on a list
+
+    private static List<JCheckBox> actionList;
 
     //The chosen date from user
     private static int chosenDay;
@@ -16,20 +22,21 @@ public class TimeSet extends JPanel {
     private static int nod;//  Used for calculations instructions
 
     //Options of choosing the date
-    private JComboBox<Integer> yearBox;
-    private JComboBox<Integer> monthBox;
+    private final JComboBox<Integer> yearBox;
+    private final JComboBox<Integer> monthBox;
     private JComboBox<Integer> dayBox;
 
-    private JButton addToList;// Button that confirmed user's chose to add to a list
-    private JButton removeFromList; // Button that removes user's chose from the list
+    private final JButton addToList;// Button that confirmed user's chose to add to a list
+    private final JButton removeFromList; // Button that removes user's chose from the list
 
     //Action option
-    private JRadioButton dragOption;
-    private JRadioButton pressOption;
+    private final JRadioButton dragOption;
+    private final JRadioButton pressOption;
+
     private ButtonGroup bg;// Only to pick one of the 2 buttons
 
-    private JLabel textForInstruction; //Simple explanation
-    private JLabel textForDate;//Simple explanation
+    private final JLabel textForInstruction; //Simple explanation
+    private final JLabel textForDate;//Simple explanation
 
     //Feces around the user's input
     private Graphics2D rect1;
@@ -37,12 +44,14 @@ public class TimeSet extends JPanel {
     private Graphics2D rect3;
     private Graphics2D rect4;
 
-    private JPanel dateBox;//Gets the date from user
-    private JPanel performanceBox;//Gets the action from user
-    private JPanel timeBox;//Gets the time from user
-    private JPanel addOrRemoveBox;//Gets to put/remove to/from a list
-    private JPanel listBox;//List of actions (max 10 actions to put)
-    private JPanel boxOfBoxes;//Contains the panels together
+    private final JPanel dateBox;//Gets the date from user
+    private final JPanel performanceBox;//Gets the action from user
+    private final JPanel timeBox;//Gets the time from user
+    private final JPanel addOrRemoveBox;//Gets to put/remove to/from a list
+
+
+    private final JPanel listBox;//List of actions (max 10 actions to put)
+    private final JPanel boxOfBoxes;//Contains the panels together
 
     //The starting and ending of the action
     private JTextField hoursStart;
@@ -53,22 +62,22 @@ public class TimeSet extends JPanel {
     private JTextField secondEnd;
 
     //Title to understand which is who
-    private JLabel hoursStartLabel;
-    private JLabel minutesStartLabel;
-    private JLabel secondsStartLabel;
-    private JLabel hoursEndLabel;
-    private JLabel minutesEndLabel;
-    private JLabel secondsEndLabel;
-    private JLabel StartText;
-    private JLabel endText;
-    private JLabel spaceText;
+    private final JLabel hoursStartLabel;
+    private final JLabel minutesStartLabel;
+    private final JLabel secondsStartLabel;
+    private final JLabel hoursEndLabel;
+    private final JLabel minutesEndLabel;
+    private final JLabel secondsEndLabel;
+    private final JLabel StartText;
+    private final JLabel endText;
+    private final JLabel spaceText;
 
 
 
 
 
 
-    public TimeSet(int windowWidth,int windowHeight){
+    public TimeSet(int windowWidth,int windowHeight, JButton confirm){
         //Pane's sets
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
@@ -78,7 +87,7 @@ public class TimeSet extends JPanel {
         //Container's sets
         boxOfBoxes = new JPanel();
         boxOfBoxes.setLayout(new FlowLayout(FlowLayout.LEFT));
-        boxOfBoxes.setPreferredSize(new Dimension(windowWidth/2+(windowWidth-((windowWidth/2)+445)),windowHeight-(windowHeight/10)-20));
+        boxOfBoxes.setPreferredSize(new Dimension(windowWidth/2+(windowWidth-((windowWidth/2)+(windowWidth/3)+100)),windowHeight-(windowHeight/10)-20));
         boxOfBoxes.setBackground(Color.cyan);
 
         //Date box sets
@@ -100,12 +109,13 @@ public class TimeSet extends JPanel {
 
         //Sets of add/remove to/from a list box
         addOrRemoveBox = new JPanel();
-        addOrRemoveBox.setPreferredSize(new Dimension((windowWidth/2+(windowWidth-((windowWidth/2)+445)))/2+10, (windowHeight-(windowHeight/10)-20)/2));
+        addOrRemoveBox.setPreferredSize(new Dimension((windowWidth/2+(windowWidth-((windowWidth/2)+445)))/4, (windowHeight-(windowHeight/6)-150)/2));
         addOrRemoveBox.setBackground(Color.DARK_GRAY);
 
         //list box's sets
         listBox = new JPanel();
-        listBox.setPreferredSize(new Dimension(420, windowHeight-(windowHeight/10)-20));
+        int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2)+445));
+        listBox.setPreferredSize(new Dimension(betterSize-windowWidth/3, windowHeight/2 -(windowHeight/10)+150));
         listBox.setBackground(Color.DARK_GRAY);
 
 
@@ -181,6 +191,8 @@ public class TimeSet extends JPanel {
         bg = new ButtonGroup();  // על מנת שתהיה למשתמש רק אופציה אחת לבחירה, נשתמש בדבר הבא
         bg.add(dragOption);
         bg.add(pressOption);
+
+
 
         //Sets of starting/ending time
         hoursStart = new JTextField(2);
@@ -263,6 +275,60 @@ public class TimeSet extends JPanel {
         secondsEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
         secondsEndLabel.setForeground(Color.white);
 
+        actionList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            actionList.add(new JCheckBox());
+            actionList.get(i).setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-15));
+            listBox.add(actionList.get(i));
+        }
+
+        actionToList = new ArrayList<>();
+        addToList = new JButton("ADD");
+        removeFromList = new JButton("REMOVE");
+        addToList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        addToList.addActionListener(e -> {
+            if (e.getSource()==addToList && actionToList.size()==10){
+                addToList.setEnabled(false);
+            }
+            if (e.getSource()==addToList && dragOption.isSelected()){
+                actionToList.add(Arrays.toString(dragOption.getSelectedObjects()));
+                for (int i = 0; i < 10; i++) {
+                    if (actionList.get(i).getText().isEmpty()){
+                        actionList.get(i).setText(Arrays.toString(dragOption.getSelectedObjects()));
+                        break;
+                    }
+                }
+            } else if (e.getSource()==addToList && pressOption.isSelected()) {
+                actionToList.add(Arrays.toString(pressOption.getSelectedObjects()));
+                System.out.println(actionToList);
+                for (int i = 0; i < 10; i++) {
+                    if (actionList.get(i).getText().isEmpty()){
+                        actionList.get(i).setText(Arrays.toString(pressOption.getSelectedObjects()));
+                        break;
+                    }
+                }
+            }
+        });
+        removeFromList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        removeFromList.addActionListener(e -> {
+            if (e.getSource()==removeFromList && actionToList.isEmpty()){
+                addToList.setEnabled(true);
+            }else {
+                removeFromList.setEnabled(true);
+            }
+            if (e.getSource()==removeFromList && !actionToList.isEmpty()){
+                for(JCheckBox box:actionList){
+                    if (box.isSelected()){
+                        actionToList.remove(box.getText());
+                        box.setText("");
+                    }
+                }
+                addToList.setEnabled(true);
+            }
+        });
+
+        listBox.add(confirm);
+
         //Adding/combining things together
         this.add(boxOfBoxes);
         boxOfBoxes.add(dateBox);
@@ -288,19 +354,16 @@ public class TimeSet extends JPanel {
         timeBox.add(secondsEndLabel);
         timeBox.add(secondEnd);
 
+
         boxOfBoxes.add(performanceBox);
         performanceBox.add(textForInstruction);
         performanceBox.add(dragOption);
         performanceBox.add(pressOption);
 
         boxOfBoxes.add(addOrRemoveBox);
-
+        addOrRemoveBox.add(addToList);
+        addOrRemoveBox.add(removeFromList);
         this.add(listBox);
-
-
-
-
-
 
 
 
@@ -351,16 +414,20 @@ public class TimeSet extends JPanel {
     public static int getChosenYear() {
         return chosenYear;
     }
+    public static List<String> getActionToList() {
+        return actionToList;
+    }
 
     //Updates the days to mach the month
-    public void updateDayBox(){
+    private void updateDayBox(){
         for (int i = 1; i <= nod; i++) {
             dayBox.addItem(i);
         }
 
     }
+
     //Limits the amount of text for time writing (so no illegal term would catch)
-    public void limitJTextField(JTextField textField, int maxValue){
+    private void limitJTextField(JTextField textField, int maxValue){
         AbstractDocument document = (AbstractDocument) textField.getDocument();
         document.setDocumentFilter(new DocumentFilter() {
             @Override

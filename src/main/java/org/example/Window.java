@@ -10,15 +10,17 @@ public class Window extends JFrame implements ActionListener {
 
     private InfoPanel infoPanel; // Shows the list of actions that user have made
     private Instructions instructions; // Shows information of how to use the app
-    private static  JButton infoPoint = new JButton("Calendar"); // Button that transitions to the calendar of actions/explanation
+    private static final JButton infoPoint = new JButton("Calendar"); // Button that transitions to the calendar of actions/explanation
     private CalendarForProject calendar; // The calendar of years/months/days that may or may not added actions to it
-    private static  JButton timingPoint = new JButton("Set Time"); // Button that transitions to the timing of action (10 actions counts as 1)
-    private TimeSet timer; // Sets the time and actions of user's input
-    private static  JButton actionPoint = new JButton("Make A Move"); // Button that transitions to the MAM (Make A Move)
+    private static final JButton timingPoint = new JButton("Set Time"); // Button that transitions to the timing of action (10 actions counts as 1)
+    private static TimeSet timer; // Sets the time and actions of user's input
+    private static final JButton actionPoint = new JButton("Make A Move"); // Button that transitions to the MAM (Make A Move)
     private MAM action; // Sets the time of each action that the user gave and the potions of each action that user gave
-    private static  JButton exit = new JButton(new ImageIcon("src/Resources/x.png")); // Exits/closes the window
-    private static  JButton goDown = new JButton(new ImageIcon("src/Resources/hide.png")); // Hides/minimises the window
-    private static Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Gets the size of user's window
+    private static final JButton exit = new JButton(new ImageIcon("src/Resources/x.png")); // Exits/closes the window
+    private static final JButton goDown = new JButton(new ImageIcon("src/Resources/hide.png")); // Hides/minimises the window
+
+    private static final JButton confirmOption = new JButton("CONFIRM");
+    private static final Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Gets the size of user's window
     //User's width/height window
     private final int windowWidth = size.width;
     private final int windowHeight = size.height;
@@ -54,6 +56,7 @@ public class Window extends JFrame implements ActionListener {
         actionPoint.setFont(new Font("Arial",Font.BOLD, 26));
         actionPoint.setForeground(Color.white);
         actionPoint.setBackground(Color.blue);
+        actionPoint.setEnabled(false);
         actionPoint.setFocusPainted(false);
 
         //Adds actions to the 3 buttons mentioned before
@@ -88,20 +91,22 @@ public class Window extends JFrame implements ActionListener {
         panel = this.getContentPane(); //Get content pane
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+        confirmOption.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        confirmOption.addActionListener(this);
+
         //Adds/makes the operations
         this.add(boxOfNavigation);
         this.add(boxOfWindowOp);
         infoPanel = new InfoPanel(windowWidth,windowHeight);
-        this.timer = new TimeSet(windowWidth,windowHeight);
+        timer = new TimeSet(windowWidth,windowHeight,confirmOption);
         this.add(timer);
         this.calendar = new CalendarForProject(windowWidth,windowHeight);
-        this.action =new MAM(windowWidth,windowHeight);
+        this.action =new MAM(windowWidth,windowHeight, timer.getActionToList());
         this.add(action);
         instructions = new Instructions(windowWidth,windowHeight);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
-
 
 
 
@@ -125,9 +130,16 @@ public class Window extends JFrame implements ActionListener {
             this.setState(JFrame.ICONIFIED); // Makes the window hide
         }
         timer.setVisible(e.getSource() == timingPoint);
+        confirmOption.setVisible(e.getSource() == timingPoint);
         calendar.setVisible(e.getSource() == infoPoint);
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
+        if (e.getSource() == confirmOption){
+            this.remove(timer);
+            timer=new TimeSet(windowWidth,windowHeight,confirmOption);
+            this.add(timer);
+            actionPoint.setEnabled(e.getSource() == confirmOption);
+        }
         action.setVisible(e.getSource() == actionPoint);
     }
 }

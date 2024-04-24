@@ -137,7 +137,7 @@ public class Window extends JFrame implements ActionListener {
         calendar.setVisible(e.getSource() == infoPoint);
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
-        if (e.getSource() == confirmOption){
+        if (e.getSource() == confirmOption && isFull()){
             listOfAction = timer.getActionToList();
             this.remove(timer);
             timer=new TimeSet(windowWidth,windowHeight,confirmOption);
@@ -148,5 +148,11 @@ public class Window extends JFrame implements ActionListener {
             this.add(action);
         }
         action.setVisible(e.getSource() == actionPoint);
+    }
+
+    private boolean isFull() {
+        return (timer.getChosenYear() != 0 && timer.getChosenMonth()!= 0 && !timer.getHoursEnd().isEmpty()
+                && !timer.getHoursStart().isEmpty() && !timer.getMinutesEnd().isEmpty() &&!timer.getMinutesStart().isEmpty()
+                && !timer.getSecondEnd().isEmpty() && !timer.getSecondStart().isEmpty() && !timer.getActionToList().isEmpty());
     }
 }

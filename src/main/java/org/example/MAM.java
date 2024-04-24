@@ -10,6 +10,8 @@ public class MAM extends JPanel {
     private JPanel boxList;
     private List<JCheckBox> performanceList;
 
+    private JPanel boxOfCommand;
+
     public MAM (int windowWidth, int windowHeight, List<String> actionList){
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -32,6 +34,9 @@ public class MAM extends JPanel {
                 checkGroup.add(performanceList.get(i));
             }
         }
+        boxOfCommand = new JPanel();
+        boxOfCommand.setPreferredSize(new Dimension(windowWidth-boxList.getWidth()-4,boxList.getHeight()-2));
+        boxOfCommand.setBackground(Color.orange);
         this.add(boxList);
     }
 }

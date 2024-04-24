@@ -53,6 +53,7 @@ public class TimeSet extends JPanel {
     private final JPanel listBox;//List of actions (max 10 actions to put)
     private final JPanel boxOfBoxes;//Contains the panels together
 
+
     //The starting and ending of the action
     private JTextField hoursStart;
     private JTextField minutesStart;
@@ -87,7 +88,7 @@ public class TimeSet extends JPanel {
         //Container's sets
         boxOfBoxes = new JPanel();
         boxOfBoxes.setLayout(new FlowLayout(FlowLayout.LEFT));
-        boxOfBoxes.setPreferredSize(new Dimension(windowWidth/2+(windowWidth-((windowWidth/2)+(windowWidth/3)+100)),windowHeight-(windowHeight/10)-20));
+        boxOfBoxes.setPreferredSize(new Dimension(windowWidth/2+(windowWidth-((windowWidth/2)+(windowWidth/3)+150)),windowHeight-(windowHeight/10)-20));
         boxOfBoxes.setBackground(Color.cyan);
 
         //Date box sets
@@ -114,7 +115,7 @@ public class TimeSet extends JPanel {
 
         //list box's sets
         listBox = new JPanel();
-        int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2)+windowWidth/5));
+        int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2)+445));
         listBox.setPreferredSize(new Dimension(betterSize-windowWidth/3, windowHeight/2 -(windowHeight/10)+150));
         listBox.setBackground(Color.GREEN);
 
@@ -171,27 +172,30 @@ public class TimeSet extends JPanel {
 
 
         //Sets of action (on a mouse)
-        textForInstruction = new JLabel();
-        textForInstruction.setText("Choose one of the following actions:");
-        textForInstruction.setBounds(0,400,250,70);
-        textForInstruction.setFont(new Font("Arial" , Font.BOLD , 18));
+//        textForInstruction = new JLabel();
+//        textForInstruction.setText("Choose one of the following actions:");
+//        textForInstruction.setBounds(0,400,250,70);
+//        textForInstruction.setFont(new Font("Arial" , Font.BOLD , 18));
+//
+//        dragOption = new JRadioButton();
+//        dragOption.setText("Scroll");     //פעולת גלילה
+//        dragOption.setPreferredSize(new Dimension(80 , 60));
+//        dragOption.setFont(new Font("Arial" , Font.BOLD , 17));
+//        dragOption.setFocusPainted(false);
+//
+//        pressOption = new JRadioButton();
+//        pressOption.setText("Press");     //פעולת לחיצה
+//        pressOption.setPreferredSize(new Dimension(80 , 60));
+//        pressOption.setFont(new Font("Arial" , Font.BOLD , 17));
+//        pressOption.setFocusPainted(false);
 
-        dragOption = new JRadioButton();
-        dragOption.setText("Drag");     //פעולת גרירה
-        dragOption.setPreferredSize(new Dimension(80 , 60));
-        dragOption.setFont(new Font("Arial" , Font.BOLD , 17));
-        dragOption.setFocusPainted(false);
-
-        pressOption = new JRadioButton();
-        pressOption.setText("Press");     //פעולת לחיצה
-        pressOption.setPreferredSize(new Dimension(80 , 60));
-        pressOption.setFont(new Font("Arial" , Font.BOLD , 17));
-        pressOption.setFocusPainted(false);
-
+        textForInstruction = createTextLabel("Choose one of the following actions: ", 0, 400, 250, 70, new Font("Arial", Font.BOLD, 18));
+        dragOption = createTextRadioButton("Scroll", 80, 60, new Font("Arial", Font.BOLD, 17));
+        pressOption = createTextRadioButton("Press", 80, 60, new Font("Arial", Font.BOLD, 17));
         buttonGroup = new ButtonGroup();  // על מנת שתהיה למשתמש רק אופציה אחת לבחירה, נשתמש בדבר הבא
+        textForInstruction.setBounds(0,400,250,70);
         buttonGroup.add(dragOption);
         buttonGroup.add(pressOption);
-
 
 
         //Sets of starting/ending time
@@ -416,6 +420,16 @@ public class TimeSet extends JPanel {
     public static List<String> getActionToList() {
         return actionToList;
     }
+    public String getHoursStart() {return hoursStart.getText();}
+
+    public String getMinutesStart() {return minutesStart.getText();}
+
+    public String getSecondStart() {return secondStart.getText();}
+
+    public String getHoursEnd() {return hoursEnd.getText();}
+
+    public String getMinutesEnd() {return minutesEnd.getText();}
+    public String getSecondEnd() {return secondEnd.getText();}
 
     //Updates the days to mach the month
     private void updateDayBox(){

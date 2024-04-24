@@ -114,9 +114,9 @@ public class TimeSet extends JPanel {
 
         //list box's sets
         listBox = new JPanel();
-        int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2)+445));
+        int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2)+windowWidth/5));
         listBox.setPreferredSize(new Dimension(betterSize-windowWidth/3, windowHeight/2 -(windowHeight/10)+150));
-        listBox.setBackground(Color.DARK_GRAY);
+        listBox.setBackground(Color.GREEN);
 
 
         //Sets for date

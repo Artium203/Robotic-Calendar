@@ -22,7 +22,6 @@ public class CalendarForProject extends JPanel {
    private static int chosenYear= 2024;
    private static int chosenMonth=5;
    private static int chosenDay= 17;
-   private static Time time;
    private static JButton btnPrev, btnNext;
    private static JTable tblCalendar;
    private static DefaultTableModel mtblCalendar; //Table model
@@ -152,7 +151,7 @@ public class CalendarForProject extends JPanel {
       tblCalendar.setDefaultRenderer(tblCalendar.getColumnClass(0), new tblCalendarRenderer());
    }
 
-    private static class tblCalendarRenderer extends DefaultTableCellRenderer {
+   private static class tblCalendarRenderer extends DefaultTableCellRenderer {
       public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column){
          super.getTableCellRendererComponent(table, value, selected, focused, row, column);
          if (column == 0 || column == 6){ //Weekend

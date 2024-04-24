@@ -9,12 +9,13 @@ public class MAM extends JPanel {
     //In future wait
     private JPanel boxList;
     private List<JCheckBox> performanceList;
-    public MAM(int windowWidth, int windowHeight, List<String> actionList){
+
+    public MAM (int windowWidth, int windowHeight, List<String> actionList){
+
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
         this.setVisible(false);
         this.setBackground(Color.green);
-
 
         boxList = new JPanel();
         boxList.setPreferredSize(new Dimension(windowWidth/3,31+(windowHeight/6)*5));

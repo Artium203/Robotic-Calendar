@@ -30,7 +30,7 @@ public class Window extends JFrame implements ActionListener {
 
     private static JPanel boxOfNavigation = new JPanel(); // Box of the 3 buttons mentioned before
     private static JPanel boxOfWindowOp = new JPanel(); //Box of the 2 window buttons
-//    private static JPanel panel3 = new JPanel();
+    //    private static JPanel panel3 = new JPanel();
     public Window(){
         //Window setting
         this.setTitle("Robotic Calendar");

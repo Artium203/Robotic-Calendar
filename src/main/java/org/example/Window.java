@@ -4,12 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Window extends JFrame implements ActionListener {
     private static Container panel; // Contains the frame of the window mainly used of the calendar at the moment
 
     private InfoPanel infoPanel; // Shows the list of actions that user have made
     private Instructions instructions; // Shows information of how to use the app
+    private List<String> listOfAction =new ArrayList<>();
     private static final JButton infoPoint = new JButton("Calendar"); // Button that transitions to the calendar of actions/explanation
     private CalendarForProject calendar; // The calendar of years/months/days that may or may not added actions to it
     private static final JButton timingPoint = new JButton("Set Time"); // Button that transitions to the timing of action (10 actions counts as 1)
@@ -101,7 +104,7 @@ public class Window extends JFrame implements ActionListener {
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
         this.add(timer);
         this.calendar = new CalendarForProject(windowWidth,windowHeight);
-        this.action =new MAM(windowWidth,windowHeight, timer.getActionToList());
+        this.action =new MAM(windowWidth,windowHeight, listOfAction);
         this.add(action);
         instructions = new Instructions(windowWidth,windowHeight);
         panel.add(calendar);
@@ -135,10 +138,14 @@ public class Window extends JFrame implements ActionListener {
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
         if (e.getSource() == confirmOption){
+            listOfAction = timer.getActionToList();
             this.remove(timer);
             timer=new TimeSet(windowWidth,windowHeight,confirmOption);
             this.add(timer);
             actionPoint.setEnabled(e.getSource() == confirmOption);
+            this.remove(action);
+            this.action =new MAM(windowWidth,windowHeight, listOfAction);
+            this.add(action);
         }
         action.setVisible(e.getSource() == actionPoint);
     }

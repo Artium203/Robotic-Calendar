@@ -16,19 +16,19 @@ public class MAM extends JPanel {
         this.setBackground(Color.green);
 
 
-
         boxList = new JPanel();
-        boxList.setPreferredSize(new Dimension(windowWidth/5,31+(windowHeight/6)*5));
+        boxList.setPreferredSize(new Dimension(windowWidth/3,31+(windowHeight/6)*5));
         boxList.setBackground(Color.DARK_GRAY);
 
+        ButtonGroup checkGroup = new ButtonGroup();
         performanceList = new ArrayList<>();
         if (!actionList.isEmpty()){
-            System.out.println(actionList.size());
             for (int i = 0; i < 10; i++) {
                 performanceList.add(new JCheckBox());
                 performanceList.get(i).setPreferredSize(new Dimension((windowWidth/6),(windowHeight/10)-15));
                 performanceList.get(i).setText(actionList.get(i));
                 boxList.add(performanceList.get(i));
+                checkGroup.add(performanceList.get(i));
             }
         }
         this.add(boxList);

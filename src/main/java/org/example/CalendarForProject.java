@@ -47,9 +47,15 @@ public class CalendarForProject extends JPanel {
       lblMonth = new JLabel ("January");
       btnPrev = new JButton ("Prev");
       btnNext = new JButton ("Next");
-      mtblCalendar = new DefaultTableModel(){public boolean isCellEditable(int rowIndex, int mColIndex){return false;}};
+      mtblCalendar = new DefaultTableModel(){
+         public boolean isCellEditable(int rowIndex, int mColIndex) {
+            return false;
+         }
+      };
       tblCalendar = new JTable(mtblCalendar);
+
       stblCalendar = new JScrollPane(tblCalendar);
+      this.add(stblCalendar, BorderLayout.CENTER);
 
 
       //Register action listeners
@@ -59,7 +65,6 @@ public class CalendarForProject extends JPanel {
       this.add(lblMonth, BorderLayout.NORTH);
       this.add(btnPrev, BorderLayout.WEST);
       this.add(btnNext, BorderLayout.EAST);
-      this.add(stblCalendar, BorderLayout.CENTER);
 
       //Sets
 //      this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));

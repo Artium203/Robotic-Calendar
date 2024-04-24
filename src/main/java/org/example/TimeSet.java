@@ -3,9 +3,9 @@ package org.example;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.GregorianCalendar;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
 
 public class TimeSet extends JPanel {
@@ -19,12 +19,12 @@ public class TimeSet extends JPanel {
     private static int chosenMonth;
     private static int chosenYear;
 
-    private static int nod;//  Used for calculations instructions
+    private static int nod; // Used for calculations instructions
 
     //Options of choosing the date
     private final JComboBox<Integer> yearBox;
-    private final JComboBox<Integer> monthBox;
-    private JComboBox<Integer> dayBox;
+    private final JComboBox<Integer> monthBox; // number of months in a year
+    private final JComboBox<Integer> dayBox; // number of days in a month
 
     private final JButton addToList;// Button that confirmed user's chose to add to a list
     private final JButton removeFromList; // Button that removes user's chose from the list
@@ -33,7 +33,7 @@ public class TimeSet extends JPanel {
     private final JRadioButton dragOption;
     private final JRadioButton pressOption;
 
-    private ButtonGroup bg;// Only to pick one of the 2 buttons
+    private ButtonGroup buttonGroup;// Only for picking one of the 2 buttons
 
     private final JLabel textForInstruction; //Simple explanation
     private final JLabel textForDate;//Simple explanation
@@ -188,9 +188,9 @@ public class TimeSet extends JPanel {
         pressOption.setFont(new Font("Arial" , Font.BOLD , 17));
         pressOption.setFocusPainted(false);
 
-        bg = new ButtonGroup();  // על מנת שתהיה למשתמש רק אופציה אחת לבחירה, נשתמש בדבר הבא
-        bg.add(dragOption);
-        bg.add(pressOption);
+        buttonGroup = new ButtonGroup();  // על מנת שתהיה למשתמש רק אופציה אחת לבחירה, נשתמש בדבר הבא
+        buttonGroup.add(dragOption);
+        buttonGroup.add(pressOption);
 
 
 
@@ -300,7 +300,6 @@ public class TimeSet extends JPanel {
                 }
             } else if (e.getSource()==addToList && pressOption.isSelected()) {
                 actionToList.add(Arrays.toString(pressOption.getSelectedObjects()));
-                System.out.println(actionToList);
                 for (int i = 0; i < 10; i++) {
                     if (actionList.get(i).getText().isEmpty()){
                         actionList.get(i).setText(Arrays.toString(pressOption.getSelectedObjects()));

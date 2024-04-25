@@ -16,7 +16,5 @@ public class InfoPanel extends JPanel {
         listPanel.setBackground(Color.gray);
         listPanel.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));
         this.add(listPanel);
-
-
     }
 }

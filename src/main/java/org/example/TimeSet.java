@@ -39,10 +39,10 @@ public class TimeSet extends JPanel {
     private final JLabel textForDate;//Simple explanation
 
     //Fences around the user's input
-    private Graphics2D rect1;
-    private Graphics2D rect2;
-    private Graphics2D rect3;
-    private Graphics2D rect4;
+//    private Graphics2D rect1;
+//    private Graphics2D rect2;
+//    private Graphics2D rect3;
+//    private Graphics2D rect4;
 
     private final JPanel dateBox;//Gets the date from user
     private final JPanel performanceBox;//Gets the action from user
@@ -107,12 +107,14 @@ public class TimeSet extends JPanel {
 
         //Sets of add/remove to/from a list box
         addOrRemoveBox = new JPanel();
-        addOrRemoveBox.setPreferredSize(new Dimension((windowWidth/2+(windowWidth-((windowWidth/2)+445)))/4, (windowHeight-(windowHeight/6)-150)/2));
+        addOrRemoveBox.setPreferredSize(new Dimension(
+                (windowWidth / 2 + (windowWidth - ((windowWidth / 2) + 445))) / 4,
+                (windowHeight - (windowHeight / 6) - 150) / 2));
         addOrRemoveBox.setBackground(Color.DARK_GRAY);
 
         //list box's sets
         listBox = new JPanel();
-        int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2)+445));
+        int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2) + 445));
         listBox.setPreferredSize(new Dimension(betterSize-windowWidth/3, windowHeight/2 -(windowHeight/10)+150));
         listBox.setBackground(Color.GREEN);
 
@@ -534,7 +536,9 @@ public class TimeSet extends JPanel {
 
             // Checks whether the String passes the wanting limitation
             private boolean isValid(String text) {
-                if (text.length() == 0) return true;
+                if (text.isEmpty()) {
+                    return true;
+                }
                 int numberInput = Integer.parseInt(text);
                 return numberInput >= 0 && numberInput <= maxValue;
             }

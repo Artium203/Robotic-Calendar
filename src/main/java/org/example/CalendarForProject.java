@@ -19,9 +19,9 @@ public class CalendarForProject extends JPanel {
    private static JLabel lblMonth;
 
    //User's map of dates input and the given time
-   private static int chosenYear= 2024;
-   private static int chosenMonth=5;
-   private static int chosenDay= 17;
+   private static int chosenYear = 2024;
+   private static int chosenMonth = 5;
+   private static int chosenDay = 17;
    private static JButton btnPrev, btnNext;
    private static JTable tblCalendar;
    private static DefaultTableModel mtblCalendar; //Table model
@@ -65,14 +65,13 @@ public class CalendarForProject extends JPanel {
       this.add(btnPrev, BorderLayout.WEST);
       this.add(btnNext, BorderLayout.EAST);
 
-      //Sets
-//      this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
+      // Sets
+      // this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
       lblMonth.setPreferredSize(new Dimension(50,20));
       lblMonth.setHorizontalTextPosition(JLabel.CENTER);
-      btnPrev.setBounds(10, 25, 70, 25);
-      btnNext.setBounds(240, 25, 70, 25);
-      stblCalendar.setBounds(10, 50, 300, 250);
-
+//      btnPrev.setBounds(10, 25, 70, 25);
+//      btnNext.setBounds(240, 25, 70, 25);
+//      stblCalendar.setBounds(10, 50, 300, 250);
 
       //Get real month/year
       GregorianCalendar cal = new GregorianCalendar(); //Create calendar
@@ -82,29 +81,27 @@ public class CalendarForProject extends JPanel {
       currentMonth = realMonth; //Match month and year
       currentYear = realYear;
 
-
       //Add headers
-      String[] headers = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}; //All headers
-      for (int i=0; i<7; i++){
-         mtblCalendar.addColumn(headers[i]);
+      String[] headers = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+      for (String header : headers) {
+         mtblCalendar.addColumn(header);
       }
+//      for (int i=0; i<7; i++){
+//         mtblCalendar.addColumn(headers[i]);
+//      }
 
       tblCalendar.getParent().setBackground(tblCalendar.getBackground()); //Set background
-
       //No resize/reorder
       tblCalendar.getTableHeader().setResizingAllowed(false);
       tblCalendar.getTableHeader().setReorderingAllowed(false);
-
       //Single cell selection
       tblCalendar.setColumnSelectionAllowed(true);
       tblCalendar.setRowSelectionAllowed(true);
       tblCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
       //Set row/column count
       tblCalendar.setRowHeight(38);
       mtblCalendar.setColumnCount(7);
       mtblCalendar.setRowCount(6);
-
 
       //Refresh calendar
       refreshCalendar (realMonth, realYear);//Refresh calendar

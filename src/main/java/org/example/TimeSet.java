@@ -20,30 +20,19 @@ public class TimeSet extends JPanel {
     private static int chosenYear;
 
     private static int nod; // Used for calculations instructions
-
     //Options of choosing the date
     private final JComboBox<Integer> yearBox;
     private final JComboBox<Integer> monthBox; // number of months in a year
     private final JComboBox<Integer> dayBox; // number of days in a month
-
     private final JButton addToList;// Button that confirmed user's chose to add to a list
     private final JButton removeFromList; // Button that removes user's chose from the list
-
     //Action option
     private final JRadioButton dragOption;
     private final JRadioButton pressOption;
-
     private ButtonGroup buttonGroup;// Only for picking one of the 2 buttons
 
     private final JLabel textForInstruction; //Simple explanation
     private final JLabel textForDate;//Simple explanation
-
-    //Fences around the user's input
-//    private Graphics2D rect1;
-//    private Graphics2D rect2;
-//    private Graphics2D rect3;
-//    private Graphics2D rect4;
-
     private final JPanel dateBox;//Gets the date from user
     private final JPanel performanceBox;//Gets the action from user
     private final JPanel timeBox;//Gets the time from user
@@ -145,23 +134,6 @@ public class TimeSet extends JPanel {
 
 
         //Sets of action (on a mouse)
-//        textForInstruction = new JLabel();
-//        textForInstruction.setText("Choose one of the following actions:");
-//        textForInstruction.setBounds(0,400,250,70);
-//        textForInstruction.setFont(new Font("Arial" , Font.BOLD , 18));
-//
-//        dragOption = new JRadioButton();
-//        dragOption.setText("Scroll");     //פעולת גלילה
-//        dragOption.setPreferredSize(new Dimension(80 , 60));
-//        dragOption.setFont(new Font("Arial" , Font.BOLD , 17));
-//        dragOption.setFocusPainted(false);
-//
-//        pressOption = new JRadioButton();
-//        pressOption.setText("Press");     //פעולת לחיצה
-//        pressOption.setPreferredSize(new Dimension(80 , 60));
-//        pressOption.setFont(new Font("Arial" , Font.BOLD , 17));
-//        pressOption.setFocusPainted(false);
-
         textForInstruction = createTextLabel("Choose one of the following actions: ", 0, 400, 250, 70, new Font("Arial", Font.BOLD, 18));
         dragOption = createTextRadioButton("Scroll", 80, 60, new Font("Arial", Font.BOLD, 17));
         pressOption = createTextRadioButton("Press", 80, 60, new Font("Arial", Font.BOLD, 17));
@@ -172,98 +144,14 @@ public class TimeSet extends JPanel {
 
 
         //Sets of starting/ending time
-//        hoursStart = new JTextField(2);
-//        hoursStart.setPreferredSize(new Dimension(30 , 20));
-//        hoursStart.setActionCommand("Hours Start");
-//        limitJTextField(hoursStart, 23);
-//
-//        hoursEnd = new JTextField(2);
-//        hoursEnd.setPreferredSize(new Dimension(30 , 20));
-//        hoursEnd.setActionCommand("Hours End");
-//        limitJTextField(hoursEnd, 23);
-//
-//        minutesStart = new JTextField(2);
-//        minutesStart.setPreferredSize(new Dimension(30 , 20));
-//        minutesStart.setActionCommand("Minutes Start");
-//        limitJTextField(minutesStart, 59);
-//
-//        minutesEnd = new JTextField(2);
-//        minutesEnd.setPreferredSize(new Dimension(30 , 20));
-//        limitJTextField(minutesEnd, 59);
-//
-//        secondStart = new JTextField(2);
-//        secondStart.setPreferredSize(new Dimension(30 , 20));
-//        limitJTextField(secondStart, 59);
-//
-//        secondEnd = new JTextField(2);
-//        secondEnd.setSelectionEnd(1);
-//        secondEnd.setPreferredSize(new Dimension(30 , 20));
-//        limitJTextField(secondEnd, 59);
 
         hoursStart = createTextField(2, "Hours Start", 30, 20, 23);
         hoursEnd = createTextField(2, "Hours End", 30, 20, 23);
-
         minutesStart = createTextField(2, "Minutes Start", 30, 20, 59);
         minutesEnd = createTextField(2, null, 30, 20, 59);
 
         secondStart = createTextField(2, null, 30, 20, 59);
         secondEnd = createTextField(2, null, 30, 20, 59);
-
-
-
-
-
-//        StartText = new JLabel();
-//        StartText.setText(" Choose time the robot will start the instruction:");
-//        StartText.setPreferredSize(new Dimension(400 , 40));
-//        StartText.setFont(new Font("Arial" , Font.BOLD , 17));
-//        StartText.setForeground(Color.white);
-//
-//        hoursStartLabel = new JLabel();
-//        hoursStartLabel.setText("Hour:");
-//        hoursStartLabel.setPreferredSize(new Dimension(45 , 50));
-//        hoursStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-//        hoursStartLabel.setForeground(Color.white);
-//
-//        minutesStartLabel = new JLabel();
-//        minutesStartLabel.setText("Minute:");
-//        minutesStartLabel.setPreferredSize(new Dimension(60 , 50));
-//        minutesStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-//        minutesStartLabel.setForeground(Color.white);
-//
-//        secondsStartLabel = new JLabel();
-//        secondsStartLabel.setText("Second:");
-//        secondsStartLabel.setPreferredSize(new Dimension(70 , 50));
-//        secondsStartLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-//        secondsStartLabel.setForeground(Color.white);
-//
-//        spaceText = new JLabel();
-//        spaceText.setText("                                         ");
-//        spaceText.setPreferredSize(new Dimension(400 , 60));
-//
-//        endText = new JLabel();
-//        endText.setText(" Choose time the robot will finish the instruction:");
-//        endText.setPreferredSize(new Dimension(400 , 40));
-//        endText.setFont(new Font("Arial" , Font.BOLD , 17));
-//        endText.setForeground(Color.white);
-//
-//        hoursEndLabel = new JLabel();
-//        hoursEndLabel.setText("Hour:");
-//        hoursEndLabel.setPreferredSize(new Dimension(45 , 50));
-//        hoursEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-//        hoursEndLabel.setForeground(Color.white);
-//
-//        minutesEndLabel = new JLabel();
-//        minutesEndLabel.setText("Minute:");
-//        minutesEndLabel.setPreferredSize(new Dimension(60 , 50));
-//        minutesEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-//        minutesEndLabel.setForeground(Color.white);
-//
-//        secondsEndLabel = new JLabel();
-//        secondsEndLabel.setText("Second:");
-//        secondsEndLabel.setPreferredSize(new Dimension(70 , 60));
-//        secondsEndLabel.setFont(new Font("Arial" , Font.BOLD , 17));
-//        secondsEndLabel.setForeground(Color.white);
 
         StartText = createLabel(" Choose time the robot will start the instruction:", 400, 40);
         hoursStartLabel = createLabel("Hour:", 45, 50);
@@ -288,7 +176,7 @@ public class TimeSet extends JPanel {
         removeFromList = new JButton("REMOVE");
         addToList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         addToList.addActionListener(e -> {
-            if (e.getSource()==addToList && actionToList.size()==10){
+            if (e.getSource()==addToList && actionToList.size()==9){
                 addToList.setEnabled(false);
             }
             if (e.getSource()==addToList && dragOption.isSelected()){
@@ -423,7 +311,7 @@ public class TimeSet extends JPanel {
         if(command != null){
             jTextField.setActionCommand(command);
         }
-        limitJTextField(jTextField, limit);
+        Utils.limitJTextField(jTextField, limit);
         return jTextField;
     }
 
@@ -441,30 +329,6 @@ public class TimeSet extends JPanel {
             graphics2D.drawRect(panel.getX() + 2, panel.getY() + 1, panel.getWidth(), panel.getHeight());
             graphics2D.setStroke(boringStroke);
         }
-//        rect1 = (Graphics2D) g;
-//        Stroke oldStroke = rect1.getStroke();
-//        Stroke borderStroke = new BasicStroke(6); // ניתן לשנות את המספר לקבע רוחב מסגרת שונה
-//        rect1.setStroke(borderStroke);
-//        rect1.drawRect(dateBox.getX()+2, dateBox.getY()+1, dateBox.getWidth(), dateBox.getHeight());
-//        rect1.setStroke(oldStroke);
-//
-//        rect2 = (Graphics2D) g;
-//        oldStroke = rect2.getStroke();
-//        rect2.setStroke(borderStroke);
-//        rect2.drawRect(performanceBox.getX()+2, performanceBox.getY()+2, performanceBox.getWidth(), performanceBox.getHeight());
-//        rect2.setStroke(oldStroke);
-//
-//        rect3 = (Graphics2D) g;
-//        oldStroke = rect3.getStroke();
-//        rect3.setStroke(borderStroke);
-//        rect3.drawRect(timeBox.getX()+4, timeBox.getY()+2, timeBox.getWidth(), timeBox.getHeight());
-//        rect3.setStroke(oldStroke);
-//
-//        rect4 = (Graphics2D) g;
-//        oldStroke = rect4.getStroke();
-//        rect4.setStroke(borderStroke);
-//        rect4.drawRect(addOrRemoveBox.getX()+4, addOrRemoveBox.getY()+2, addOrRemoveBox.getWidth(), addOrRemoveBox.getHeight());
-//        rect4.setStroke(oldStroke);
     }
     public void paint(Graphics g) {
         super.paint(g);
@@ -504,44 +368,60 @@ public class TimeSet extends JPanel {
         }
     }
 
-    //Limits the amount of text for time writing (so no illegal term would catch)
-    private void limitJTextField(JTextField textField, int maxValue){
-        AbstractDocument document = (AbstractDocument) textField.getDocument();
-        document.setDocumentFilter(new DocumentFilter() {
-            @Override
-            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-                if (isNumeric(string) && (fb.getDocument().getLength() + string.length()) <= 2) {
-                    String newText = fb.getDocument().getText(0, fb.getDocument().getLength()) + string;
-                    if (isValid(newText)) {
-                        super.insertString(fb, offset, string, attr);
-                    }
+    public boolean isTimeValid(){
+        boolean time = false;
+        if (Integer.parseInt(hoursStart.getText())<Integer.parseInt(hoursEnd.getText())){
+            time =true;
+        } else if (Integer.parseInt(hoursStart.getText())==Integer.parseInt(hoursEnd.getText())) {
+            if (Integer.parseInt(minutesStart.getText())<Integer.parseInt(minutesEnd.getText())){
+                time =true;
+            } else if (Integer.parseInt(minutesStart.getText())==Integer.parseInt(minutesEnd.getText())) {
+                if (Integer.parseInt(secondStart.getText())<Integer.parseInt(secondEnd.getText())){
+                    time =true;
                 }
             }
-
-            // Allow only numeric characters and check text length
-            @Override
-            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                if (isNumeric(text) && (fb.getDocument().getLength() + text.length() - length) <= 2) {
-                    String newText = fb.getDocument().getText(0, offset) + text + fb.getDocument().getText(offset + length, fb.getDocument().getLength() - offset - length);
-                    if (isValid(newText)) {
-                        super.replace(fb, offset, length, text, attrs);
-                    }
-                }
-            }
-
-            //checks whether the String contains only numbers
-            private boolean isNumeric(String text) {
-                return text != null && text.matches("\\d");
-            }
-
-            // Checks whether the String passes the wanting limitation
-            private boolean isValid(String text) {
-                if (text.isEmpty()) {
-                    return true;
-                }
-                int numberInput = Integer.parseInt(text);
-                return numberInput >= 0 && numberInput <= maxValue;
-            }
-        });
+        }
+        return time;
     }
+
+    //Limits the amount of text for time writing (so no illegal term would catch)
+//    private void limitJTextField(JTextField textField, int maxValue){
+//        AbstractDocument document = (AbstractDocument) textField.getDocument();
+//        document.setDocumentFilter(new DocumentFilter() {
+//            @Override
+//            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+//                if (isNumeric(string) && (fb.getDocument().getLength() + string.length()) <= 2) {
+//                    String newText = fb.getDocument().getText(0, fb.getDocument().getLength()) + string;
+//                    if (isValid(newText)) {
+//                        super.insertString(fb, offset, string, attr);
+//                    }
+//                }
+//            }
+//
+//            // Allow only numeric characters and check text length
+//            @Override
+//            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+//                if (isNumeric(text) && (fb.getDocument().getLength() + text.length() - length) <= 2) {
+//                    String newText = fb.getDocument().getText(0, offset) + text + fb.getDocument().getText(offset + length, fb.getDocument().getLength() - offset - length);
+//                    if (isValid(newText)) {
+//                        super.replace(fb, offset, length, text, attrs);
+//                    }
+//                }
+//            }
+//
+//            //checks whether the String contains only numbers
+//            private boolean isNumeric(String text) {
+//                return text != null && text.matches("\\d");
+//            }
+//
+//            // Checks whether the String passes the wanting limitation
+//            private boolean isValid(String text) {
+//                if (text.isEmpty()) {
+//                    return true;
+//                }
+//                int numberInput = Integer.parseInt(text);
+//                return numberInput >= 0 && numberInput <= maxValue;
+//            }
+//        });
+//    }
 }

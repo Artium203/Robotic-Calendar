@@ -137,7 +137,7 @@ public class Window extends JFrame implements ActionListener {
         calendar.setVisible(e.getSource() == infoPoint);
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
-        if (e.getSource() == confirmOption && isFull()){
+        if (e.getSource() == confirmOption && isFull() && timer.isTimeValid()){
             listOfAction = timer.getActionToList();
             this.remove(timer);
             timer=new TimeSet(windowWidth,windowHeight,confirmOption);
@@ -146,12 +146,14 @@ public class Window extends JFrame implements ActionListener {
             this.remove(action);
             this.action =new MAM(windowWidth,windowHeight, listOfAction);
             this.add(action);
+        } else if (e.getSource() == confirmOption && !timer.isTimeValid()) {
+            JOptionPane.showMessageDialog(null,"ERROR IN TIME INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
         }
         action.setVisible(e.getSource() == actionPoint);
     }
 
     private boolean isFull() {
-        return (timer.getChosenYear() != 0 && timer.getChosenMonth()!= 0 && !timer.getHoursEnd().isEmpty()
+        return (timer.getChosenYear() != 0 && timer.getChosenMonth()+1 != 0 && !timer.getHoursEnd().isEmpty()
                 && !timer.getHoursStart().isEmpty() && !timer.getMinutesEnd().isEmpty() &&!timer.getMinutesStart().isEmpty()
                 && !timer.getSecondEnd().isEmpty() && !timer.getSecondStart().isEmpty() && !timer.getActionToList().isEmpty());
     }

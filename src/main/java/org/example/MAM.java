@@ -9,8 +9,17 @@ public class MAM extends JPanel {
     //In future wait
     private JPanel boxList;
     private List<JCheckBox> performanceList;
-
     private JPanel boxOfCommand;
+
+    private JPanel repeat;
+    private JPanel timeToLive;
+    private JPanel nextOrPrevious;
+    private JPanel location;
+    private  JPanel instructions;
+    private JPanel timeMonitor;
+
+
+
 
     public MAM (int windowWidth, int windowHeight, List<String> actionList){
 
@@ -20,13 +29,13 @@ public class MAM extends JPanel {
         this.setBackground(Color.green);
 
         boxList = new JPanel();
-        boxList.setPreferredSize(new Dimension(windowWidth/3,31+(windowHeight/6)*5));
+        boxList.setPreferredSize(new Dimension(windowWidth/4,31+(windowHeight/6)*5));
         boxList.setBackground(Color.DARK_GRAY);
 
         ButtonGroup checkGroup = new ButtonGroup();
         performanceList = new ArrayList<>();
         if (!actionList.isEmpty()){
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < actionList.size(); i++) {
                 performanceList.add(new JCheckBox());
                 performanceList.get(i).setPreferredSize(new Dimension((windowWidth/6),(windowHeight/10)-15));
                 performanceList.get(i).setText(actionList.get(i));
@@ -35,8 +44,32 @@ public class MAM extends JPanel {
             }
         }
         boxOfCommand = new JPanel();
-        boxOfCommand.setPreferredSize(new Dimension(windowWidth-boxList.getWidth()-4,boxList.getHeight()-2));
+        boxOfCommand.setPreferredSize(new Dimension(windowWidth-(windowWidth/4)-25,31+(windowHeight/6)*5));
         boxOfCommand.setBackground(Color.orange);
+        boxOfCommand.setLayout(new GridLayout(3,3));
+
+        repeat = new JPanel();
+        repeat.setBackground(Color.cyan);
+        timeToLive =new JPanel();
+        timeToLive.setBackground(Color.BLACK);
+        nextOrPrevious = new JPanel();
+        nextOrPrevious.setBackground(Color.red);
+        timeMonitor =new JPanel();
+        timeMonitor.setBackground(Color.GREEN);
+        location =new JPanel();
+        location.setBackground(Color.MAGENTA);
+        instructions =new JPanel();
+        instructions.setBackground(Color.yellow);
+
+        boxOfCommand.add(repeat);
+        boxOfCommand.add(timeToLive);
+        boxOfCommand.add(nextOrPrevious);
+        boxOfCommand.add(timeMonitor);
+        boxOfCommand.add(location);
+        boxOfCommand.add(instructions);
+
+
         this.add(boxList);
+        this.add(boxOfCommand);
     }
 }

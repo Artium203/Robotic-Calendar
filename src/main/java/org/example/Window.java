@@ -146,8 +146,11 @@ public class Window extends JFrame implements ActionListener {
             this.remove(action);
             this.action =new MAM(windowWidth,windowHeight, listOfAction);
             this.add(action);
-        } else if (e.getSource() == confirmOption && !timer.isTimeValid()) {
+        }
+        else if (e.getSource() == confirmOption && !timer.isTimeValid()) {
             JOptionPane.showMessageDialog(null,"ERROR IN TIME INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
+
+
         }
         action.setVisible(e.getSource() == actionPoint);
     }

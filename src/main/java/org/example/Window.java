@@ -103,24 +103,19 @@ public class Window extends JFrame implements ActionListener {
         infoPanel = new InfoPanel(windowWidth,windowHeight);
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
         this.add(timer);
-        this.calendar = new CalendarForProject(windowWidth,windowHeight);
+        this.calendar = new CalendarForProject(windowWidth,windowHeight,timer.getNameAction(), timer.getChosenYear(), timer.getChosenMonth() , timer.getChosenDay());
         this.action =new MAM(windowWidth,windowHeight, listOfAction);
         this.add(action);
         instructions = new Instructions(windowWidth,windowHeight);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
-
-
-
-
     }
     //Sets the visibility
     public void showWindow(){
         this.setVisible(true);
 
     }
-
 
     //Sets the actions
     @Override
@@ -138,6 +133,15 @@ public class Window extends JFrame implements ActionListener {
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
         if (e.getSource() == confirmOption && isFull() && timer.isTimeValid()){
+            this.remove(calendar);
+            this.calendar = new CalendarForProject(windowWidth,windowHeight,timer.getNameAction(), timer.getChosenYear(), timer.getChosenMonth() , timer.getChosenDay());
+            this.add(calendar);
+            this.remove(infoPanel);
+            infoPanel = new InfoPanel(windowWidth,windowHeight);
+            this.add(infoPanel);
+            this.remove(instructions);
+            instructions = new Instructions(windowWidth,windowHeight);
+            this.add(instructions);
             listOfAction = timer.getActionToList();
             this.remove(timer);
             timer=new TimeSet(windowWidth,windowHeight,confirmOption);
@@ -149,8 +153,6 @@ public class Window extends JFrame implements ActionListener {
         }
         else if (e.getSource() == confirmOption && !timer.isTimeValid()) {
             JOptionPane.showMessageDialog(null,"ERROR IN TIME INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
-
-
         }
         action.setVisible(e.getSource() == actionPoint);
     }

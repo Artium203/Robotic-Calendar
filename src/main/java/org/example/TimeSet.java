@@ -20,6 +20,7 @@ public class TimeSet extends JPanel {
     private static int chosenYear;
 
     private static int nod; // Used for calculations instructions
+
     //Options of choosing the date
     private final JComboBox<Integer> yearBox;
     private final JComboBox<Integer> monthBox; // number of months in a year
@@ -336,20 +337,12 @@ public class TimeSet extends JPanel {
     }
 
     //Getters
-    public static int getChosenDay() {
-        return chosenDay;
-    }
+    public static int getChosenDay() {return chosenDay;}
 
-    public static int getChosenMonth() {
-        return chosenMonth;
-    }
+    public static int getChosenMonth() {return chosenMonth;}
 
-    public static int getChosenYear() {
-        return chosenYear;
-    }
-    public static List<String> getActionToList() {
-        return actionToList;
-    }
+    public static int getChosenYear() {return chosenYear;}
+    public static List<String> getActionToList() {return actionToList;}
     public String getHoursStart() {return hoursStart.getText();}
 
     public String getMinutesStart() {return minutesStart.getText();}
@@ -360,6 +353,7 @@ public class TimeSet extends JPanel {
 
     public String getMinutesEnd() {return minutesEnd.getText();}
     public String getSecondEnd() {return secondEnd.getText();}
+    public String getNameAction(){return nameAction.getText();}
 
     //Updates the days to mach the month
     private void updateDayBox(){

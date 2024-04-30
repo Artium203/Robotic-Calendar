@@ -19,16 +19,17 @@ public class CalendarForProject extends JPanel {
    private static JLabel lblMonth;
 
    //User's map of dates input and the given time
-   private static int chosenYear = 2024;
-   private static int chosenMonth = 5;
-   private static int chosenDay = 17;
+   private static int chosenYear;
+   private static int chosenMonth;
+   private static int chosenDay;
+   private  static  String nameAction;
    private static JButton btnPrev, btnNext;
    private static JTable tblCalendar;
    private static DefaultTableModel mtblCalendar; //Table model
    private static JScrollPane stblCalendar; //The scrollPanel
    private static int realYear, realMonth, realDay, currentYear, currentMonth;
 
-   public CalendarForProject(int windowWidth, int windowHeight){
+   public CalendarForProject(int windowWidth, int windowHeight,String nameAction,int chosenYear,int chosenMonth,int chosenDay){
 
       this.setLayout(new BorderLayout());
       this.setVisible(false);
@@ -42,6 +43,10 @@ public class CalendarForProject extends JPanel {
       catch (IllegalAccessException e) {}
       catch (UnsupportedLookAndFeelException e) {}
 
+      this.chosenYear=chosenYear;
+      this.chosenMonth=chosenMonth;
+      this.chosenDay=chosenDay;
+      this.nameAction = nameAction;
 
       lblMonth = new JLabel ("January");
       btnPrev = new JButton ("Prev");

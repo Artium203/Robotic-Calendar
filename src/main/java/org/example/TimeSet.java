@@ -63,6 +63,9 @@ public class TimeSet extends JPanel {
     private final JLabel endText;
     private final JLabel spaceText;
 
+    private JTextField nameAction;
+
+
     public TimeSet(int windowWidth,int windowHeight, JButton confirm){
         //Panel layout and dimensions
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -138,6 +141,11 @@ public class TimeSet extends JPanel {
         textForInstruction = createTextLabel("Choose one of the following actions: ", 0, 400, 250, 70, new Font("Arial", Font.BOLD, 18));
         dragOption = createTextRadioButton("Scroll", 80, 60, new Font("Arial", Font.BOLD, 17));
         pressOption = createTextRadioButton("Press", 80, 60, new Font("Arial", Font.BOLD, 17));
+        nameAction = new JTextField();
+        nameAction.setPreferredSize(new Dimension(windowWidth/5 , windowHeight/15));
+        nameAction.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Name your action"),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        nameAction.setFont(new Font("Arial" , Font.BOLD , 18));
         buttonGroup = new ButtonGroup();  // על מנת שתהיה למשתמש רק אופציה אחת לבחירה, נשתמש בדבר הבא
         textForInstruction.setBounds(0,400,250,70);
         buttonGroup.add(dragOption);
@@ -248,6 +256,7 @@ public class TimeSet extends JPanel {
         performanceBox.add(textForInstruction);
         performanceBox.add(dragOption);
         performanceBox.add(pressOption);
+        performanceBox.add(nameAction);
 
         boxOfBoxes.add(addOrRemoveBox);
         addOrRemoveBox.add(addToList);
@@ -377,6 +386,8 @@ public class TimeSet extends JPanel {
         }
         return time;
     }
+
+
 
     //Limits the amount of text for time writing (so no illegal term would catch)
 //    private void limitJTextField(JTextField textField, int maxValue){

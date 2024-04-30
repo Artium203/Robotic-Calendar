@@ -141,7 +141,9 @@ public class MAM extends JPanel implements ActionListener {
         nextOrPrevious.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Go Back/Go Forward"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         next.setPreferredSize(new Dimension(windowWidth/6,windowHeight/8));
+        next.addActionListener(this);
         previous.setPreferredSize(new Dimension(windowWidth/6,windowHeight/8));
+        previous.addActionListener(this);
         nextOrPrevious.add(next,BorderLayout.NORTH);
         nextOrPrevious.add(previous,BorderLayout.SOUTH);
 

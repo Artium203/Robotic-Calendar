@@ -142,8 +142,8 @@ public class CalendarForProject extends JPanel {
       for (int i=1; i<=nod; i++){
          int row = ((i+som-2)/7);
          int column  =  (i+som-2)%7;
-         if (i == chosenDay && lblMonth.getText().contains(months[chosenMonth-1]) && chosenYear==year){
-            mtblCalendar.setValueAt(i, row, column);
+         if (i == chosenDay && lblMonth.getText().contains(months[chosenMonth]) && chosenYear==year){
+            mtblCalendar.setValueAt(nameAction, row, column);
          }else {
             mtblCalendar.setValueAt(i, row, column);
          }

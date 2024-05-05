@@ -1,16 +1,14 @@
 package org.example;
 
 import javax.swing.*;
-import javax.swing.text.*;
 import java.awt.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
 public class TimeSet extends JPanel {
 
     private static List<String> actionToList;// Will be used to put on a list
+    private static List<String> plans;
 
     private static List<JCheckBox> actionList;
 
@@ -45,12 +43,12 @@ public class TimeSet extends JPanel {
 
 
     //The starting and ending of the action
-    private JTextField hoursStart;
-    private JTextField minutesStart;
-    private JTextField secondStart;
-    private JTextField hoursEnd;
-    private JTextField minutesEnd;
-    private JTextField secondEnd;
+    private JSpinner hoursStart;
+    private JSpinner minutesStart;
+    private JSpinner secondStart;
+    private JSpinner hoursEnd;
+    private JSpinner minutesEnd;
+    private JSpinner secondEnd;
 
     //Title to understand which is who
     private final JLabel hoursStartLabel;
@@ -85,17 +83,23 @@ public class TimeSet extends JPanel {
         dateBox = new JPanel();
         dateBox.setLayout(new FlowLayout(FlowLayout.LEFT));
         dateBox.setPreferredSize(new Dimension((windowWidth/2+(windowWidth-((windowWidth/2)+445)))/3, (windowHeight-(windowHeight/10)-20)/2));
+        dateBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Date Of Task"),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         //Action box's sets
         performanceBox = new JPanel();
         performanceBox.setLayout(new FlowLayout(FlowLayout.CENTER));
         performanceBox.setPreferredSize(new Dimension(400, (windowHeight-(windowHeight/10)-20)/2));
+        performanceBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Type Of Operation"),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         performanceBox.setBackground(Color.white);
 
         //Time box's sets
         timeBox = new JPanel();
         timeBox.setLayout(new FlowLayout(FlowLayout.CENTER));
         timeBox.setPreferredSize(new Dimension(430, (windowHeight-(windowHeight/10)-20)/2));
+        timeBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Start Task And End Task"),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         timeBox.setBackground(Color.DARK_GRAY);
 
         //Sets of add/remove to/from a list box
@@ -104,6 +108,8 @@ public class TimeSet extends JPanel {
                 (windowWidth / 2 + (windowWidth - ((windowWidth / 2) + 445))) / 4,
                 (windowHeight - (windowHeight / 6) - 150) / 2));
         addOrRemoveBox.setBackground(Color.DARK_GRAY);
+        addOrRemoveBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Add To List Or Remove From List"),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         //list box's sets
         listBox = new JPanel();
@@ -154,13 +160,13 @@ public class TimeSet extends JPanel {
 
         //Sets of starting/ending time
 
-        hoursStart = createTextField(2, "Hours Start", 30, 20, 23);
-        hoursEnd = createTextField(2, "Hours End", 30, 20, 23);
-        minutesStart = createTextField(2, "Minutes Start", 30, 20, 59);
-        minutesEnd = createTextField(2, null, 30, 20, 59);
+        hoursStart = createSpinner( 23);
+        hoursEnd = createSpinner(  23);
+        minutesStart = createSpinner(59);
+        minutesEnd = createSpinner(59);
 
-        secondStart = createTextField(2, null, 30, 20, 59);
-        secondEnd = createTextField(2, null, 30, 20, 59);
+        secondStart = createSpinner(59);
+        secondEnd = createSpinner(59);
 
         StartText = createLabel(" Choose time the robot will start the instruction:", 400, 40);
         hoursStartLabel = createLabel("Hour:", 45, 50);
@@ -185,10 +191,10 @@ public class TimeSet extends JPanel {
         removeFromList = new JButton("REMOVE");
         addToList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         addToList.addActionListener(e -> {
-            if (e.getSource()==addToList && actionToList.size()==9){
+            if ( actionToList.size()==9){
                 addToList.setEnabled(false);
             }
-            if (e.getSource()==addToList && dragOption.isSelected()){
+            if ( dragOption.isSelected()){
                 actionToList.add(Arrays.toString(dragOption.getSelectedObjects()));
                 for (int i = 0; i < 10; i++) {
                     if (actionList.get(i).getText().isEmpty()){
@@ -196,7 +202,7 @@ public class TimeSet extends JPanel {
                         break;
                     }
                 }
-            } else if (e.getSource()==addToList && pressOption.isSelected()) {
+            } else if ( pressOption.isSelected()) {
                 actionToList.add(Arrays.toString(pressOption.getSelectedObjects()));
                 for (int i = 0; i < 10; i++) {
                     if (actionList.get(i).getText().isEmpty()){
@@ -208,12 +214,12 @@ public class TimeSet extends JPanel {
         });
         removeFromList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         removeFromList.addActionListener(e -> {
-            if (e.getSource()==removeFromList && actionToList.isEmpty()){
+            if ( actionToList.isEmpty()){
                 addToList.setEnabled(true);
             }else {
                 removeFromList.setEnabled(true);
             }
-            if (e.getSource()==removeFromList && !actionToList.isEmpty()){
+            if (!actionToList.isEmpty()){
                 for(JCheckBox box:actionList){
                     if (box.isSelected()){
                         actionToList.remove(box.getText());
@@ -315,14 +321,11 @@ public class TimeSet extends JPanel {
         return jRadioButton;
     }
 
-    private JTextField createTextField(int col, String command, int width, int height, int limit){
-        JTextField jTextField = new JTextField(col);
-        jTextField.setPreferredSize(new Dimension(width, height));
-        if(command != null){
-            jTextField.setActionCommand(command);
-        }
-        Utils.limitJTextField(jTextField, limit);
-        return jTextField;
+    private JSpinner createSpinner( int limit){
+        JSpinner jSpinner = new JSpinner(new SpinnerNumberModel(0,0,limit,1));
+        ((JSpinner.DefaultEditor) jSpinner.getEditor()).getTextField().setEditable(false);
+
+        return jSpinner;
     }
 
     //Making/Drawing the fences
@@ -352,17 +355,22 @@ public class TimeSet extends JPanel {
 
     public static int getChosenYear() {return chosenYear;}
     public static List<String> getActionToList() {return actionToList;}
-    public String getHoursStart() {return hoursStart.getText();}
+    public String getHoursStart() {return hoursStart.getValue().toString();}
 
-    public String getMinutesStart() {return minutesStart.getText();}
+    public String getMinutesStart() {return minutesStart.getValue().toString();}
 
-    public String getSecondStart() {return secondStart.getText();}
+    public String getSecondStart() {return secondStart.getValue().toString();}
 
-    public String getHoursEnd() {return hoursEnd.getText();}
+    public String getHoursEnd() {return hoursEnd.getValue().toString();}
 
-    public String getMinutesEnd() {return minutesEnd.getText();}
-    public String getSecondEnd() {return secondEnd.getText();}
+    public String getMinutesEnd() {return minutesEnd.getValue().toString();}
+    public String getSecondEnd() {return secondEnd.getValue().toString();}
     public String getNameAction(){return nameAction.getText();}
+    public String getPlans(){
+        return "Date:"+chosenYear+"/"+(chosenMonth+1)+"/"+chosenDay+"\n"+
+                "Time Starts:"+hoursStart.getValue().toString()+":"+minutesStart.getValue().toString()+":"+secondStart.getValue().toString()+"\n"+
+                "Time Ends:"+hoursEnd.getValue().toString()+":"+minutesEnd.getValue().toString()+":"+secondEnd.getValue().toString()+"\n";
+    }
 
     //Updates the days to mach the month
     private void updateDayBox(){
@@ -373,60 +381,21 @@ public class TimeSet extends JPanel {
 
     public boolean isTimeValid(){
         boolean time = false;
-        if (Integer.parseInt(hoursStart.getText())<Integer.parseInt(hoursEnd.getText())){
-            time =true;
-        } else if (Integer.parseInt(hoursStart.getText())==Integer.parseInt(hoursEnd.getText())) {
-            if (Integer.parseInt(minutesStart.getText())<Integer.parseInt(minutesEnd.getText())){
+        try {
+            if (Integer.parseInt(hoursStart.getValue().toString())<Integer.parseInt(hoursEnd.getValue().toString())){
                 time =true;
-            } else if (Integer.parseInt(minutesStart.getText())==Integer.parseInt(minutesEnd.getText())) {
-                if (Integer.parseInt(secondStart.getText())<Integer.parseInt(secondEnd.getText())){
+            } else if (Integer.parseInt(hoursStart.getValue().toString())==Integer.parseInt(hoursEnd.getValue().toString())) {
+                if (Integer.parseInt(minutesStart.getValue().toString())<Integer.parseInt(minutesEnd.getValue().toString())){
                     time =true;
+                } else if (Integer.parseInt(minutesStart.getValue().toString())==Integer.parseInt(minutesEnd.getValue().toString())) {
+                    if (Integer.parseInt(secondStart.getValue().toString())<Integer.parseInt(secondEnd.getValue().toString())){
+                        time =true;
+                    }
                 }
             }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null,"ERROR IN USER'S INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
         }
         return time;
     }
-
-
-
-    //Limits the amount of text for time writing (so no illegal term would catch)
-//    private void limitJTextField(JTextField textField, int maxValue){
-//        AbstractDocument document = (AbstractDocument) textField.getDocument();
-//        document.setDocumentFilter(new DocumentFilter() {
-//            @Override
-//            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-//                if (isNumeric(string) && (fb.getDocument().getLength() + string.length()) <= 2) {
-//                    String newText = fb.getDocument().getText(0, fb.getDocument().getLength()) + string;
-//                    if (isValid(newText)) {
-//                        super.insertString(fb, offset, string, attr);
-//                    }
-//                }
-//            }
-//
-//            // Allow only numeric characters and check text length
-//            @Override
-//            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-//                if (isNumeric(text) && (fb.getDocument().getLength() + text.length() - length) <= 2) {
-//                    String newText = fb.getDocument().getText(0, offset) + text + fb.getDocument().getText(offset + length, fb.getDocument().getLength() - offset - length);
-//                    if (isValid(newText)) {
-//                        super.replace(fb, offset, length, text, attrs);
-//                    }
-//                }
-//            }
-//
-//            //checks whether the String contains only numbers
-//            private boolean isNumeric(String text) {
-//                return text != null && text.matches("\\d");
-//            }
-//
-//            // Checks whether the String passes the wanting limitation
-//            private boolean isValid(String text) {
-//                if (text.isEmpty()) {
-//                    return true;
-//                }
-//                int numberInput = Integer.parseInt(text);
-//                return numberInput >= 0 && numberInput <= maxValue;
-//            }
-//        });
-//    }
 }

@@ -1,6 +1,8 @@
 package org.example;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,11 +35,12 @@ public class MAM extends JPanel implements ActionListener {
     private final  JPanel instructions;
     private JLabel instructionsText;
     private final JPanel timeMonitor;
+    private  JLabel timeChecker;
 
 
 
 
-    public MAM (int windowWidth, int windowHeight, List<String> actionList){
+    public MAM (int windowWidth, int windowHeight, List<String> actionList, String startHour, String startMinute, String startSecond, String endHour, String endMinute, String endSecond){
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
@@ -84,15 +87,15 @@ public class MAM extends JPanel implements ActionListener {
         ((JSpinner.DefaultEditor) countOfRepeat.getEditor()).getTextField().setEditable(false);
         repeat.add(countOfRepeat);
 
-        frequencyAmountHour = new JSpinner(new SpinnerNumberModel(1,0,23,1));
+        frequencyAmountHour = new JSpinner(new SpinnerNumberModel(0,0,23,1));
         frequencyAmountHour.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Hours"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-        frequencyAmountMinute = new JSpinner(new SpinnerNumberModel(1,0,59,1));
+        frequencyAmountMinute = new JSpinner(new SpinnerNumberModel(0,0,59,1));
         frequencyAmountMinute.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Minutes"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-        frequencyAmountSecond = new JSpinner(new SpinnerNumberModel(1,0,59,1));
+        frequencyAmountSecond = new JSpinner(new SpinnerNumberModel(0,0,59,1));
         frequencyAmountSecond.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Seconds"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
@@ -149,6 +152,43 @@ public class MAM extends JPanel implements ActionListener {
 
         timeMonitor =new JPanel();
         timeMonitor.setBackground(Color.GREEN);
+        timeMonitor.setLayout(new GridLayout());
+        frequencyAmountHour.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (Integer.parseInt(endHour) != Integer.parseInt(frequencyAmountHour.getValue().toString())){
+                    timeChecker.setText((Integer.parseInt(startHour)+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
+                            (Integer.parseInt(startMinute)+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
+                            (Integer.parseInt(startSecond)+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+                }
+            }
+        });
+        frequencyAmountMinute.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (endMinute != frequencyAmountMinute.getValue()){
+                    timeChecker.setText((Integer.parseInt(startHour)+Integer.parseInt(frequencyAmountHour
+                            .getValue().toString()))+":"+
+                            (Integer.parseInt(startMinute)+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
+                            (Integer.parseInt(startSecond)+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+                }
+            }
+        });
+        frequencyAmountSecond.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (endSecond != frequencyAmountSecond.getValue()){
+                    timeChecker.setText((Integer.parseInt(startHour)+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
+                            (Integer.parseInt(startMinute)+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
+                            (Integer.parseInt(startSecond)+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+                }
+            }
+        });
+        timeChecker = new JLabel((Integer.parseInt(startHour)+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
+                (Integer.parseInt(startMinute)+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
+                (Integer.parseInt(startSecond)+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+        timeChecker.setFont(new Font("Arial" , Font.BOLD , 50));
+        timeMonitor.add(timeChecker);
 
 
         location =new JPanel();

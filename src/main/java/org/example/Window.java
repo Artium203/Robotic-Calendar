@@ -13,6 +13,12 @@ public class Window extends JFrame implements ActionListener {
     private InfoPanel infoPanel; // Shows the list of actions that user have made
     private Instructions instructions; // Shows information of how to use the app
     private List<String> listOfAction =new ArrayList<>();
+    private String startHour = "0";
+    private String startMinute = "0";
+    private String startSecond = "0";
+    private String endHour = "0";
+    private String endMinute = "0";
+    private String endSecond = "0";
     private static final JButton infoPoint = new JButton("Calendar"); // Button that transitions to the calendar of actions/explanation
     private CalendarForProject calendar; // The calendar of years/months/days that may or may not add actions to it
     private static final JButton timingPoint = new JButton("Set Time"); // Button that transitions to the timing of action (10 actions counts as 1)
@@ -100,11 +106,11 @@ public class Window extends JFrame implements ActionListener {
         //Adds/makes the operations
         this.add(boxOfNavigation);
         this.add(boxOfWindowOp);
-        infoPanel = new InfoPanel(windowWidth,windowHeight);
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
+        infoPanel = new InfoPanel(windowWidth,windowHeight,"");
         this.add(timer);
         this.calendar = new CalendarForProject(windowWidth,windowHeight,timer.getNameAction(), timer.getChosenYear(), timer.getChosenMonth() , timer.getChosenDay());
-        this.action =new MAM(windowWidth,windowHeight, listOfAction);
+        this.action =new MAM(windowWidth,windowHeight,listOfAction, startHour, startMinute, startSecond,endHour,endMinute,endSecond);
         this.add(action);
         instructions = new Instructions(windowWidth,windowHeight);
         panel.add(calendar);
@@ -137,18 +143,21 @@ public class Window extends JFrame implements ActionListener {
             this.calendar = new CalendarForProject(windowWidth,windowHeight,timer.getNameAction(), timer.getChosenYear(), timer.getChosenMonth() , timer.getChosenDay());
             this.add(calendar);
             this.remove(infoPanel);
-            infoPanel = new InfoPanel(windowWidth,windowHeight);
+            infoPanel = new InfoPanel(windowWidth,windowHeight,timer.getPlans());
             this.add(infoPanel);
             this.remove(instructions);
             instructions = new Instructions(windowWidth,windowHeight);
             this.add(instructions);
             listOfAction = timer.getActionToList();
+            startHour =timer.getHoursStart();
+            startMinute =timer.getMinutesStart();
+            startSecond =timer.getSecondStart();
             this.remove(timer);
             timer=new TimeSet(windowWidth,windowHeight,confirmOption);
             this.add(timer);
             actionPoint.setEnabled(e.getSource() == confirmOption);
             this.remove(action);
-            this.action =new MAM(windowWidth,windowHeight, listOfAction);
+            this.action =new MAM(windowWidth,windowHeight, listOfAction, startHour, startMinute, startSecond, endHour, endMinute, endSecond);
             this.add(action);
         }
         else if (e.getSource() == confirmOption && !timer.isTimeValid()) {

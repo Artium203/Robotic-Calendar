@@ -66,14 +66,14 @@ public class TimeSet extends JPanel {
 
     public TimeSet(int windowWidth,int windowHeight, JButton confirm){
         //Panel layout and dimensions
-        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
         this.setVisible(false);
         this.setBackground(Color.gray);
 
         //Container's sets
         boxOfBoxes = new JPanel();
-        boxOfBoxes.setLayout(new FlowLayout(FlowLayout.LEFT));
+        boxOfBoxes.setLayout(new GridLayout(2,2));
         boxOfBoxes.setPreferredSize(new Dimension(windowWidth/2+(windowWidth-((windowWidth/2)+(windowWidth/3)+150)),windowHeight-(windowHeight/10)-20));
         boxOfBoxes.setBackground(Color.cyan);
 
@@ -114,7 +114,7 @@ public class TimeSet extends JPanel {
         //list box's sets
         listBox = new JPanel();
         int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2) + 445));
-        listBox.setPreferredSize(new Dimension(betterSize-windowWidth/3, windowHeight/2 -(windowHeight/10)+150));
+        listBox.setPreferredSize(new Dimension(betterSize-windowWidth/4, windowHeight-(windowHeight/10)-20));
         listBox.setBackground(Color.GREEN);
 
 
@@ -168,12 +168,12 @@ public class TimeSet extends JPanel {
         secondStart = createSpinner(59);
         secondEnd = createSpinner(59);
 
-        StartText = createLabel(" Choose time the robot will start the instruction:", 400, 40);
+        StartText = createLabel("    Choose time the robot will start the instruction:", 400, 40);
         hoursStartLabel = createLabel("Hour:", 45, 50);
         minutesStartLabel = createLabel("Minute:", 60, 50);
         secondsStartLabel = createLabel("Second:", 70, 50);
         spaceText = createLabel("                                         ", 400, 60);
-        endText = createLabel(" Choose time the robot will finish the instruction:", 400, 40);
+        endText = createLabel("    Choose time the robot will finish the instruction:", 400, 40);
         hoursEndLabel = createLabel("Hour:", 45, 50);
         minutesEndLabel = createLabel("Minute:", 60, 50);
         secondsEndLabel = createLabel("Second:", 70, 60);
@@ -281,6 +281,7 @@ public class TimeSet extends JPanel {
         if (!Objects.equals(monthBox.getSelectedItem(), 0) && !Objects.equals(yearBox.getSelectedItem(), 0)) {
             chosenMonth = (int) monthBox.getSelectedItem() - 1;
             GregorianCalendar cal2 = new GregorianCalendar(chosenYear, chosenMonth,1);
+
             nod = cal2.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
             updateDayBox();
             dayBox.setVisible(true);
@@ -305,11 +306,11 @@ public class TimeSet extends JPanel {
         return label;
     }
 
-    private JLabel createLabel(String text, int width, int height) {
+    private JLabel createLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
-        label.setPreferredSize(new Dimension(width, height));
-        label.setFont(new Font("Arial", Font.BOLD, 17));
+        label.setFont(new Font("Arial", Font.BOLD, 13));
         label.setForeground(Color.white);
+        label.setLocation(x,y);
         return label;
     }
 

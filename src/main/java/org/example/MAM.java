@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class MAM extends JPanel implements ActionListener {
     //In future wait
@@ -35,12 +37,12 @@ public class MAM extends JPanel implements ActionListener {
     private final  JPanel instructions;
     private JLabel instructionsText;
     private final JPanel timeMonitor;
-    private  JLabel timeChecker;
+    private JLabel timeChecker;
 
 
 
 
-    public MAM (int windowWidth, int windowHeight, List<String> actionList, String startHour, String startMinute, String startSecond, String endHour, String endMinute, String endSecond){
+    public MAM (int windowWidth, int windowHeight, List<String> actionList, int startHour, int startMinute, int startSecond, int endHour, int endMinute, int endSecond){
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
@@ -156,37 +158,36 @@ public class MAM extends JPanel implements ActionListener {
         frequencyAmountHour.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (Integer.parseInt(endHour) != Integer.parseInt(frequencyAmountHour.getValue().toString())){
-                    timeChecker.setText((Integer.parseInt(startHour)+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
-                            (Integer.parseInt(startMinute)+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
-                            (Integer.parseInt(startSecond)+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+                if (endHour > Integer.parseInt(frequencyAmountHour.getValue().toString())){
+                    timeChecker.setText((startHour+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
+                            startMinute+":"+
+                            startSecond);
                 }
             }
         });
         frequencyAmountMinute.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (endMinute != frequencyAmountMinute.getValue()){
-                    timeChecker.setText((Integer.parseInt(startHour)+Integer.parseInt(frequencyAmountHour
-                            .getValue().toString()))+":"+
-                            (Integer.parseInt(startMinute)+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
-                            (Integer.parseInt(startSecond)+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+                if (endMinute > Integer.parseInt(frequencyAmountMinute.getValue().toString()) && endHour == Integer.parseInt(frequencyAmountHour.getValue().toString())){
+                    timeChecker.setText(startHour+":"+
+                            (startMinute+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
+                            startSecond);
                 }
             }
         });
         frequencyAmountSecond.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (endSecond != frequencyAmountSecond.getValue()){
-                    timeChecker.setText((Integer.parseInt(startHour)+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
-                            (Integer.parseInt(startMinute)+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
-                            (Integer.parseInt(startSecond)+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+                if (endSecond > Integer.parseInt(frequencyAmountSecond.getValue().toString())){
+                    timeChecker.setText(startHour+":"+
+                            startMinute+":"+
+                            (startSecond+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
                 }
             }
         });
-        timeChecker = new JLabel((Integer.parseInt(startHour)+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
-                (Integer.parseInt(startMinute)+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
-                (Integer.parseInt(startSecond)+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+        timeChecker = new JLabel((startHour+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
+                (startMinute+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
+                (startSecond+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
         timeChecker.setFont(new Font("Arial" , Font.BOLD , 50));
         timeMonitor.add(timeChecker);
 

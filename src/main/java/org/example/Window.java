@@ -107,10 +107,10 @@ public class Window extends JFrame implements ActionListener {
         this.add(boxOfNavigation);
         this.add(boxOfWindowOp);
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
-        infoPanel = new InfoPanel(windowWidth,windowHeight,"");
+        infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0");
         this.add(timer);
         this.calendar = new CalendarForProject(windowWidth,windowHeight,timer.getNameAction(), timer.getChosenYear(), timer.getChosenMonth() , timer.getChosenDay());
-        this.action =new MAM(windowWidth,windowHeight,listOfAction, startHour, startMinute, startSecond,endHour,endMinute,endSecond);
+        this.action =new MAM(windowWidth,windowHeight,listOfAction, Integer.parseInt(startHour),Integer.parseInt(startMinute), Integer.parseInt(startSecond),Integer.parseInt(endHour),Integer.parseInt(endMinute),Integer.parseInt(endSecond));
         this.add(action);
         instructions = new Instructions(windowWidth,windowHeight);
         panel.add(calendar);
@@ -143,7 +143,9 @@ public class Window extends JFrame implements ActionListener {
             this.calendar = new CalendarForProject(windowWidth,windowHeight,timer.getNameAction(), timer.getChosenYear(), timer.getChosenMonth() , timer.getChosenDay());
             this.add(calendar);
             this.remove(infoPanel);
-            infoPanel = new InfoPanel(windowWidth,windowHeight,timer.getPlans());
+            infoPanel = new InfoPanel(windowWidth,windowHeight,timer.getPlans(),
+                    timer.getChosenDay(),timer.getChosenMonth()+1,timer.getChosenYear(),
+                    timer.getSecondStart(),timer.getMinutesStart(),timer.getHoursStart());
             this.add(infoPanel);
             this.remove(instructions);
             instructions = new Instructions(windowWidth,windowHeight);
@@ -152,6 +154,9 @@ public class Window extends JFrame implements ActionListener {
             startHour =timer.getHoursStart();
             startMinute =timer.getMinutesStart();
             startSecond =timer.getSecondStart();
+            endHour = timer.getHoursEnd();
+            endMinute=timer.getMinutesEnd();
+            endSecond=timer.getSecondEnd();
             this.remove(timer);
             timer=new TimeSet(windowWidth,windowHeight,confirmOption);
             this.add(timer);

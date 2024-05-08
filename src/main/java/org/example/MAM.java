@@ -42,7 +42,9 @@ public class MAM extends JPanel implements ActionListener {
 
 
 
-    public MAM (int windowWidth, int windowHeight, List<String> actionList, int startHour, int startMinute, int startSecond, int endHour, int endMinute, int endSecond){
+    public MAM (int windowWidth, int windowHeight, List<String> actionList,
+                int startHour, int startMinute, int startSecond, int endHour,
+                int endMinute, int endSecond){
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));

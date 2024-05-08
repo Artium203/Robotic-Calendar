@@ -19,12 +19,17 @@ public class InfoPanel extends JPanel {
     private int currentDay = cal.get(GregorianCalendar.DAY_OF_MONTH);
     private int currentMonth = 1+cal.get(GregorianCalendar.MONTH);
     private int currentYear = cal.get(GregorianCalendar.YEAR);
+    private Calendar calendar = GregorianCalendar.getInstance();
+    private int currentHour;
+    private int currentMinut;
+    private int currentSecond;
+
     private int chosenYear;
     private int chosenMonth;
     private int chosenDay;
-    private String chosenStartHours;
-    private String chosenStartMinutes;
-    private String chosenStartSeconds;
+    private int chosenStartHours;
+    private int chosenStartMinutes;
+    private int chosenStartSeconds;
     private List<String> fixed;
 
 
@@ -37,11 +42,16 @@ public class InfoPanel extends JPanel {
         chosenYear=year;
         chosenMonth=month;
         chosenDay=day;
-        chosenStartHours=hours;
-        chosenStartMinutes=minutes;
-        chosenStartSeconds=seconds;
+        chosenStartHours= Integer.parseInt(hours);
+        chosenStartMinutes= Integer.parseInt(minutes);
+        chosenStartSeconds= Integer.parseInt(seconds);
 //        System.out.println(chosenDay+"/"+chosenMonth+"/"+chosenYear);
 //        System.out.println(currentDay+"/"+currentMonth+"/"+currentYear);
+        calendar.setTime(cal.getTime());
+        currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        currentMinut= calendar.get(Calendar.MINUTE);
+        currentSecond = calendar.get(Calendar.SECOND);
+
 
         listPanel = new JPanel();
         listPanel.setBackground(Color.gray);
@@ -65,6 +75,8 @@ public class InfoPanel extends JPanel {
     }
     public void addToLastTwoPlans(String plan){
         if (currentYear <= chosenYear ){
+            System.out.println(currentHour+"/"+chosenMonth+"/"+chosenYear);
+            System.out.println(currentDay+"/"+currentMonth+"/"+currentYear);
             if (currentMonth<chosenMonth){
                 if (this.plansList.size() > 9){
                     plansList.remove(0);
@@ -74,8 +86,8 @@ public class InfoPanel extends JPanel {
                     plansList.add(plan);
                     Collections.sort(plansList);
                 }
-            } else if (currentMonth+1==chosenMonth) {
-                if (currentDay <= chosenDay){
+            } else if (currentMonth==chosenMonth) {
+                if (currentDay < chosenDay){
                     if (this.plansList.size() > 9){
                         plansList.remove(0);
                         plansList.add(plan);
@@ -83,6 +95,26 @@ public class InfoPanel extends JPanel {
                     }else {
                         plansList.add(plan);
                         Collections.sort(plansList);
+                    }
+                } else if (currentDay == chosenDay) {
+                    if (currentHour<chosenStartHours){
+                        if (this.plansList.size() > 9){
+                            plansList.remove(0);
+                            plansList.add(plan);
+                            Collections.sort(plansList);
+                        }else {
+                            plansList.add(plan);
+                            Collections.sort(plansList);
+                        }
+                    } else if (currentHour==chosenStartHours && currentMinut<chosenStartMinutes) {
+                        if (this.plansList.size() > 9){
+                            plansList.remove(0);
+                            plansList.add(plan);
+                            Collections.sort(plansList);
+                        }else {
+                            plansList.add(plan);
+                            Collections.sort(plansList);
+                        }
                     }
                 }
             }

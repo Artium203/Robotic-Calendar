@@ -162,7 +162,9 @@ public class Window extends JFrame implements ActionListener {
             this.add(timer);
             actionPoint.setEnabled(e.getSource() == confirmOption);
             this.remove(action);
-            this.action =new MAM(windowWidth,windowHeight, listOfAction, startHour, startMinute, startSecond, endHour, endMinute, endSecond);
+            this.action =new MAM(windowWidth,windowHeight, listOfAction, Integer.parseInt(startHour),
+                    Integer.parseInt(startMinute), Integer.parseInt(startSecond), Integer.parseInt(endHour),
+                    Integer.parseInt(endMinute), Integer.parseInt(endSecond));
             this.add(action);
         }
         else if (e.getSource() == confirmOption && !timer.isTimeValid()) {

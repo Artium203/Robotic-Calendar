@@ -6,6 +6,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,44 +36,64 @@ public class MAM extends JPanel implements ActionListener {
     private static final JButton previous = new JButton("Previous");
     private final JPanel location;
     private static final JButton pointLocation = new JButton("Point The Location");
-    private final  JPanel instructions;
+    private final JPanel instructions;
     private JLabel instructionsText;
     private final JPanel timeMonitor;
     private JLabel timeChecker;
+    private ArrayList saveDataOfIndex;
+    private int currentIndex = 0;
 
 
-
-
-    public MAM (int windowWidth, int windowHeight, List<String> actionList,
-                int startHour, int startMinute, int startSecond, int endHour,
-                int endMinute, int endSecond){
+    public MAM(int windowWidth, int windowHeight, List<String> actionList,
+               int startHour, int startMinute, int startSecond, int endHour,
+               int endMinute, int endSecond) {
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
+        this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
         this.setVisible(false);
         this.setBackground(Color.green);
 
         boxList = new JPanel();
-        boxList.setPreferredSize(new Dimension(windowWidth/4,31+(windowHeight/6)*5));
+        boxList.setPreferredSize(new Dimension(windowWidth / 4, 31 + (windowHeight / 6) * 5));
         boxList.setBackground(Color.DARK_GRAY);
         boxList.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("List Of Commands"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         ButtonGroup checkGroup = new ButtonGroup();
         performanceList = new ArrayList<>();
-        if (!actionList.isEmpty()){
+
+
+
+        if (!actionList.isEmpty()) {
             for (int i = 0; i < actionList.size(); i++) {
                 performanceList.add(new JCheckBox());
-                performanceList.get(i).setPreferredSize(new Dimension((windowWidth/6),(windowHeight/10)-15));
+                performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
                 performanceList.get(i).setText(actionList.get(i));
                 boxList.add(performanceList.get(i));
                 checkGroup.add(performanceList.get(i));
+
+                if (i == currentIndex) {
+                    performanceList.get(i).setSelected(true);
+                }
             }
+
+            next.addActionListener(e -> {
+                saveDataOfIndex.add(timeChecker.getText());
+                System.out.println(timeChecker.getText());
+                System.out.println(saveDataOfIndex);
+
+                if (currentIndex < performanceList.size() - 1) {
+                    currentIndex++;
+                    performanceList.get(currentIndex).setSelected(true);
+                }
+            });
         }
+
+
         boxOfCommand = new JPanel();
-        boxOfCommand.setPreferredSize(new Dimension(windowWidth-(windowWidth/4)-25,31+(windowHeight/6)*5));
+        boxOfCommand.setPreferredSize(new Dimension(windowWidth - (windowWidth / 4) - 25, 31 + (windowHeight / 6) * 5));
         boxOfCommand.setBackground(Color.orange);
-        boxOfCommand.setLayout(new GridLayout(3,3));
+        boxOfCommand.setLayout(new GridLayout(3, 3));
 
         repeat = new JPanel();
         repeat.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Repeats"),
@@ -79,27 +101,27 @@ public class MAM extends JPanel implements ActionListener {
         repeat.setBackground(Color.cyan);
         repeat.setLayout(new FlowLayout(FlowLayout.CENTER));
         loop = new JCheckBox("Loop?");
-        loop.setPreferredSize(new Dimension(windowWidth/15,(windowHeight/10)-15));
+        loop.setPreferredSize(new Dimension(windowWidth / 15, (windowHeight / 10) - 15));
         loop.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("LOOP"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         repeat.add(loop);
 
-        countOfRepeat = new JSpinner(new SpinnerNumberModel(1,1,99,1));
-        countOfRepeat.setPreferredSize(new Dimension(windowWidth/17,(windowHeight/10)-15));
+        countOfRepeat = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+        countOfRepeat.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
         countOfRepeat.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Counter"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         ((JSpinner.DefaultEditor) countOfRepeat.getEditor()).getTextField().setEditable(false);
         repeat.add(countOfRepeat);
 
-        frequencyAmountHour = new JSpinner(new SpinnerNumberModel(0,0,23,1));
+        frequencyAmountHour = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         frequencyAmountHour.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Hours"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-        frequencyAmountMinute = new JSpinner(new SpinnerNumberModel(0,0,59,1));
+        frequencyAmountMinute = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         frequencyAmountMinute.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Minutes"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-        frequencyAmountSecond = new JSpinner(new SpinnerNumberModel(0,0,59,1));
+        frequencyAmountSecond = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         frequencyAmountSecond.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Seconds"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
@@ -107,101 +129,113 @@ public class MAM extends JPanel implements ActionListener {
         ((JSpinner.DefaultEditor) frequencyAmountMinute.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) frequencyAmountSecond.getEditor()).getTextField().setEditable(false);
 
-        frequencyAmountHour.setPreferredSize(new Dimension(windowWidth/17,(windowHeight/10)-15));
-        frequencyAmountMinute.setPreferredSize(new Dimension(windowWidth/17,(windowHeight/10)-15));
-        frequencyAmountSecond.setPreferredSize(new Dimension(windowWidth/17,(windowHeight/10)-15));
+        frequencyAmountHour.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
+        frequencyAmountMinute.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
+        frequencyAmountSecond.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
 
         repeat.add(frequencyAmountHour);
         repeat.add(frequencyAmountMinute);
         repeat.add(frequencyAmountSecond);
 
+        repeat.setEnabled(false);
 
 
-        timeToLive =new JPanel();
+        timeToLive = new JPanel();
         timeToLive.setBackground(Color.PINK);
         timeToLive.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Time For Loop To Live"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        lifeHour = new JSpinner(new SpinnerNumberModel(0,0,23,1));
+        lifeHour = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         ((JSpinner.DefaultEditor) lifeHour.getEditor()).getTextField().setEditable(false);
         lifeHour.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Hour"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        lifeHour.setPreferredSize(new Dimension(windowWidth/17,(windowHeight/10)-15));
+        lifeHour.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
 
-        lifeMinute =new JSpinner(new SpinnerNumberModel(0,0,59,1));
+        lifeMinute = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         ((JSpinner.DefaultEditor) lifeMinute.getEditor()).getTextField().setEditable(false);
         lifeMinute.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Minute"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        lifeMinute.setPreferredSize(new Dimension(windowWidth/17,(windowHeight/10)-15));
+        lifeMinute.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
 
-        lifeSecond =new JSpinner(new SpinnerNumberModel(0,0,59,1));
+        lifeSecond = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         ((JSpinner.DefaultEditor) lifeSecond.getEditor()).getTextField().setEditable(false);
         lifeSecond.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Second"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        lifeSecond.setPreferredSize(new Dimension(windowWidth/17,(windowHeight/10)-15));
+        lifeSecond.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
         timeToLive.add(lifeHour);
         timeToLive.add(lifeMinute);
         timeToLive.add(lifeSecond);
 
         nextOrPrevious = new JPanel();
         nextOrPrevious.setBackground(Color.red);
-        nextOrPrevious.setLayout(new BorderLayout(0,10));
+        nextOrPrevious.setLayout(new BorderLayout(0, 10));
         nextOrPrevious.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Go Back/Go Forward"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        next.setPreferredSize(new Dimension(windowWidth/6,windowHeight/8));
+        next.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
+        saveDataOfIndex = new ArrayList<>();
         next.addActionListener(this);
-        previous.setPreferredSize(new Dimension(windowWidth/6,windowHeight/8));
+        previous.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
         previous.addActionListener(this);
-        nextOrPrevious.add(next,BorderLayout.NORTH);
-        nextOrPrevious.add(previous,BorderLayout.SOUTH);
+        nextOrPrevious.add(next, BorderLayout.NORTH);
+        nextOrPrevious.add(previous, BorderLayout.SOUTH);
 
-        timeMonitor =new JPanel();
+
+//        int hoursToActive = endHour - startHour;
+//        int minutesToActive = endMinute - startMinute;
+//        int secondsToActive = endSecond - startSecond;
+
+        timeMonitor = new JPanel();
         timeMonitor.setBackground(Color.GREEN);
         timeMonitor.setLayout(new GridLayout());
-        frequencyAmountHour.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (endHour > Integer.parseInt(frequencyAmountHour.getValue().toString())){
-                    timeChecker.setText((startHour+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
-                            startMinute+":"+
-                            startSecond);
-                }
-            }
-        });
-        frequencyAmountMinute.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (endMinute > Integer.parseInt(frequencyAmountMinute.getValue().toString()) && endHour == Integer.parseInt(frequencyAmountHour.getValue().toString())){
-                    timeChecker.setText(startHour+":"+
-                            (startMinute+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
-                            startSecond);
-                }
-            }
-        });
-        frequencyAmountSecond.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (endSecond > Integer.parseInt(frequencyAmountSecond.getValue().toString())){
-                    timeChecker.setText(startHour+":"+
-                            startMinute+":"+
-                            (startSecond+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
-                }
-            }
-        });
-        timeChecker = new JLabel((startHour+Integer.parseInt(frequencyAmountHour.getValue().toString()))+":"+
-                (startMinute+Integer.parseInt(frequencyAmountMinute.getValue().toString()))+":"+
-                (startSecond+Integer.parseInt(frequencyAmountSecond.getValue().toString())));
-        timeChecker.setFont(new Font("Arial" , Font.BOLD , 50));
-        timeMonitor.add(timeChecker);
+        timeMonitor.setEnabled(false);
 
 
-        location =new JPanel();
+                frequencyAmountHour.addChangeListener(new ChangeListener() {
+                    @Override
+                    public void stateChanged(ChangeEvent e) {
+                        if (endHour > Integer.parseInt(frequencyAmountHour.getValue().toString())) {
+                            timeChecker.setText((startHour + Integer.parseInt(frequencyAmountHour.getValue().toString())) + ":" +
+                                    startMinute + ":" +
+                                    startSecond);
+                        }
+                    }
+                });
+
+                frequencyAmountMinute.addChangeListener(new ChangeListener() {
+                    @Override
+                    public void stateChanged(ChangeEvent e) {
+                        if (endMinute > Integer.parseInt(frequencyAmountMinute.getValue().toString()) && endHour == Integer.parseInt(frequencyAmountHour.getValue().toString())) {
+                            timeChecker.setText(startHour + ":" +
+                                    (startMinute + Integer.parseInt(frequencyAmountMinute.getValue().toString())) + ":" +
+                                    startSecond);
+                        }
+                    }
+                });
+                frequencyAmountSecond.addChangeListener(new ChangeListener() {
+                    @Override
+                    public void stateChanged(ChangeEvent e) {
+                        if (endSecond > Integer.parseInt(frequencyAmountSecond.getValue().toString())) {
+                            timeChecker.setText(startHour + ":" +
+                                    startMinute + ":" +
+                                    (startSecond + Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+                        }
+                    }
+                });
+                timeChecker = new JLabel((startHour + Integer.parseInt(frequencyAmountHour.getValue().toString())) + ":" +
+                        (startMinute + Integer.parseInt(frequencyAmountMinute.getValue().toString())) + ":" +
+                        (startSecond + Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+                timeChecker.setFont(new Font("Arial", Font.BOLD, 50));
+                timeMonitor.add(timeChecker);
+
+
+
+        location = new JPanel();
         location.setBackground(Color.MAGENTA);
         location.setLayout(new GridLayout());
         location.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Point Robot's Action Point"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         location.add(pointLocation);
 
-        instructions =new JPanel();
+        instructions = new JPanel();
         instructions.setBackground(Color.yellow);
         instructions.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Help For Understatement"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -227,4 +261,5 @@ public class MAM extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     }
+
 }

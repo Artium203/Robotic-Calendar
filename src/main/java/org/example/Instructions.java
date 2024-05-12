@@ -7,6 +7,7 @@ public class Instructions extends JPanel {
     private static final JButton startButton = new JButton("start"); // To start/continue the action
     private final JTextArea instructionsArea; // Helps the user around
 
+
     public Instructions(int windowWidth, int windowHeight){
         //Panel sets
         this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));

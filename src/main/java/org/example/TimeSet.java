@@ -66,7 +66,7 @@ public class TimeSet extends JPanel {
 
     public TimeSet(int windowWidth,int windowHeight, JButton confirm){
         //Panel layout and dimensions
-        this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+        this.setLayout(new GridLayout());
         this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
         this.setVisible(false);
         this.setBackground(Color.gray);
@@ -97,7 +97,7 @@ public class TimeSet extends JPanel {
         //Time box's sets
         timeBox = new JPanel();
         timeBox.setLayout(new FlowLayout(FlowLayout.CENTER));
-        timeBox.setPreferredSize(new Dimension(430, (windowHeight-(windowHeight/10)-20)/2));
+        timeBox.setPreferredSize(new Dimension(430, (windowHeight - (windowHeight / 10) - 20) / 2));
         timeBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Start Task And End Task"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         timeBox.setBackground(Color.DARK_GRAY);
@@ -158,25 +158,7 @@ public class TimeSet extends JPanel {
         buttonGroup.add(pressOption);
 
 
-        //Sets of starting/ending time
 
-        hoursStart = createSpinner( 23);
-        hoursEnd = createSpinner(  23);
-        minutesStart = createSpinner(59);
-        minutesEnd = createSpinner(59);
-
-        secondStart = createSpinner(59);
-        secondEnd = createSpinner(59);
-
-        StartText = createLabel("    Choose time the robot will start the instruction:", 400, 40);
-        hoursStartLabel = createLabel("Hour:", 45, 50);
-        minutesStartLabel = createLabel("Minute:", 60, 50);
-        secondsStartLabel = createLabel("Second:", 70, 50);
-        spaceText = createLabel("                                         ", 400, 60);
-        endText = createLabel("    Choose time the robot will finish the instruction:", 400, 40);
-        hoursEndLabel = createLabel("Hour:", 45, 50);
-        minutesEndLabel = createLabel("Minute:", 60, 50);
-        secondsEndLabel = createLabel("Second:", 70, 60);
         //I changed here ^ the type of how you implement the font so please feel free to adjust it
 
         actionList = new ArrayList<>();
@@ -240,7 +222,28 @@ public class TimeSet extends JPanel {
         dateBox.add(monthBox);
         dateBox.add(dayBox);
 
-        boxOfBoxes.add(timeBox);
+
+
+        //Sets of starting/ending time
+
+        hoursStart = createSpinner( 23);
+        hoursEnd = createSpinner(  23);
+        minutesStart = createSpinner(59);
+        minutesEnd = createSpinner(59);
+
+        secondStart = createSpinner(59);
+        secondEnd = createSpinner(59);
+
+        StartText = createLabel("    Choose time the robot will start the instruction:", 400, 40);
+        hoursStartLabel = createLabel("Hour:", 45, 50);
+        minutesStartLabel = createLabel("Minute:", 60, 50);
+        secondsStartLabel = createLabel("Second:", 70, 50);
+        spaceText = createLabel("                                         ", 400, 60);
+        endText = createLabel("    Choose time the robot will finish the instruction:", 400, 40);
+        hoursEndLabel = createLabel("Hour:", 45, 50);
+        minutesEndLabel = createLabel("Minute:", 60, 50);
+        secondsEndLabel = createLabel("Second:", 70, 60);
+
         timeBox.add(StartText);
         timeBox.add(hoursStartLabel);
         timeBox.add(hoursStart);
@@ -256,6 +259,7 @@ public class TimeSet extends JPanel {
         timeBox.add(minutesEnd);
         timeBox.add(secondsEndLabel);
         timeBox.add(secondEnd);
+        boxOfBoxes.add(timeBox);
 
 
         boxOfBoxes.add(performanceBox);

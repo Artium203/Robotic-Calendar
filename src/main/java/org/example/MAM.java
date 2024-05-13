@@ -184,7 +184,8 @@ public class MAM extends JPanel implements ActionListener {
         repeat.add(frequencyAmountMinute);
         repeat.add(frequencyAmountSecond);
 
-        repeat.setEnabled(false);
+//        repeat.setEnabled(false);
+
 
 
         timeToLive = new JPanel();

@@ -6,12 +6,9 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class MAM extends JPanel implements ActionListener {
     //In future wait
@@ -41,12 +38,18 @@ public class MAM extends JPanel implements ActionListener {
     private final JPanel timeMonitor;
     private JLabel timeChecker;
     private ArrayList saveDataOfIndex;
+    private List<String> splitList = new ArrayList<>();
     private int currentIndex = 0;
+    List<Boolean> isSelectedOnThePast = new ArrayList<>();
+
+
 
 
     public MAM(int windowWidth, int windowHeight, List<String> actionList,
                int startHour, int startMinute, int startSecond, int endHour,
                int endMinute, int endSecond) {
+
+
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
@@ -71,23 +74,64 @@ public class MAM extends JPanel implements ActionListener {
                 performanceList.get(i).setText(actionList.get(i));
                 boxList.add(performanceList.get(i));
                 checkGroup.add(performanceList.get(i));
+                isSelectedOnThePast.add(0 , true);
 
                 if (i == currentIndex) {
                     performanceList.get(i).setSelected(true);
                 }
+                if (currentIndex > 0){
+                    isSelectedOnThePast.add(i , false);
+                }
+
+
             }
 
             next.addActionListener(e -> {
-                saveDataOfIndex.add(timeChecker.getText());
-                System.out.println(timeChecker.getText());
-                System.out.println(saveDataOfIndex);
-
                 if (currentIndex < performanceList.size() - 1) {
                     currentIndex++;
                     performanceList.get(currentIndex).setSelected(true);
+                    if (!isSelectedOnThePast.get(currentIndex)) {
+                        countOfRepeat.setValue(1);
+                        frequencyAmountHour.setValue(0);
+                        frequencyAmountMinute.setValue(0);
+                        frequencyAmountSecond.setValue(0);
+                        isSelectedOnThePast.set(currentIndex , true);
+                        saveDataOfIndex.add(timeChecker.getText());
+                    }
+                }
+
+
+            });
+
+
+            previous.addActionListener(e -> {
+                if (currentIndex > 0) {
+                    saveDataOfIndex.add(timeChecker.getText());
+                    String string = saveDataOfIndex.get(currentIndex - 1).toString();
+                    String[] parts = string.split(":");
+                    splitList.addAll(Arrays.asList(parts));
+
+                    String previousHour = splitList.get(0);
+                    String previousMinutes = splitList.get(1);
+                    String previousSecond = splitList.get(2);
+
+                    timeChecker.setText(previousHour + ":" + previousMinutes + ":" + previousSecond);
+                    frequencyAmountHour.setValue(Integer.parseInt(previousHour));
+                    frequencyAmountMinute.setValue(Integer.parseInt(previousMinutes));
+                    frequencyAmountSecond.setValue(Integer.parseInt(previousSecond));
+
+                    System.out.println(splitList.get(0));
+                    System.out.println(splitList.get(1));
+                    System.out.println(splitList.get(2));
+
+                    currentIndex--;
+                    performanceList.get(currentIndex).setSelected(true);
                 }
             });
+
+
         }
+
 
 
         boxOfCommand = new JPanel();
@@ -125,6 +169,8 @@ public class MAM extends JPanel implements ActionListener {
         frequencyAmountSecond.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Seconds"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
+
+
         ((JSpinner.DefaultEditor) frequencyAmountHour.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) frequencyAmountMinute.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) frequencyAmountSecond.getEditor()).getTextField().setEditable(false);
@@ -132,6 +178,7 @@ public class MAM extends JPanel implements ActionListener {
         frequencyAmountHour.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
         frequencyAmountMinute.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
         frequencyAmountSecond.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
+
 
         repeat.add(frequencyAmountHour);
         repeat.add(frequencyAmountMinute);
@@ -145,6 +192,7 @@ public class MAM extends JPanel implements ActionListener {
         timeToLive.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Time For Loop To Live"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         lifeHour = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
+
         ((JSpinner.DefaultEditor) lifeHour.getEditor()).getTextField().setEditable(false);
         lifeHour.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Hour"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -173,8 +221,10 @@ public class MAM extends JPanel implements ActionListener {
         next.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
         saveDataOfIndex = new ArrayList<>();
         next.addActionListener(this);
+
         previous.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
         previous.addActionListener(this);
+
         nextOrPrevious.add(next, BorderLayout.NORTH);
         nextOrPrevious.add(previous, BorderLayout.SOUTH);
 
@@ -259,6 +309,9 @@ public class MAM extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+    }
+    private void resetSpinnersToOriginalModels() {
 
     }
 

@@ -41,6 +41,7 @@ public class MAM extends JPanel implements ActionListener {
     private List<String> splitList = new ArrayList<>();
     private int currentIndex = 0;
     List<Boolean> isSelectedOnThePast = new ArrayList<>();
+    private int numberForSplitList = 0;
 
 
 
@@ -74,20 +75,22 @@ public class MAM extends JPanel implements ActionListener {
                 performanceList.get(i).setText(actionList.get(i));
                 boxList.add(performanceList.get(i));
                 checkGroup.add(performanceList.get(i));
+                performanceList.get(0).setSelected(true);
                 isSelectedOnThePast.add(0 , true);
 
-                if (i == currentIndex) {
-                    performanceList.get(i).setSelected(true);
-                }
-                if (currentIndex > 0){
+
+//                if (i == currentIndex) {
+//                }
+                if (i > 0){
                     isSelectedOnThePast.add(i , false);
                 }
+
 
 
             }
 
             next.addActionListener(e -> {
-                if (currentIndex < performanceList.size() - 1) {
+                if (currentIndex < actionList.size() - 1) {
                     currentIndex++;
                     performanceList.get(currentIndex).setSelected(true);
                     if (!isSelectedOnThePast.get(currentIndex)) {
@@ -96,18 +99,20 @@ public class MAM extends JPanel implements ActionListener {
                         frequencyAmountMinute.setValue(0);
                         frequencyAmountSecond.setValue(0);
                         isSelectedOnThePast.set(currentIndex , true);
-                        saveDataOfIndex.add(timeChecker.getText());
                     }
+                    saveDataOfIndex.add(timeChecker.getText());
+
+
                 }
-
-
             });
 
 
             previous.addActionListener(e -> {
                 if (currentIndex > 0) {
-                    saveDataOfIndex.add(timeChecker.getText());
-                    String string = saveDataOfIndex.get(currentIndex - 1).toString();
+                    currentIndex--;
+                    String string = saveDataOfIndex.get(currentIndex).toString();
+                    performanceList.get(currentIndex).setSelected(true);
+
                     String[] parts = string.split(":");
                     splitList.addAll(Arrays.asList(parts));
 
@@ -120,12 +125,13 @@ public class MAM extends JPanel implements ActionListener {
                     frequencyAmountMinute.setValue(Integer.parseInt(previousMinutes));
                     frequencyAmountSecond.setValue(Integer.parseInt(previousSecond));
 
-                    System.out.println(splitList.get(0));
-                    System.out.println(splitList.get(1));
-                    System.out.println(splitList.get(2));
+                    System.out.println(previousHour);
+                    System.out.println(previousMinutes);
+                    System.out.println(previousSecond);
 
-                    currentIndex--;
-                    performanceList.get(currentIndex).setSelected(true);
+                    saveDataOfIndex.add(timeChecker.getText());
+
+
                 }
             });
 

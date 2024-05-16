@@ -74,9 +74,17 @@ public class InfoPanel extends JPanel {
         return get.toString();
     }
     public void addToLastTwoPlans(String plan){
-        if (currentYear <= chosenYear ){
-            System.out.println(currentHour+"/"+chosenMonth+"/"+chosenYear);
-            System.out.println(currentDay+"/"+currentMonth+"/"+currentYear);
+        if (currentYear<chosenYear){
+            if (this.plansList.size() > 9){
+                plansList.remove(0);
+                plansList.add(plan);
+                Collections.sort(plansList);
+            }else {
+                plansList.add(plan);
+                Collections.sort(plansList);
+            }
+        }
+        if (currentYear == chosenYear ){
             if (currentMonth<chosenMonth){
                 if (this.plansList.size() > 9){
                     plansList.remove(0);

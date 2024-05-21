@@ -9,6 +9,6 @@
 
 
 <br>Disign Reference<br>
-<img src="https://github.com/Artium203/Robotic-Calendar/assets/111447264/3987f844-e660-4775-a6d8-5801df9065a2" width="300">
+<img src="" width="300">
 <img src="" width="200">
 

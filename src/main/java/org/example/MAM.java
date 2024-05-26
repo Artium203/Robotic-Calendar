@@ -1,16 +1,14 @@
 package org.example;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Timer;
 
 public class MAM extends JPanel{
+
+    private Utils utils;
     private JPanel boxList; // Contains checkers of user's input
     private List<JCheckBox> performanceList; // The checkers of user input
     private JPanel boxOfCommand; // Box the contains the commands for the checked action, info of it's input and explanation
@@ -36,7 +34,7 @@ public class MAM extends JPanel{
     private static final JButton next = new JButton("Next"); // Going forward in checkers list
     private static final JButton previous = new JButton("Previous");// Going backwards in checkers list
     private final JPanel location; // The place where user will select the place of action
-    private static final JButton pointLocation = new JButton("Point The Location"); //Will transform to user's desktop/screen
+    private final JButton pointLocation = new JButton("Point The Location"); //Will transform to user's desktop/screen
 
     // Explanations for user's need
     private final JPanel instructions;
@@ -46,19 +44,15 @@ public class MAM extends JPanel{
     private final JPanel timeMonitor;
     private JLabel timeChecker;
     private final JButton confirmSelection = new JButton("Confirm Your Selection");
-    private List<Integer> collection = new ArrayList<>();
-    private int counter;
     private int HOURS;
     private int MINUTES;
     private int SECONDS;
 
     //In future wait
     private List<Integer> saveDataOfIndex;
-    private static int actionSize;
-    private List<String> splitList = new ArrayList<>();
+    private Timer actionLife;
     private int currentIndex = 0;
     List<Boolean> isSelectedOnThePast = new ArrayList<>();
-    private int numberForSplitList = 0;
     private Map<Integer, List<Integer>> savingsMap = new HashMap<>();
 
 
@@ -68,12 +62,13 @@ public class MAM extends JPanel{
 
     public MAM(int windowWidth, int windowHeight, List<String> actionList,
                int startHour, int startMinute, int startSecond, int endHour,
-               int endMinute, int endSecond) {
+               int endMinute, int endSecond, Utils util) {
         //Setting for class MAM
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
         this.setVisible(false);
         this.setBackground(Color.green);
+        this.utils = util;
 
 
         //Setting for List of Check boxes
@@ -84,7 +79,6 @@ public class MAM extends JPanel{
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         ButtonGroup checkGroup = new ButtonGroup();
         performanceList = new ArrayList<>();
-        actionSize = actionList.size();
 
 
 
@@ -122,14 +116,6 @@ public class MAM extends JPanel{
                         frequencyAmountSecond.setValue(0);
                         isSelectedOnThePast.set(currentIndex , true);
                     }
-
-//                    saveDataOfIndex.add((Integer) countOfRepeat.getValue());
-//                    saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
-//                    saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
-//                    saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
-//                    System.out.println(saveDataOfIndex);
-
-
                 }
             });
             previous.addActionListener(e -> {
@@ -284,63 +270,6 @@ public class MAM extends JPanel{
         timeToLive.add(lifeMinute);
         timeToLive.add(lifeSecond);
         timeToLive.add(confirmLoop);
-//        if (!actionList.isEmpty()) {
-//            for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
-//                performanceList.add(new JCheckBox());
-//                performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
-//                performanceList.get(i).setText(actionList.get(i));
-//                boxList.add(performanceList.get(i));
-//                checkGroup.add(performanceList.get(i));
-//                performanceList.get(i).setEnabled(false);
-//                performanceList.get(0).setSelected(true);
-////                isSelectedOnThePast.add(0 , true);
-////                if (i == currentIndex) {
-////                }
-////                if (i > 0){ // In testing
-////                    isSelectedOnThePast.add(i , false);
-////                }
-//            }
-//            // In testing
-//            next.addActionListener(e -> {
-//                if (currentIndex < actionList.size() - 1) {
-//                    currentIndex++;
-//                    performanceList.get(currentIndex).setSelected(true);
-//                    System.out.println(repeat.getComponent(0));
-//                    if (saveDataOfIndex.isEmpty()|| saveDataOfIndex.size()>0 || saveDataOfIndex.size()<=10){
-//                        saveDataOfIndex.add(repeat);
-//                        countOfRepeat.setValue(1);
-//                        frequencyAmountHour.setValue(0);
-//                        frequencyAmountMinute.setValue(0);
-//                        frequencyAmountSecond.setValue(0);
-//                    }
-//                }
-//            });
-//            previous.addActionListener(e -> {
-//                if (currentIndex > 0) {
-//                    currentIndex--;
-//                    String string = saveDataOfIndex.get(currentIndex).toString();
-//                    performanceList.get(currentIndex).setSelected(true);
-//
-//                    String[] parts = string.split(":");
-//                    splitList.addAll(Arrays.asList(parts));
-//
-//                    String previousHour = splitList.get(0);
-//                    String previousMinutes = splitList.get(1);
-//                    String previousSecond = splitList.get(2);
-//
-//                    timeChecker.setText(previousHour + ":" + previousMinutes + ":" + previousSecond);
-//                    frequencyAmountHour.setValue(Integer.parseInt(previousHour));
-//                    frequencyAmountMinute.setValue(Integer.parseInt(previousMinutes));
-//                    frequencyAmountSecond.setValue(Integer.parseInt(previousSecond));
-//
-//                    System.out.println(previousHour);
-//                    System.out.println(previousMinutes);
-//                    System.out.println(previousSecond);
-//
-//                    saveDataOfIndex.add(repeat);
-//                }
-//            });
-//        }
 
         //The buttons for going back or forward from the list
         nextOrPrevious = new JPanel();
@@ -360,16 +289,6 @@ public class MAM extends JPanel{
         timeMonitor.setLayout(new GridLayout(2,0));
         timeMonitor.setEnabled(false);
         confirmSelection.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-//        confirmSelection.addActionListener(e -> {
-//            if (counter==0){
-//                if (!loop.isSelected()){
-//                    collection.add(repeat);
-//                }else {
-//                    collection.add(timeToLive);
-//                }
-//                counter++;
-//            }
-//        });
 
         timeChecker = new JLabel((startHour + Integer.parseInt(frequencyAmountHour.getValue().toString())) + ":" +
                 (startMinute + Integer.parseInt(frequencyAmountMinute.getValue().toString())) + ":" +
@@ -384,6 +303,14 @@ public class MAM extends JPanel{
         location.setLayout(new GridLayout());
         location.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Point Robot's Action Point"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        pointLocation.addActionListener(e -> {
+            utils.setWindowVisibility(false);
+            System.out.println("sos");
+            SwingUtilities.invokeLater(() -> {
+                LocationFinder gui = new LocationFinder();
+                gui.setVisible(true);
+            });
+        });
         location.add(pointLocation);
 
         //Instruction of how to put and what things do
@@ -405,9 +332,6 @@ public class MAM extends JPanel{
 
         this.add(boxList);
         this.add(boxOfCommand);
-    }
-    private void resetSpinnersToOriginalModels() {
-
     }
     private void updateText(){
         timeChecker.setText(HOURS + ":" +

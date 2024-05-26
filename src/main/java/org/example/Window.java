@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Window extends JFrame implements ActionListener {
+public class Window extends JFrame implements ActionListener,Utils {
     private static Container panel; // Contains the frame of the window mainly used of the calendar at the moment
 
     private InfoPanel infoPanel; // Shows the list of actions that user have made
@@ -110,12 +110,13 @@ public class Window extends JFrame implements ActionListener {
         infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0");
         this.add(timer);
         this.calendar = new CalendarForProject(windowWidth,windowHeight,timer.getNameAction(), timer.getChosenYear(), timer.getChosenMonth() , timer.getChosenDay());
-        this.action =new MAM(windowWidth,windowHeight,listOfAction, Integer.parseInt(startHour),Integer.parseInt(startMinute), Integer.parseInt(startSecond),Integer.parseInt(endHour),Integer.parseInt(endMinute),Integer.parseInt(endSecond));
+        this.action =new MAM(windowWidth,windowHeight,listOfAction, Integer.parseInt(startHour),Integer.parseInt(startMinute), Integer.parseInt(startSecond),Integer.parseInt(endHour),Integer.parseInt(endMinute),Integer.parseInt(endSecond),this);
         this.add(action);
         instructions = new Instructions(windowWidth,windowHeight);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
+        this.setVisible(true);
     }
     //Sets the visibility
     public void showWindow(){
@@ -164,7 +165,7 @@ public class Window extends JFrame implements ActionListener {
             this.remove(action);
             this.action =new MAM(windowWidth,windowHeight, listOfAction, Integer.parseInt(startHour),
                     Integer.parseInt(startMinute), Integer.parseInt(startSecond), Integer.parseInt(endHour),
-                    Integer.parseInt(endMinute), Integer.parseInt(endSecond));
+                    Integer.parseInt(endMinute), Integer.parseInt(endSecond),this);
             this.add(action);
         }
         else if (e.getSource() == confirmOption && !timer.isTimeValid()) {
@@ -177,5 +178,10 @@ public class Window extends JFrame implements ActionListener {
         return (timer.getChosenYear() != 0 && timer.getChosenMonth()+1 != 0 && !timer.getHoursEnd().isEmpty()
                 && !timer.getHoursStart().isEmpty() && !timer.getMinutesEnd().isEmpty() &&!timer.getMinutesStart().isEmpty()
                 && !timer.getSecondEnd().isEmpty() && !timer.getSecondStart().isEmpty() && !timer.getActionToList().isEmpty());
+    }
+
+    @Override
+    public void setWindowVisibility(boolean visible) {
+        this.setVisible(visible);
     }
 }

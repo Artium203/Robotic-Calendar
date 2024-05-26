@@ -6,8 +6,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class MAM extends JPanel{
     private List<JCheckBox> performanceList; // The checkers of user input
     private JPanel boxOfCommand; // Box the contains the commands for the checked action, info of it's input and explanation
 
-    private final JPanel repeat; // The repeater  option
+    private JPanel repeat; // The repeater  option
     private JCheckBox loop; // The looper (if user want it to be in loops)
     private JSpinner countOfRepeat; // The amount of the action to repeat itself
 
@@ -47,18 +46,22 @@ public class MAM extends JPanel{
     private final JPanel timeMonitor;
     private JLabel timeChecker;
     private final JButton confirmSelection = new JButton("Confirm Your Selection");
-    private List<JPanel> collection = new ArrayList<>();
+    private List<Integer> collection = new ArrayList<>();
     private int counter;
     private int HOURS;
     private int MINUTES;
     private int SECONDS;
 
     //In future wait
-    private ArrayList saveDataOfIndex;
+    private List<Integer> saveDataOfIndex;
+    private static int actionSize;
     private List<String> splitList = new ArrayList<>();
     private int currentIndex = 0;
     List<Boolean> isSelectedOnThePast = new ArrayList<>();
     private int numberForSplitList = 0;
+    private Map<Integer, List<Integer>> savingsMap = new HashMap<>();
+
+
 
 
 
@@ -72,6 +75,7 @@ public class MAM extends JPanel{
         this.setVisible(false);
         this.setBackground(Color.green);
 
+
         //Setting for List of Check boxes
         boxList = new JPanel();
         boxList.setPreferredSize(new Dimension(windowWidth / 4, 31 + (windowHeight / 6) * 5));
@@ -80,6 +84,8 @@ public class MAM extends JPanel{
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         ButtonGroup checkGroup = new ButtonGroup();
         performanceList = new ArrayList<>();
+        actionSize = actionList.size();
+
 
 
         if (!actionList.isEmpty()) {
@@ -101,41 +107,46 @@ public class MAM extends JPanel{
             // In testing
             next.addActionListener(e -> {
                 if (currentIndex < actionList.size() - 1) {
+                    saveDataOfIndex.add((Integer) countOfRepeat.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
+                    savingsMap.put(currentIndex,saveDataOfIndex);
+                    saveDataOfIndex = new ArrayList<>();
                     currentIndex++;
                     performanceList.get(currentIndex).setSelected(true);
-                    if (!isSelectedOnThePast.get(currentIndex)) {
+                    if (!savingsMap.containsKey(currentIndex)) {
                         countOfRepeat.setValue(1);
                         frequencyAmountHour.setValue(0);
                         frequencyAmountMinute.setValue(0);
                         frequencyAmountSecond.setValue(0);
                         isSelectedOnThePast.set(currentIndex , true);
                     }
-                    saveDataOfIndex.add(timeChecker.getText());
+
+//                    saveDataOfIndex.add((Integer) countOfRepeat.getValue());
+//                    saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
+//                    saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
+//                    saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
+//                    System.out.println(saveDataOfIndex);
+
+
                 }
             });
             previous.addActionListener(e -> {
                 if (currentIndex > 0) {
                     currentIndex--;
-                    String string = saveDataOfIndex.get(currentIndex).toString();
+                    // <----map here
+                    System.out.println(savingsMap);
+                    for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
+                        switch (i){
+                            case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
+                            case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
+                            case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
+                            case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
+                        }
+                    }
+                    isSelectedOnThePast.set(currentIndex , true);
                     performanceList.get(currentIndex).setSelected(true);
-
-                    String[] parts = string.split(":");
-                    splitList.addAll(Arrays.asList(parts));
-
-                    String previousHour = splitList.get(0);
-                    String previousMinutes = splitList.get(1);
-                    String previousSecond = splitList.get(2);
-
-                    timeChecker.setText(previousHour + ":" + previousMinutes + ":" + previousSecond);
-                    frequencyAmountHour.setValue(Integer.parseInt(previousHour));
-                    frequencyAmountMinute.setValue(Integer.parseInt(previousMinutes));
-                    frequencyAmountSecond.setValue(Integer.parseInt(previousSecond));
-
-                    System.out.println(previousHour);
-                    System.out.println(previousMinutes);
-                    System.out.println(previousSecond);
-
-                    saveDataOfIndex.add(timeChecker.getText());
                 }
             });
         }
@@ -273,6 +284,63 @@ public class MAM extends JPanel{
         timeToLive.add(lifeMinute);
         timeToLive.add(lifeSecond);
         timeToLive.add(confirmLoop);
+//        if (!actionList.isEmpty()) {
+//            for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
+//                performanceList.add(new JCheckBox());
+//                performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
+//                performanceList.get(i).setText(actionList.get(i));
+//                boxList.add(performanceList.get(i));
+//                checkGroup.add(performanceList.get(i));
+//                performanceList.get(i).setEnabled(false);
+//                performanceList.get(0).setSelected(true);
+////                isSelectedOnThePast.add(0 , true);
+////                if (i == currentIndex) {
+////                }
+////                if (i > 0){ // In testing
+////                    isSelectedOnThePast.add(i , false);
+////                }
+//            }
+//            // In testing
+//            next.addActionListener(e -> {
+//                if (currentIndex < actionList.size() - 1) {
+//                    currentIndex++;
+//                    performanceList.get(currentIndex).setSelected(true);
+//                    System.out.println(repeat.getComponent(0));
+//                    if (saveDataOfIndex.isEmpty()|| saveDataOfIndex.size()>0 || saveDataOfIndex.size()<=10){
+//                        saveDataOfIndex.add(repeat);
+//                        countOfRepeat.setValue(1);
+//                        frequencyAmountHour.setValue(0);
+//                        frequencyAmountMinute.setValue(0);
+//                        frequencyAmountSecond.setValue(0);
+//                    }
+//                }
+//            });
+//            previous.addActionListener(e -> {
+//                if (currentIndex > 0) {
+//                    currentIndex--;
+//                    String string = saveDataOfIndex.get(currentIndex).toString();
+//                    performanceList.get(currentIndex).setSelected(true);
+//
+//                    String[] parts = string.split(":");
+//                    splitList.addAll(Arrays.asList(parts));
+//
+//                    String previousHour = splitList.get(0);
+//                    String previousMinutes = splitList.get(1);
+//                    String previousSecond = splitList.get(2);
+//
+//                    timeChecker.setText(previousHour + ":" + previousMinutes + ":" + previousSecond);
+//                    frequencyAmountHour.setValue(Integer.parseInt(previousHour));
+//                    frequencyAmountMinute.setValue(Integer.parseInt(previousMinutes));
+//                    frequencyAmountSecond.setValue(Integer.parseInt(previousSecond));
+//
+//                    System.out.println(previousHour);
+//                    System.out.println(previousMinutes);
+//                    System.out.println(previousSecond);
+//
+//                    saveDataOfIndex.add(repeat);
+//                }
+//            });
+//        }
 
         //The buttons for going back or forward from the list
         nextOrPrevious = new JPanel();
@@ -292,16 +360,16 @@ public class MAM extends JPanel{
         timeMonitor.setLayout(new GridLayout(2,0));
         timeMonitor.setEnabled(false);
         confirmSelection.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-        confirmSelection.addActionListener(e -> {
-            if (counter==0){
-                if (!loop.isSelected()){
-                    collection.add(repeat);
-                }else {
-                    collection.add(timeToLive);
-                }
-                counter++;
-            }
-        });
+//        confirmSelection.addActionListener(e -> {
+//            if (counter==0){
+//                if (!loop.isSelected()){
+//                    collection.add(repeat);
+//                }else {
+//                    collection.add(timeToLive);
+//                }
+//                counter++;
+//            }
+//        });
 
         timeChecker = new JLabel((startHour + Integer.parseInt(frequencyAmountHour.getValue().toString())) + ":" +
                 (startMinute + Integer.parseInt(frequencyAmountMinute.getValue().toString())) + ":" +
@@ -349,6 +417,17 @@ public class MAM extends JPanel{
     public static boolean isTimeInputValid(){
         boolean result = false;
 
+        return result;
+    }
+
+    public boolean hasChanged(int currentIndex){
+        boolean result = false;
+        for (int i = 0; i < savingsMap.size(); i++) {
+         if (savingsMap.get(currentIndex).get(i) == (Integer) countOfRepeat.getValue() || savingsMap.get(currentIndex).get(i) == (Integer) frequencyAmountHour.getValue()
+         || savingsMap.get(currentIndex).get(i) == (Integer) frequencyAmountMinute.getValue() || savingsMap.get(currentIndex).get(i) == (Integer) frequencyAmountSecond.getValue()){
+             result=true;
+         }
+        }
         return result;
     }
 

@@ -184,4 +184,5 @@ public class Window extends JFrame implements ActionListener,Utils {
     public void setWindowVisibility(boolean visible) {
         this.setVisible(visible);
     }
+
 }

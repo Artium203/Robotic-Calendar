@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.List;
 import java.util.Timer;
 
-public class MAM extends JPanel{
+public class MAM extends JPanel implements ButtonPlace{
 
     private Utils utils;
     private JPanel boxList; // Contains checkers of user's input
@@ -35,6 +35,7 @@ public class MAM extends JPanel{
     private static final JButton previous = new JButton("Previous");// Going backwards in checkers list
     private final JPanel location; // The place where user will select the place of action
     private final JButton pointLocation = new JButton("Point The Location"); //Will transform to user's desktop/screen
+    private Point locationPoint = new Point();
 
     // Explanations for user's need
     private final JPanel instructions;
@@ -82,60 +83,69 @@ public class MAM extends JPanel{
 
 
 
-        if (!actionList.isEmpty()) {
-            for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
-                performanceList.add(new JCheckBox());
-                performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
-                performanceList.get(i).setText(actionList.get(i));
-                boxList.add(performanceList.get(i));
-                checkGroup.add(performanceList.get(i));
-                performanceList.get(i).setEnabled(false);
-                performanceList.get(0).setSelected(true);
-                isSelectedOnThePast.add(0 , true);
-//                if (i == currentIndex) {
+//        if (!actionList.isEmpty()) {
+//            for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
+//                performanceList.add(new JCheckBox());
+//                performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
+//                performanceList.get(i).setText(actionList.get(i));
+//                boxList.add(performanceList.get(i));
+//                checkGroup.add(performanceList.get(i));
+//                performanceList.get(i).setEnabled(false);
+//                performanceList.get(0).setSelected(true);
+//                isSelectedOnThePast.add(0 , true);
+////                if (i == currentIndex) {
+////                }
+//                if (i > 0){ // In testing
+//                    isSelectedOnThePast.add(i , false);
 //                }
-                if (i > 0){ // In testing
-                    isSelectedOnThePast.add(i , false);
-                }
-            }
-            // In testing
-            next.addActionListener(e -> {
-                if (currentIndex < actionList.size() - 1) {
-                    saveDataOfIndex.add((Integer) countOfRepeat.getValue());
-                    saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
-                    saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
-                    saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
-                    savingsMap.put(currentIndex,saveDataOfIndex);
-                    saveDataOfIndex = new ArrayList<>();
-                    currentIndex++;
-                    performanceList.get(currentIndex).setSelected(true);
-                    if (!savingsMap.containsKey(currentIndex)) {
-                        countOfRepeat.setValue(1);
-                        frequencyAmountHour.setValue(0);
-                        frequencyAmountMinute.setValue(0);
-                        frequencyAmountSecond.setValue(0);
-                        isSelectedOnThePast.set(currentIndex , true);
-                    }
-                }
-            });
-            previous.addActionListener(e -> {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    // <----map here
-                    System.out.println(savingsMap);
-                    for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
-                        switch (i){
-                            case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
-                            case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
-                            case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
-                            case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
-                        }
-                    }
-                    isSelectedOnThePast.set(currentIndex , true);
-                    performanceList.get(currentIndex).setSelected(true);
-                }
-            });
-        }
+//            }
+//            // In testing
+//            next.addActionListener(e -> {
+//                if (currentIndex < actionList.size() - 1) {
+//                    saveDataOfIndex.add((Integer) countOfRepeat.getValue());
+//                    saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
+//                    saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
+//                    saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
+//                    savingsMap.put(currentIndex,saveDataOfIndex);
+//                    saveDataOfIndex = new ArrayList<>();
+//                    currentIndex++;
+//                    performanceList.get(currentIndex).setSelected(true);
+//                    if (!savingsMap.containsKey(currentIndex)) {
+//                        countOfRepeat.setValue(1);
+//                        frequencyAmountHour.setValue(0);
+//                        frequencyAmountMinute.setValue(0);
+//                        frequencyAmountSecond.setValue(0);
+//                        isSelectedOnThePast.set(currentIndex , true);
+//                    }else {
+//                        for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
+//                            switch (i){
+//                                case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
+//                                case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
+//                                case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
+//                                case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+//            previous.addActionListener(e -> {
+//                if (currentIndex > 0) {
+//                    currentIndex--;
+//                    // <----map here
+//                    System.out.println(savingsMap);
+//                    for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
+//                        switch (i){
+//                            case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
+//                            case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
+//                            case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
+//                            case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
+//                        }
+//                    }
+//                    isSelectedOnThePast.set(currentIndex , true);
+//                    performanceList.get(currentIndex).setSelected(true);
+//                }
+//            });
+//        }
 
         //Settings of the commands box
         boxOfCommand = new JPanel();
@@ -305,9 +315,9 @@ public class MAM extends JPanel{
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         pointLocation.addActionListener(e -> {
             utils.setWindowVisibility(false);
-            System.out.println("sos");
+            System.out.println(pointLocation.getWidth()+"|"+pointLocation.getHeight());
             SwingUtilities.invokeLater(() -> {
-                LocationFinder gui = new LocationFinder();
+                LocationFinder gui = new LocationFinder(utils,this,pointLocation.getWidth(),pointLocation.getHeight());
                 gui.setVisible(true);
             });
         });
@@ -320,6 +330,76 @@ public class MAM extends JPanel{
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         instructions.setLayout(new GridLayout());
         instructionsText = new JLabel("Questions For Settings");
+
+        if (!actionList.isEmpty()) {
+            for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
+                performanceList.add(new JCheckBox());
+                performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
+                performanceList.get(i).setText(actionList.get(i));
+                boxList.add(performanceList.get(i));
+                checkGroup.add(performanceList.get(i));
+                performanceList.get(i).setEnabled(false);
+                performanceList.get(0).setSelected(true);
+                isSelectedOnThePast.add(0 , true);
+//                if (i == currentIndex) {
+//                }
+                if (i > 0){ // In testing
+                    isSelectedOnThePast.add(i , false);
+                }
+            }
+            // In testing
+            next.addActionListener(e -> {
+                if (currentIndex < actionList.size() - 1) {
+                    saveDataOfIndex.add((Integer) countOfRepeat.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
+                    saveDataOfIndex.add(locationPoint.getLocation().x);
+                    saveDataOfIndex.add(locationPoint.getLocation().y);
+                    savingsMap.put(currentIndex,saveDataOfIndex);
+                    saveDataOfIndex = new ArrayList<>();
+                    currentIndex++;
+                    performanceList.get(currentIndex).setSelected(true);
+                    if (!savingsMap.containsKey(currentIndex)) {
+                        countOfRepeat.setValue(1);
+                        frequencyAmountHour.setValue(0);
+                        frequencyAmountMinute.setValue(0);
+                        frequencyAmountSecond.setValue(0);
+                        pointLocation.setIcon(null);
+                        pointLocation.setText("Point The Location");
+                        isSelectedOnThePast.set(currentIndex , true);
+                    }else {
+                        for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
+                            switch (i){
+                                case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
+                                case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
+                                case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
+                                case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
+                                case 4:pointLocation.setText("("+savingsMap.get(currentIndex).get(i)+","+savingsMap.get(currentIndex).get(i+1)+")");
+                            }
+                        }
+                    }
+                }
+            });
+            previous.addActionListener(e -> {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    // <----map here
+                    System.out.println(savingsMap);
+                    for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
+                        switch (i){
+                            case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
+                            case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
+                            case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
+                            case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
+                            case 4:pointLocation.setText("("+savingsMap.get(currentIndex).get(i)+","+savingsMap.get(currentIndex).get(i+1)+")");
+                        }
+                    }
+                    isSelectedOnThePast.set(currentIndex , true);
+                    performanceList.get(currentIndex).setSelected(true);
+                }
+            });
+        }
 
 
         instructions.add(instructionsText);
@@ -355,4 +435,9 @@ public class MAM extends JPanel{
         return result;
     }
 
+    @Override
+    public void changeApperance(Image image, int x, int y) {
+        this.pointLocation.setIcon(new ImageIcon(image));
+        locationPoint.setLocation(x,y);
+    }
 }

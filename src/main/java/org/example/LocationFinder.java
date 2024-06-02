@@ -4,19 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.awt.image.MultiResolutionImage;
 
 public class LocationFinder extends JFrame {
+    private Utils utils;
+    private ButtonPlace place;
     private Circle circle;
     private static final Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     private MultiResolutionImage image;
     private Image picture;
     private JButton location = new JButton("Confirm Location");
-    public LocationFinder(){
+    public LocationFinder(Utils utils,ButtonPlace buttonPlace,int width,int height){
+        this.place = buttonPlace;
         try {
             Rectangle rectangle = new Rectangle(size.width,size.height);
             Robot robot = new Robot();
-            robot.createMultiResolutionScreenCapture(rectangle);
+//            robot.createMultiResolutionScreenCapture(rectangle);
             this.image = robot.createMultiResolutionScreenCapture(rectangle);
             this.picture = this.image.getResolutionVariant(50,50);
         } catch (AWTException e) {
@@ -26,12 +30,25 @@ public class LocationFinder extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         setUndecorated(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.utils = utils;
 
         location.setPreferredSize(new Dimension(50,50));
         location.setLocation(size.width/2,0);
         location.addActionListener(e -> {
-            System.out.println(circle.getX() +":"+ circle.getY());
-            location.setIcon(new ImageIcon(picture));
+            if (circle!=null) {
+                try {
+                    Rectangle rectangle = new Rectangle(size.width,size.height);
+                    Robot robot = new Robot();
+                    this.image = robot.createMultiResolutionScreenCapture(rectangle);
+                    this.picture = this.image.getResolutionVariant(width,height);
+                    this.picture = picture.getScaledInstance(width,height,Image.SCALE_DEFAULT);
+                } catch (AWTException eac) {
+                    throw new RuntimeException(eac);
+                }
+                this.place.changeApperance(picture,circle.getX(),circle.getY());
+                utils.setWindowVisibility(true);
+                this.dispose();
+            }
         });
 
         // Create a panel to hold the circle

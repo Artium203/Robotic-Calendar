@@ -81,72 +81,6 @@ public class MAM extends JPanel implements ButtonPlace{
         ButtonGroup checkGroup = new ButtonGroup();
         performanceList = new ArrayList<>();
 
-
-
-//        if (!actionList.isEmpty()) {
-//            for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
-//                performanceList.add(new JCheckBox());
-//                performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
-//                performanceList.get(i).setText(actionList.get(i));
-//                boxList.add(performanceList.get(i));
-//                checkGroup.add(performanceList.get(i));
-//                performanceList.get(i).setEnabled(false);
-//                performanceList.get(0).setSelected(true);
-//                isSelectedOnThePast.add(0 , true);
-////                if (i == currentIndex) {
-////                }
-//                if (i > 0){ // In testing
-//                    isSelectedOnThePast.add(i , false);
-//                }
-//            }
-//            // In testing
-//            next.addActionListener(e -> {
-//                if (currentIndex < actionList.size() - 1) {
-//                    saveDataOfIndex.add((Integer) countOfRepeat.getValue());
-//                    saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
-//                    saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
-//                    saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
-//                    savingsMap.put(currentIndex,saveDataOfIndex);
-//                    saveDataOfIndex = new ArrayList<>();
-//                    currentIndex++;
-//                    performanceList.get(currentIndex).setSelected(true);
-//                    if (!savingsMap.containsKey(currentIndex)) {
-//                        countOfRepeat.setValue(1);
-//                        frequencyAmountHour.setValue(0);
-//                        frequencyAmountMinute.setValue(0);
-//                        frequencyAmountSecond.setValue(0);
-//                        isSelectedOnThePast.set(currentIndex , true);
-//                    }else {
-//                        for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
-//                            switch (i){
-//                                case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
-//                                case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
-//                                case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
-//                                case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//            previous.addActionListener(e -> {
-//                if (currentIndex > 0) {
-//                    currentIndex--;
-//                    // <----map here
-//                    System.out.println(savingsMap);
-//                    for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
-//                        switch (i){
-//                            case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
-//                            case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
-//                            case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
-//                            case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
-//                        }
-//                    }
-//                    isSelectedOnThePast.set(currentIndex , true);
-//                    performanceList.get(currentIndex).setSelected(true);
-//                }
-//            });
-//        }
-
         //Settings of the commands box
         boxOfCommand = new JPanel();
         boxOfCommand.setPreferredSize(new Dimension(windowWidth - (windowWidth / 4) - 25, 31 + (windowHeight / 6) * 5));
@@ -290,6 +224,7 @@ public class MAM extends JPanel implements ButtonPlace{
         next.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
         saveDataOfIndex = new ArrayList<>();
         previous.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
+        previous.setEnabled(false);
         nextOrPrevious.add(next, BorderLayout.NORTH);
         nextOrPrevious.add(previous, BorderLayout.SOUTH);
 
@@ -299,6 +234,7 @@ public class MAM extends JPanel implements ButtonPlace{
         timeMonitor.setLayout(new GridLayout(2,0));
         timeMonitor.setEnabled(false);
         confirmSelection.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        confirmSelection.setEnabled(false);
 
         timeChecker = new JLabel((startHour + Integer.parseInt(frequencyAmountHour.getValue().toString())) + ":" +
                 (startMinute + Integer.parseInt(frequencyAmountMinute.getValue().toString())) + ":" +
@@ -349,7 +285,7 @@ public class MAM extends JPanel implements ButtonPlace{
             }
             // In testing
             next.addActionListener(e -> {
-                if (currentIndex < actionList.size() - 1) {
+                if (currentIndex < actionList.size() - 1 && isFull()) {
                     saveDataOfIndex.add((Integer) countOfRepeat.getValue());
                     saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
                     saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
@@ -379,6 +315,22 @@ public class MAM extends JPanel implements ButtonPlace{
                             }
                         }
                     }
+                }else if (!isFull()){
+                    JOptionPane.showMessageDialog(null,"YOU DIDN'T FULLY PUT YOUR INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    next.setEnabled(false);
+                }
+                if (currentIndex==0){
+                    previous.setEnabled(false);
+                }else {
+                    previous.setEnabled(true);
+                }
+                if (currentIndex == actionList.size() - 1){
+                    next.setEnabled(false);
+                    confirmSelection.setEnabled(true);
+                }else {
+                    next.setEnabled(true);
                 }
             });
             previous.addActionListener(e -> {
@@ -397,6 +349,16 @@ public class MAM extends JPanel implements ButtonPlace{
                     }
                     isSelectedOnThePast.set(currentIndex , true);
                     performanceList.get(currentIndex).setSelected(true);
+                }
+                if (currentIndex==0){
+                    previous.setEnabled(false);
+                }else {
+                    previous.setEnabled(true);
+                }
+                if (currentIndex == actionList.size() - 1){
+                    next.setEnabled(false);
+                }else {
+                    next.setEnabled(true);
                 }
             });
         }
@@ -424,13 +386,17 @@ public class MAM extends JPanel implements ButtonPlace{
         return result;
     }
 
-    public boolean hasChanged(int currentIndex){
+    public boolean isFull(){
         boolean result = false;
-        for (int i = 0; i < savingsMap.size(); i++) {
-         if (savingsMap.get(currentIndex).get(i) == (Integer) countOfRepeat.getValue() || savingsMap.get(currentIndex).get(i) == (Integer) frequencyAmountHour.getValue()
-         || savingsMap.get(currentIndex).get(i) == (Integer) frequencyAmountMinute.getValue() || savingsMap.get(currentIndex).get(i) == (Integer) frequencyAmountSecond.getValue()){
-             result=true;
-         }
+        if (loop.isSelected()){
+            if (((int) lifeHour.getValue() > 0 || (int) lifeMinute.getValue()>0 || (int) lifeSecond.getValue()>30) &&
+                    locationPoint.x!=0 && locationPoint.y!=0){
+                result = true;
+            }
+        }else {
+            if (locationPoint.x!=0 && locationPoint.y!=0){
+                result = true;
+            }
         }
         return result;
     }

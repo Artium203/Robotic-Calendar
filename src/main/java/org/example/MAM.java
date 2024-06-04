@@ -21,14 +21,14 @@ public class MAM extends JPanel implements ButtonPlace{
     private JSpinner frequencyAmountHour;
     private JSpinner frequencyAmountMinute;
     private JSpinner frequencyAmountSecond;
-    private final JButton confirmRepeat = new JButton("CONFIRM");
+//    private final JButton confirmRepeat = new JButton("CONFIRM");
 
     // Time to live for the loop if he is selected
     private final JPanel timeToLive;
     private JSpinner lifeHour;
     private JSpinner lifeMinute;
     private JSpinner lifeSecond;
-    private final JButton confirmLoop = new JButton("CONFIRM");
+//    private final JButton confirmLoop = new JButton("CONFIRM");
 
     private final JPanel nextOrPrevious; // The place for user to go on in the action list
     private static final JButton next = new JButton("Next"); // Going forward in checkers list
@@ -43,7 +43,7 @@ public class MAM extends JPanel implements ButtonPlace{
 
     //Place to show the user his time input and the changes of inputting time for action
     private final JPanel timeMonitor;
-    private JLabel timeChecker;
+//    private JLabel timeChecker;
     private final JButton confirmSelection = new JButton("Confirm Your Selection");
     private int HOURS;
     private int MINUTES;
@@ -70,7 +70,6 @@ public class MAM extends JPanel implements ButtonPlace{
         this.setVisible(false);
         this.setBackground(Color.green);
         this.utils = util;
-
 
         //Setting for List of Check boxes
         boxList = new JPanel();
@@ -101,18 +100,18 @@ public class MAM extends JPanel implements ButtonPlace{
         loop.addActionListener(e -> {
             if (loop.isSelected()){
                 countOfRepeat.setEnabled(false);
-                confirmRepeat.setEnabled(false);
+//                confirmRepeat.setEnabled(false);
                 lifeHour.setEnabled(true);
                 lifeMinute.setEnabled(true);
                 lifeSecond.setEnabled(true);
-                confirmLoop.setEnabled(true);
+//                confirmLoop.setEnabled(true);
             }else {
                 countOfRepeat.setEnabled(true);
-                confirmRepeat.setEnabled(true);
+//                confirmRepeat.setEnabled(true);
                 lifeHour.setEnabled(false);
                 lifeMinute.setEnabled(false);
                 lifeSecond.setEnabled(false);
-                confirmLoop.setEnabled(false);
+//                confirmLoop.setEnabled(false);
             }
         });
         repeat.add(loop);
@@ -147,40 +146,40 @@ public class MAM extends JPanel implements ButtonPlace{
         frequencyAmountSecond.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
 
         // Confirms user's input of the amount to repeat and puts it on the clock
-        confirmRepeat.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-        confirmRepeat.addActionListener(e -> {
-            if (endHour == (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString()) &&
-                    endMinute == (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString()) &&
-                    endSecond == (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString())){
-                HOURS = (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString());
-                MINUTES = (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString());
-                SECONDS = (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString());
-                updateText();
-            } else if (endHour == (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString()) &&
-                    endMinute >= (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString()) &&
-                    endSecond >= (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString())) {
-                HOURS = (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString());
-                MINUTES = (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString());
-                SECONDS = (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString());
-                updateText();
-            } else if (endHour == (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString()) &&
-                    endMinute == (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString()) &&
-                    endSecond >= (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString())) {
-                HOURS = (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString());
-                MINUTES = (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString());
-                SECONDS = (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString());
-                updateText();
-            } else if (endHour > (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString())){
-                HOURS = (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString());
-                MINUTES = (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString());
-                SECONDS = (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString());
-                updateText();
-            }
-        });
+//        confirmRepeat.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+//        confirmRepeat.addActionListener(e -> {
+//            if (endHour == (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString()) &&
+//                    endMinute == (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString()) &&
+//                    endSecond == (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString())){
+//                HOURS = (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString());
+//                MINUTES = (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString());
+//                SECONDS = (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString());
+//                updateText();
+//            } else if (endHour == (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString()) &&
+//                    endMinute >= (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString()) &&
+//                    endSecond >= (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString())) {
+//                HOURS = (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString());
+//                MINUTES = (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString());
+//                SECONDS = (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString());
+//                updateText();
+//            } else if (endHour == (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString()) &&
+//                    endMinute == (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString()) &&
+//                    endSecond >= (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString())) {
+//                HOURS = (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString());
+//                MINUTES = (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString());
+//                SECONDS = (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString());
+//                updateText();
+//            } else if (endHour > (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString())){
+//                HOURS = (Integer.parseInt(countOfRepeat.getValue().toString())*startHour) + Integer.parseInt(frequencyAmountHour.getValue().toString());
+//                MINUTES = (Integer.parseInt(countOfRepeat.getValue().toString())*startMinute) + Integer.parseInt(frequencyAmountMinute.getValue().toString());
+//                SECONDS = (Integer.parseInt(countOfRepeat.getValue().toString())*startSecond) + Integer.parseInt(frequencyAmountSecond.getValue().toString());
+//                updateText();
+//            }
+//        });
         repeat.add(frequencyAmountHour);
         repeat.add(frequencyAmountMinute);
         repeat.add(frequencyAmountSecond);
-        repeat.add(confirmRepeat);
+//        repeat.add(confirmRepeat);
 
         // Same thing as the repeater but without amount only loop
         timeToLive = new JPanel();
@@ -208,12 +207,12 @@ public class MAM extends JPanel implements ButtonPlace{
         lifeHour.setEnabled(false);
         lifeMinute.setEnabled(false);
         lifeSecond.setEnabled(false);
-        confirmLoop.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-        confirmLoop.setEnabled(false);
+//        confirmLoop.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+//        confirmLoop.setEnabled(false);
         timeToLive.add(lifeHour);
         timeToLive.add(lifeMinute);
         timeToLive.add(lifeSecond);
-        timeToLive.add(confirmLoop);
+//        timeToLive.add(confirmLoop);
 
         //The buttons for going back or forward from the list
         nextOrPrevious = new JPanel();
@@ -235,12 +234,18 @@ public class MAM extends JPanel implements ButtonPlace{
         timeMonitor.setEnabled(false);
         confirmSelection.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         confirmSelection.setEnabled(false);
+        confirmSelection.addActionListener(e -> {
+            if (isFull()){
 
-        timeChecker = new JLabel((startHour + Integer.parseInt(frequencyAmountHour.getValue().toString())) + ":" +
-                (startMinute + Integer.parseInt(frequencyAmountMinute.getValue().toString())) + ":" +
-                (startSecond + Integer.parseInt(frequencyAmountSecond.getValue().toString())));
-        timeChecker.setFont(new Font("Arial", Font.BOLD, 50));
-        timeMonitor.add(timeChecker);
+            }
+        });
+
+
+//        timeChecker = new JLabel((startHour + Integer.parseInt(frequencyAmountHour.getValue().toString())) + ":" +
+//                (startMinute + Integer.parseInt(frequencyAmountMinute.getValue().toString())) + ":" +
+//                (startSecond + Integer.parseInt(frequencyAmountSecond.getValue().toString())));
+//        timeChecker.setFont(new Font("Arial", Font.BOLD, 50));
+//        timeMonitor.add(timeChecker);
         timeMonitor.add(confirmSelection);
 
         //User's pointer for the location of current action
@@ -286,10 +291,18 @@ public class MAM extends JPanel implements ButtonPlace{
             // In testing
             next.addActionListener(e -> {
                 if (currentIndex < actionList.size() - 1 && isFull()) {
+                    if (loop.isSelected()){
+                        saveDataOfIndex.add(1);
+                    }else {
+                        saveDataOfIndex.add(0);
+                    }
                     saveDataOfIndex.add((Integer) countOfRepeat.getValue());
                     saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
                     saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
                     saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
+                    saveDataOfIndex.add((Integer)lifeHour.getValue());
+                    saveDataOfIndex.add((Integer)lifeMinute.getValue());
+                    saveDataOfIndex.add((Integer)lifeSecond.getValue());
                     saveDataOfIndex.add(locationPoint.getLocation().x);
                     saveDataOfIndex.add(locationPoint.getLocation().y);
                     savingsMap.put(currentIndex,saveDataOfIndex);
@@ -301,25 +314,37 @@ public class MAM extends JPanel implements ButtonPlace{
                         frequencyAmountHour.setValue(0);
                         frequencyAmountMinute.setValue(0);
                         frequencyAmountSecond.setValue(0);
+                        lifeHour.setValue(0);
+                        lifeMinute.setValue(0);
+                        lifeSecond.setValue(0);
+                        loop.setSelected(false);
+                        countOfRepeat.setEnabled(true);
+                        lifeHour.setEnabled(false);
+                        lifeMinute.setEnabled(false);
+                        lifeSecond.setEnabled(false);
                         pointLocation.setIcon(null);
                         pointLocation.setText("Point The Location");
+                        locationPoint.setLocation(0,0);
                         isSelectedOnThePast.set(currentIndex , true);
                     }else {
                         for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
                             switch (i){
-                                case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
-                                case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
-                                case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
-                                case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
-                                case 4:pointLocation.setText("("+savingsMap.get(currentIndex).get(i)+","+savingsMap.get(currentIndex).get(i+1)+")");
+                                case 0:pickedSelected(savingsMap.get(currentIndex).get(i));
+                                case 1:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
+                                case 2:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
+                                case 3:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
+                                case 4:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
+                                case 5:lifeHour.setValue(savingsMap.get(currentIndex).get(i));
+                                case 6:lifeMinute.setValue(savingsMap.get(currentIndex).get(i));
+                                case 7:lifeSecond.setValue(savingsMap.get(currentIndex).get(i));
+                                case 8:
+                                    locationPoint.setLocation(savingsMap.get(currentIndex).get(i),savingsMap.get(currentIndex).get(i+1));
+                                    pointLocation.setText("("+savingsMap.get(currentIndex).get(i)+","+savingsMap.get(currentIndex).get(i+1)+")");
                             }
                         }
                     }
                 }else if (!isFull()){
                     JOptionPane.showMessageDialog(null,"YOU DIDN'T FULLY PUT YOUR INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
-                }
-                else {
-                    next.setEnabled(false);
                 }
                 if (currentIndex==0){
                     previous.setEnabled(false);
@@ -340,12 +365,24 @@ public class MAM extends JPanel implements ButtonPlace{
                     System.out.println(savingsMap);
                     for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
                         switch (i){
-                            case 0:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
-                            case 1:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
-                            case 2:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
-                            case 3:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
-                            case 4:pointLocation.setText("("+savingsMap.get(currentIndex).get(i)+","+savingsMap.get(currentIndex).get(i+1)+")");
+                            case 0:pickedSelected(savingsMap.get(currentIndex).get(i));
+                            case 1:countOfRepeat.setValue(savingsMap.get(currentIndex).get(i));
+                            case 2:frequencyAmountHour.setValue(savingsMap.get(currentIndex).get(i));
+                            case 3:frequencyAmountMinute.setValue(savingsMap.get(currentIndex).get(i));
+                            case 4:frequencyAmountSecond.setValue(savingsMap.get(currentIndex).get(i));
+                            case 5:lifeHour.setValue(savingsMap.get(currentIndex).get(i));
+                            case 6:lifeMinute.setValue(savingsMap.get(currentIndex).get(i));
+                            case 7:lifeSecond.setValue(savingsMap.get(currentIndex).get(i));
+                            case 8:locationPoint.setLocation(savingsMap.get(currentIndex).get(i),savingsMap.get(currentIndex).get(i+1));
+                                pointLocation.setText("("+savingsMap.get(currentIndex).get(i)+","+savingsMap.get(currentIndex).get(i+1)+")");
                         }
+                    }
+
+                    if (loop.isSelected()) {
+                        countOfRepeat.setEnabled(false);
+                        lifeHour.setEnabled(true);
+                        lifeMinute.setEnabled(true);
+                        lifeSecond.setEnabled(true);
                     }
                     isSelectedOnThePast.set(currentIndex , true);
                     performanceList.get(currentIndex).setSelected(true);
@@ -375,31 +412,35 @@ public class MAM extends JPanel implements ButtonPlace{
         this.add(boxList);
         this.add(boxOfCommand);
     }
-    private void updateText(){
-        timeChecker.setText(HOURS + ":" +
-                MINUTES + ":" +
-                SECONDS);
-    }
-    public static boolean isTimeInputValid(){
-        boolean result = false;
-
-        return result;
-    }
+//    private void updateText(){
+//        timeChecker.setText(HOURS + ":" +
+//                MINUTES + ":" +
+//                SECONDS);
+//    }
 
     public boolean isFull(){
         boolean result = false;
         if (loop.isSelected()){
             if (((int) lifeHour.getValue() > 0 || (int) lifeMinute.getValue()>0 || (int) lifeSecond.getValue()>30) &&
-                    locationPoint.x!=0 && locationPoint.y!=0){
+                    locationPoint.getLocation().x !=0 && locationPoint.getLocation().y!=0){
                 result = true;
             }
-        }else {
-            if (locationPoint.x!=0 && locationPoint.y!=0){
+        }
+        else {
+            if (locationPoint.getLocation().x !=0 && locationPoint.getLocation().y!=0){
                 result = true;
             }
         }
         return result;
     }
+    private void pickedSelected(int num){
+        if (num==1){
+            this.loop.setSelected(true);
+        }else {
+            this.loop.setSelected(false);
+        }
+    }
+
 
     @Override
     public void changeApperance(Image image, int x, int y) {

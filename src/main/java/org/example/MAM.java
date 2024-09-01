@@ -56,6 +56,7 @@ public class MAM extends JPanel implements ButtonPlace{
     List<Boolean> isSelectedOnThePast = new ArrayList<>();
     private Map<Integer, List<Integer>> savingsMap = new HashMap<>();
 
+    private int sizeOfList;
 
 
 
@@ -70,6 +71,7 @@ public class MAM extends JPanel implements ButtonPlace{
         this.setVisible(false);
         this.setBackground(Color.green);
         this.utils = util;
+        sizeOfList = actionList.size();
 
         //Setting for List of Check boxes
         boxList = new JPanel();
@@ -235,8 +237,25 @@ public class MAM extends JPanel implements ButtonPlace{
         confirmSelection.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         confirmSelection.setEnabled(false);
         confirmSelection.addActionListener(e -> {
-            if (isFull()){
-
+            int amountOfGiven =0,givenEnd=0;
+            if (isMapsFull()){
+                for (int i = 0; i < savingsMap.size(); i++) {
+                    if (savingsMap.get(i).get(0)==1){
+                       amountOfGiven += (savingsMap.get(i).get(5)*60*60)+(savingsMap.get(i).get(6)*60)+savingsMap.get(i).get(7);
+                    }else{
+                        amountOfGiven +=savingsMap.get(i).get(1)*((savingsMap.get(i).get(2)*60*60)+(savingsMap.get(i).get(3)*60)+savingsMap.get(i).get(4));
+                    }
+                }
+                givenEnd=(endHour*60*60)+(endMinute*60)+endSecond;
+                if (amountOfGiven<=givenEnd){
+                    JOptionPane.showMessageDialog(null,"YOUR TIME WAS SUCCESSFULLY RECEIVED","ACCEPTED",JOptionPane.INFORMATION_MESSAGE);
+                }else {
+                    JOptionPane.showMessageDialog(null,
+                            "YOUR TIME INPUT WASN'T RIGHT PLEASE CHANGE INPUT\n"+"Given time:"+amountOfGiven+" and not lower or same to:"+ givenEnd,
+                            "ERROR",JOptionPane.WARNING_MESSAGE);
+                }
+            }else {
+                JOptionPane.showMessageDialog(null,"YOU DIDN'T FULL YOUR INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -359,10 +378,29 @@ public class MAM extends JPanel implements ButtonPlace{
                 }
             });
             previous.addActionListener(e -> {
-                if (currentIndex > 0) {
+                if (!savingsMap.containsKey(currentIndex) && isFull()){
+                    if (loop.isSelected()){
+                        saveDataOfIndex.add(1);
+                    }else {
+                        saveDataOfIndex.add(0);
+                    }
+                    saveDataOfIndex.add((Integer) countOfRepeat.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountHour.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountMinute.getValue());
+                    saveDataOfIndex.add((Integer) frequencyAmountSecond.getValue());
+                    saveDataOfIndex.add((Integer)lifeHour.getValue());
+                    saveDataOfIndex.add((Integer)lifeMinute.getValue());
+                    saveDataOfIndex.add((Integer)lifeSecond.getValue());
+                    saveDataOfIndex.add(locationPoint.getLocation().x);
+                    saveDataOfIndex.add(locationPoint.getLocation().y);
+                    savingsMap.put(currentIndex,saveDataOfIndex);
+                    saveDataOfIndex = new ArrayList<>();
+                }
+                if (currentIndex > 0 && isFull()) {
                     currentIndex--;
                     // <----map here
                     System.out.println(savingsMap);
+                    pointLocation.setIcon(null);
                     for (int i = 0; i < savingsMap.get(currentIndex).size(); i++) {
                         switch (i){
                             case 0:pickedSelected(savingsMap.get(currentIndex).get(i));
@@ -386,6 +424,8 @@ public class MAM extends JPanel implements ButtonPlace{
                     }
                     isSelectedOnThePast.set(currentIndex , true);
                     performanceList.get(currentIndex).setSelected(true);
+                }else if (!isFull()){
+                    JOptionPane.showMessageDialog(null,"YOU DIDN'T FULLY PUT YOUR INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
                 }
                 if (currentIndex==0){
                     previous.setEnabled(false);
@@ -418,7 +458,7 @@ public class MAM extends JPanel implements ButtonPlace{
 //                SECONDS);
 //    }
 
-    public boolean isFull(){
+    private boolean isFull(){
         boolean result = false;
         if (loop.isSelected()){
             if (((int) lifeHour.getValue() > 0 || (int) lifeMinute.getValue()>0 || (int) lifeSecond.getValue()>30) &&
@@ -429,6 +469,22 @@ public class MAM extends JPanel implements ButtonPlace{
         else {
             if (locationPoint.getLocation().x !=0 && locationPoint.getLocation().y!=0){
                 result = true;
+            }
+        }
+        return result;
+    }
+    private boolean isMapsFull(){
+        boolean result =false;
+        int count = 0;
+        for (int i = 0; i < sizeOfList; i++) {
+            if (savingsMap.get(i).get(0)==1 && (savingsMap.get(i).get(5)> 0 || savingsMap.get(i).get(6)> 0 || savingsMap.get(i).get(7)>30) ){
+                count++;
+            }
+            if (savingsMap.get(i).get(9)!=0){
+                count++;
+            }
+            if (sizeOfList==count){
+                result=true;
             }
         }
         return result;

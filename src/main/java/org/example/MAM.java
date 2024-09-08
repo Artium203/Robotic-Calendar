@@ -43,8 +43,9 @@ public class MAM extends JPanel implements ButtonPlace{
 
     //Place to show the user his time input and the changes of inputting time for action
     private final JPanel timeMonitor;
-//    private JLabel timeChecker;
-    private final JButton confirmSelection = new JButton("Confirm Your Selection");
+
+    //    private JLabel timeChecker;
+//    private final JButton confirmSelection = new JButton("Confirm Your Selection");
     private int HOURS;
     private int MINUTES;
     private int SECONDS;
@@ -54,17 +55,25 @@ public class MAM extends JPanel implements ButtonPlace{
     private Timer actionLife;
     private int currentIndex = 0;
     List<Boolean> isSelectedOnThePast = new ArrayList<>();
+
+
+
     private Map<Integer, List<Integer>> savingsMap = new HashMap<>();
 
     private int sizeOfList;
+    private static int endHour;
+    private static int endMinute;
+
+    private static int endSecond;
+
 
 
 
 
 
     public MAM(int windowWidth, int windowHeight, List<String> actionList,
-               int startHour, int startMinute, int startSecond, int endHour,
-               int endMinute, int endSecond, Utils util) {
+               int startHour, int startMinute, int startSecond, int endHourGiven,
+               int endMinuteGiven, int endSecondGiven, Utils util,JButton confirmSelection) {
         //Setting for class MAM
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
@@ -72,6 +81,9 @@ public class MAM extends JPanel implements ButtonPlace{
         this.setBackground(Color.green);
         this.utils = util;
         sizeOfList = actionList.size();
+        endHour=endHourGiven;
+        endMinute=endMinuteGiven;
+        endSecond=endSecondGiven;
 
         //Setting for List of Check boxes
         boxList = new JPanel();
@@ -236,28 +248,28 @@ public class MAM extends JPanel implements ButtonPlace{
         timeMonitor.setEnabled(false);
         confirmSelection.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         confirmSelection.setEnabled(false);
-        confirmSelection.addActionListener(e -> {
-            int amountOfGiven =0,givenEnd=0;
-            if (isMapsFull()){
-                for (int i = 0; i < savingsMap.size(); i++) {
-                    if (savingsMap.get(i).get(0)==1){
-                       amountOfGiven += (savingsMap.get(i).get(5)*60*60)+(savingsMap.get(i).get(6)*60)+savingsMap.get(i).get(7);
-                    }else{
-                        amountOfGiven +=savingsMap.get(i).get(1)*((savingsMap.get(i).get(2)*60*60)+(savingsMap.get(i).get(3)*60)+savingsMap.get(i).get(4));
-                    }
-                }
-                givenEnd=(endHour*60*60)+(endMinute*60)+endSecond;
-                if (amountOfGiven<=givenEnd){
-                    JOptionPane.showMessageDialog(null,"YOUR TIME WAS SUCCESSFULLY RECEIVED","ACCEPTED",JOptionPane.INFORMATION_MESSAGE);
-                }else {
-                    JOptionPane.showMessageDialog(null,
-                            "YOUR TIME INPUT WASN'T RIGHT PLEASE CHANGE INPUT\n"+"Given time:"+amountOfGiven+" and not lower or same to:"+ givenEnd,
-                            "ERROR",JOptionPane.WARNING_MESSAGE);
-                }
-            }else {
-                JOptionPane.showMessageDialog(null,"YOU DIDN'T FULL YOUR INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
-            }
-        });
+//        confirmSelection.addActionListener(e -> {
+//            int amountOfGiven =0,givenEnd=0; // need to fix transitions effect between this class and windows class
+//            if (isMapsFull()){
+//                for (int i = 0; i < savingsMap.size(); i++) {
+//                    if (savingsMap.get(i).get(0)==1){
+//                       amountOfGiven += (savingsMap.get(i).get(5)*60*60)+(savingsMap.get(i).get(6)*60)+savingsMap.get(i).get(7);
+//                    }else{
+//                        amountOfGiven +=savingsMap.get(i).get(1)*((savingsMap.get(i).get(2)*60*60)+(savingsMap.get(i).get(3)*60)+savingsMap.get(i).get(4));
+//                    }
+//                }
+//                givenEnd=(endHourGiven *60*60)+(endMinuteGiven *60)+ endSecondGiven;
+//                if (amountOfGiven<=givenEnd){
+//                    JOptionPane.showMessageDialog(null,"YOUR TIME WAS SUCCESSFULLY RECEIVED","ACCEPTED",JOptionPane.INFORMATION_MESSAGE);
+//                }else {
+//                    JOptionPane.showMessageDialog(null,
+//                            "YOUR TIME INPUT WASN'T RIGHT PLEASE CHANGE INPUT\n"+"Given time:"+amountOfGiven+" and not lower or same to:"+ givenEnd,
+//                            "ERROR",JOptionPane.WARNING_MESSAGE);
+//                }
+//            }else {
+//                JOptionPane.showMessageDialog(null,"YOU DIDN'T FULL YOUR INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
+//            }
+//        });
 
 
 //        timeChecker = new JLabel((startHour + Integer.parseInt(frequencyAmountHour.getValue().toString())) + ":" +
@@ -310,6 +322,12 @@ public class MAM extends JPanel implements ButtonPlace{
             // In testing
             next.addActionListener(e -> {
                 if (currentIndex < actionList.size() - 1 && isFull()) {
+                    if (performanceList.get(currentIndex).getText().equals("[Scroll]")){
+                        saveDataOfIndex.add(10);
+                    }else {
+                        saveDataOfIndex.add(11);
+                        System.out.println(performanceList.get(currentIndex).getText());
+                    }
                     if (loop.isSelected()){
                         saveDataOfIndex.add(1);
                     }else {
@@ -379,6 +397,11 @@ public class MAM extends JPanel implements ButtonPlace{
             });
             previous.addActionListener(e -> {
                 if (!savingsMap.containsKey(currentIndex) && isFull()){
+                    if (performanceList.get(currentIndex).getText().equals("[Scroll]")){
+                        saveDataOfIndex.add(10);
+                    }else {
+                        saveDataOfIndex.add(11);
+                    }
                     if (loop.isSelected()){
                         saveDataOfIndex.add(1);
                     }else {
@@ -473,7 +496,7 @@ public class MAM extends JPanel implements ButtonPlace{
         }
         return result;
     }
-    private boolean isMapsFull(){
+    public boolean isMapsFull(){
         boolean result =false;
         int count = 0;
         for (int i = 0; i < sizeOfList; i++) {
@@ -496,11 +519,23 @@ public class MAM extends JPanel implements ButtonPlace{
             this.loop.setSelected(false);
         }
     }
-
-
     @Override
     public void changeApperance(Image image, int x, int y) {
         this.pointLocation.setIcon(new ImageIcon(image));
         locationPoint.setLocation(x,y);
+    }
+    public Map<Integer, List<Integer>> getSavingsMap() {
+        return savingsMap;
+    }
+    public static int getEndHour() {
+        return endHour;
+    }
+
+    public static int getEndMinute() {
+        return endMinute;
+    }
+
+    public static int getEndSecond() {
+        return endSecond;
     }
 }

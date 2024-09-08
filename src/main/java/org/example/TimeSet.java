@@ -64,6 +64,8 @@ public class TimeSet extends JPanel {
     private JTextField nameAction;
 
 
+
+
     public TimeSet(int windowWidth,int windowHeight, JButton confirm){
         //Panel layout and dimensions
         this.setLayout(new GridLayout());
@@ -272,7 +274,6 @@ public class TimeSet extends JPanel {
         addOrRemoveBox.add(addToList);
         addOrRemoveBox.add(removeFromList);
         this.add(listBox);
-
     }
 
     private void yearSelection() {
@@ -376,6 +377,13 @@ public class TimeSet extends JPanel {
                 "Time Starts:"+hoursStart.getValue().toString()+":"+minutesStart.getValue().toString()+":"+secondStart.getValue().toString()+"\n"+
                 "Time Ends:"+hoursEnd.getValue().toString()+":"+minutesEnd.getValue().toString()+":"+secondEnd.getValue().toString()+"\n";
     }
+    public String getPlans(int chosenYear,int chosenMonth,int chosenDay,int hoursStart,int minutesStart,int secondStart,
+                           int hoursEnd, int minutesEnd,int secondEnd){
+        return "Date:"+chosenYear+"/"+chosenMonth+"/"+chosenDay+"\n"+
+                "Time Starts:"+hoursStart+":"+minutesStart+":"+secondStart+"\n"+
+                "Time Ends:"+hoursEnd+":"+minutesEnd+":"+secondEnd+"\n";
+    }
+
 
     //Updates the days to mach the month
     private void updateDayBox(){

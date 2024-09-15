@@ -411,4 +411,23 @@ public class TimeSet extends JPanel {
         }
         return time;
     }
+    public boolean isDateValid(){ //<-- need to change
+        boolean date = true;
+        GregorianCalendar cal = new GregorianCalendar();
+        if (chosenYear< cal.get(GregorianCalendar.YEAR)){
+            date = false;
+            JOptionPane.showMessageDialog(null,"DATE INPUT WAS ALREADY PASSED","ERROR",JOptionPane.ERROR_MESSAGE);
+        } else if (chosenYear== cal.get(GregorianCalendar.YEAR)) {
+            if (chosenMonth<cal.get(GregorianCalendar.MONTH)){
+                date = false;
+                JOptionPane.showMessageDialog(null,"DATE INPUT WAS ALREADY PASSED","ERROR",JOptionPane.ERROR_MESSAGE);
+            } else if (chosenMonth==cal.get(GregorianCalendar.MONTH)) {
+                if (chosenDay<cal.get(GregorianCalendar.YEAR)){
+                    date=false;
+                    JOptionPane.showMessageDialog(null,"DATE INPUT WAS ALREADY PASSED","ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        return date;
+    }
 }

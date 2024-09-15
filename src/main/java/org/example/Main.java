@@ -12,15 +12,16 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         try {
-            File file = new File("C:\\Users\\artem\\IdeaProjects\\Robotic-Calendar\\src\\Resources\\text.txt");
+            File file = new File("C:\\Users\\Public\\Documents\\test.txt");
+            DataHandler handler= new DataHandler();
+            List<DataContainer> dataContainers = handler.readDataFromFile();
             if (file.createNewFile()) {
                 Window window = new Window();
-            }else {
-                DataHandler handler= new DataHandler();
-                List<DataContainer> dataContainers = handler.readDataFromFile();
+            } else if (dataContainers==null) {
+                Window window = new Window();
+            } else {
                 Window window = new Window(dataContainers);
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

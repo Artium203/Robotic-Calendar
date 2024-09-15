@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataHandler {
-    private static final String FILE_PATH = "C:\\Users\\artem\\IdeaProjects\\Robotic-Calendar\\src\\Resources\\text.txt";
+    private static final String FILE_PATH = "C:\\Users\\Public\\Documents\\test.txt";
 
     // Method to read the list of DataContainer objects from the JSON file
     public List<DataContainer> readDataFromFile() {

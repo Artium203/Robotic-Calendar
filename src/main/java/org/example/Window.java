@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Window extends JFrame implements ActionListener,Utils {
@@ -30,6 +33,7 @@ public class Window extends JFrame implements ActionListener,Utils {
 
     private static final JButton confirmOption = new JButton("CONFIRM");
     private static final JButton confirmSelection = new JButton("Confirm Your Selection");
+    private static final JButton startButton = new JButton("start"); // To start/continue the action
     private static final Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Gets the size of user's window
     //User's width/height window
     private final int windowWidth = size.width;
@@ -108,6 +112,9 @@ public class Window extends JFrame implements ActionListener,Utils {
         confirmOption.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         confirmOption.addActionListener(this);
         confirmSelection.addActionListener(this);
+        startButton.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
+        startButton.setBackground(Color.LIGHT_GRAY);
+        startButton.addActionListener(this);
         //Adds/makes the operations
         this.add(boxOfNavigation);
         this.add(boxOfWindowOp);
@@ -119,7 +126,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                 Integer.parseInt(startSecond),Integer.parseInt(endHour),Integer.parseInt(endMinute),Integer.parseInt(endSecond)
                 ,this,confirmSelection);
         this.add(action);
-        instructions = new Instructions(windowWidth,windowHeight);
+        instructions = new Instructions(windowWidth,windowHeight,startButton);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
@@ -191,6 +198,9 @@ public class Window extends JFrame implements ActionListener,Utils {
         confirmOption.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         confirmOption.addActionListener(this);
         confirmSelection.addActionListener(this);
+        startButton.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
+        startButton.setBackground(Color.LIGHT_GRAY);
+        startButton.addActionListener(this);
 
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
 
@@ -216,7 +226,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                 Integer.parseInt(startSecond),Integer.parseInt(endHour),Integer.parseInt(endMinute),Integer.parseInt(endSecond)
                 ,this,confirmSelection);
         this.add(action);
-        instructions = new Instructions(windowWidth,windowHeight);
+        instructions = new Instructions(windowWidth,windowHeight,startButton);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
@@ -243,7 +253,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         calendar.setVisible(e.getSource() == infoPoint);
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
-        if (e.getSource() == confirmOption && isFull() && timer.isTimeValid()){
+        if (e.getSource() == confirmOption && isFull() && timer.isTimeValid() && timer.isDateValid()){
             dateATime.add(timer.getChosenYear());
             dateATime.add(timer.getChosenMonth()+1);
             dateATime.add(timer.getChosenDay());
@@ -257,7 +267,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                     timer.getSecondStart(),timer.getMinutesStart(),timer.getHoursStart());
             this.add(infoPanel);
             this.remove(instructions);
-            instructions = new Instructions(windowWidth,windowHeight);
+            instructions = new Instructions(windowWidth,windowHeight,startButton);
             this.add(instructions);
             listOfAction = timer.getActionToList();
             startHour =timer.getHoursStart();
@@ -318,6 +328,50 @@ public class Window extends JFrame implements ActionListener,Utils {
                 JOptionPane.showMessageDialog(null,"YOU DIDN'T FULL YOUR INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
             }
         }
+        if (e.getSource()==startButton){
+                if (handler.readDataFromFile()==null){
+                    JOptionPane.showMessageDialog(null,
+                            "THERE IS NOTHING TO START",
+                            "ERROR",JOptionPane.WARNING_MESSAGE);
+                }else {
+                    List<LocalDateTime> localDateTimes = new ArrayList<>();
+                    List<DataContainer> containers = handler.readDataFromFile();
+                    int theEarliest=0;
+                    GregorianCalendar cal = new GregorianCalendar();
+                    for (int i = 0; i < containers.size(); i++) {
+                        localDateTimes.add(LocalDateTime.of(containers.get(i).getDateATime().get(0),containers.get(i).getDateATime().get(1),containers.get(i).getDateATime().get(2),
+                                containers.get(i).getDateATime().get(3),containers.get(i).getDateATime().get(4),containers.get(i).getDateATime().get(5)));
+                    }
+                    for (int i = 0; i < containers.size(); i++) {
+                        if(localDateTimes.get(i).isBefore(localDateTimes.get(0))){
+                            theEarliest=i;
+                        }
+                    }
+                    for (int i = 0; i < containers.size(); i++) {
+                        if (containers.get(i).getDateATime().get(0)==cal.get(GregorianCalendar.YEAR) &&
+                                containers.get(i).getDateATime().get(1)==cal.get(GregorianCalendar.MONTH)&&
+                        containers.get(i).getDateATime().get(2)==cal.get(GregorianCalendar.DAY_OF_MONTH)){
+                            //<-- start the first action and after finishing delete that action
+                        }else {
+                            //<-- look at chats response
+                            String[] myChoices = {"Yes", "No"};
+                            int choiceMassage =JOptionPane.showOptionDialog(
+                                    null,
+                                    "Today there are no events.\n " +
+                                            "Would you like to skip to the nearest event?",
+                                    "Choice massage",
+                                    JOptionPane.OK_OPTION,
+                                    JOptionPane.INFORMATION_MESSAGE,
+                                    null,
+                                    myChoices,
+                                    myChoices[0]);
+                            if (choiceMassage!=-1 && choiceMassage!=1){
+                                
+                            }
+                        }
+                    }
+                }
+        }
     }
 
     private boolean isFull() {
@@ -331,5 +385,4 @@ public class Window extends JFrame implements ActionListener,Utils {
     public void setWindowVisibility(boolean visible) {
         this.setVisible(visible);
     }
-
 }

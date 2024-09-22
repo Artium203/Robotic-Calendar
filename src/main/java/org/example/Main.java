@@ -17,11 +17,13 @@ public class Main {
             List<DataContainer> dataContainers = handler.readDataFromFile();
             if (file.createNewFile()) {
                 Window window = new Window();
-            } else if (dataContainers==null) {
+            }
+            else if (dataContainers==null) {
                 Window window = new Window();
             } else {
                 Window window = new Window(dataContainers);
             }
+//            file.delete();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

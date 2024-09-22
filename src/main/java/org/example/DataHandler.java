@@ -51,4 +51,12 @@ public class DataHandler {
             e.printStackTrace();
         }
     }
+    public void removeDataFromFile(int index){
+        List<DataContainer> dataContainers = readDataFromFile();
+        // Add the new DataContainer to the list
+        if (dataContainers!=null){
+            dataContainers.remove(index);
+            writeDataToFile(dataContainers);
+        }
+    }
 }

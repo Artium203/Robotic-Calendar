@@ -9,23 +9,39 @@ import java.util.List;
 import java.util.Map;
 
 public class RobotRunner {
-    private int ttl;
-    private Point actLocation= new Point(60,90);
-    private boolean isLoop=true;
-    private int repeater=6;
+    private Point actLocation;
+    private boolean isLoop;
+    private int repeater;
     //Name stands for Hours Of Repeat
-    private int HOR=0;
-    private int MOR=10;
-    private int SOR=3;
+    private int HOR;
+    private int MOR;
+    private int SOR;
     //Name stands for Hours Of Loop
-    private int HOL=0;
-    private int MOL=0;
-    private int SOL=0;
-    private boolean isPress=false;
+    private int HOL;
+    private int MOL;
+    private int SOL;
+    private boolean isPress;
     // A need to add remaining time and buttons for stoping,pusing, (maybe skipping)
 
-    public RobotRunner(Map<Integer, List<Integer>> actions){
-
+    public RobotRunner(List<Integer> actions){
+            if (actions.get(0)==11){
+                isPress=true;
+            }else {
+                isPress=false;
+            }
+            if (actions.get(1)==1){
+                isLoop=true;
+            }else {
+                isLoop=false;
+            }
+            this.repeater=actions.get(2);
+            this.HOR=actions.get(3);
+            this.MOR=actions.get(4);
+            this.SOR=actions.get(5);
+            this.HOL=actions.get(6);
+            this.MOL=actions.get(7);
+            this.SOL=actions.get(8);
+            this.actLocation= new Point(actions.get(9),actions.get(10));
         //Make it to a mathod for only one action that gets his needs
         try {
             Robot robot = new Robot();
@@ -49,8 +65,8 @@ public class RobotRunner {
                     }
                 }
             }else {
+                robot.mouseMove(actLocation.x, actLocation.y);
                 for (int i = 0; i < repeater; i++) {
-                    robot.mouseMove(actLocation.x, actLocation.y);
                     robot.setAutoDelay(delay);
                     if (isPress) {
                         robot.mousePress(InputEvent.BUTTON1_MASK);

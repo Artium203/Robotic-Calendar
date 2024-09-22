@@ -2,12 +2,14 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
 
 public class TimeSet extends JPanel {
 
-    private static List<String> actionToList;// Will be used to put on a list
+    private List<String> actionToList;// Will be used to put on a list
     private static List<String> plans;
 
     private static List<JCheckBox> actionList;
@@ -66,17 +68,17 @@ public class TimeSet extends JPanel {
 
 
 
-    public TimeSet(int windowWidth,int windowHeight, JButton confirm){
+    public TimeSet(int windowWidth,int windowHeight, JButton confirm) {
         //Panel layout and dimensions
         this.setLayout(new GridLayout());
-        this.setPreferredSize(new Dimension(windowWidth-8,windowHeight-(windowHeight/10)-11));
+        this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
         this.setVisible(false);
         this.setBackground(Color.gray);
 
         //Container's sets
         boxOfBoxes = new JPanel();
-        boxOfBoxes.setLayout(new GridLayout(2,2));
-        boxOfBoxes.setPreferredSize(new Dimension(windowWidth/2+(windowWidth-((windowWidth/2)+(windowWidth/3)+150)),windowHeight-(windowHeight/10)-20));
+        boxOfBoxes.setLayout(new GridLayout(2, 2));
+        boxOfBoxes.setPreferredSize(new Dimension(windowWidth / 2 + (windowWidth - ((windowWidth / 2) + (windowWidth / 3) + 150)), windowHeight - (windowHeight / 10) - 20));
         boxOfBoxes.setBackground(Color.cyan);
 
 
@@ -84,14 +86,14 @@ public class TimeSet extends JPanel {
         //Date box sets
         dateBox = new JPanel();
         dateBox.setLayout(new FlowLayout(FlowLayout.LEFT));
-        dateBox.setPreferredSize(new Dimension((windowWidth/2+(windowWidth-((windowWidth/2)+445)))/3, (windowHeight-(windowHeight/10)-20)/2));
+        dateBox.setPreferredSize(new Dimension((windowWidth / 2 + (windowWidth - ((windowWidth / 2) + 445))) / 3, (windowHeight - (windowHeight / 10) - 20) / 2));
         dateBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Date Of Task"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         //Action box's sets
         performanceBox = new JPanel();
         performanceBox.setLayout(new FlowLayout(FlowLayout.CENTER));
-        performanceBox.setPreferredSize(new Dimension(400, (windowHeight-(windowHeight/10)-20)/2));
+        performanceBox.setPreferredSize(new Dimension(400, (windowHeight - (windowHeight / 10) - 20) / 2));
         performanceBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Type Of Operation"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         performanceBox.setBackground(Color.white);
@@ -115,34 +117,46 @@ public class TimeSet extends JPanel {
 
         //list box's sets
         listBox = new JPanel();
-        int betterSize = windowWidth-windowWidth/2+(windowWidth-((windowWidth/2) + 445));
-        listBox.setPreferredSize(new Dimension(betterSize-windowWidth/4, windowHeight-(windowHeight/10)-20));
+        int betterSize = windowWidth - windowWidth / 2 + (windowWidth - ((windowWidth / 2) + 445));
+        listBox.setPreferredSize(new Dimension(betterSize - windowWidth / 4, windowHeight - (windowHeight / 10) - 20));
         listBox.setBackground(Color.GREEN);
 
 
         // Date selection components
         textForDate = new JLabel("Choose a date for instruction:");
         textForDate.setPreferredSize(new Dimension(450, 80));
-        textForDate.setFont(new Font("Arial" , Font.BOLD , 22));
+        textForDate.setFont(new Font("Arial", Font.BOLD, 22));
         add(textForDate);
 
-        yearBox = new JComboBox<>(new Integer[]{0,2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032 , 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040});
-        yearBox.setPreferredSize(new Dimension(80 , 50));        yearBox.setFont(new Font("Arial", Font.BOLD, 20));
+        yearBox = new JComboBox<>(new Integer[]{0, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040});
+        yearBox.setPreferredSize(new Dimension(80, 50));
+        yearBox.setFont(new Font("Arial", Font.BOLD, 20));
 
         monthBox = new JComboBox<>(new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
-        monthBox.setPreferredSize(new Dimension(80 , 50));        monthBox.setFont(new Font("Arial" , Font.BOLD , 20));
+        monthBox.setPreferredSize(new Dimension(80, 50));
+        monthBox.setFont(new Font("Arial", Font.BOLD, 20));
         monthBox.setVisible(false);
 
         dayBox = new JComboBox<>();
-        dayBox.setPreferredSize(new Dimension(80 , 50));        dayBox.setFont(new Font("Arial" , Font.BOLD , 20));
+        dayBox.setPreferredSize(new Dimension(80, 50));
+        dayBox.setFont(new Font("Arial", Font.BOLD, 20));
         dayBox.setVisible(false);
 
 
         //Actions for the choices of the date
+        for (ActionListener al : yearBox.getActionListeners()) {
+            yearBox.removeActionListener(al);
+        }
+            yearBox.addActionListener(e -> yearSelection());
+        for (ActionListener al : monthBox.getActionListeners()) {
+            monthBox.removeActionListener(al);
+        }
+            monthBox.addActionListener(e -> monthSelection());
+        for (ActionListener al : dayBox.getActionListeners()) {
+            dayBox.removeActionListener(al);
+        }
+            dayBox.addActionListener(e -> daySelection());
 
-        yearBox.addActionListener(e -> yearSelection());
-        monthBox.addActionListener(e -> monthSelection());
-        dayBox.addActionListener(e -> daySelection());
 
 
         //Sets of action (on a mouse)
@@ -174,46 +188,51 @@ public class TimeSet extends JPanel {
         addToList = new JButton("ADD");
         removeFromList = new JButton("REMOVE");
         addToList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-        addToList.addActionListener(e -> {
-            if ( actionToList.size()==9){
-                addToList.setEnabled(false);
-            }
-            if ( dragOption.isSelected()){
-                actionToList.add(Arrays.toString(dragOption.getSelectedObjects()));
-                for (int i = 0; i < 10; i++) {
-                    if (actionList.get(i).getText().isEmpty()){
-                        actionList.get(i).setText(Arrays.toString(dragOption.getSelectedObjects()));
-                        break;
+        for (ActionListener al : addToList.getActionListeners()) {
+            addToList.removeActionListener(al);
+        }
+            addToList.addActionListener(e -> {
+                if (actionToList.size() == 9) {
+                    addToList.setEnabled(false);
+                }
+                if (dragOption.isSelected()) {
+                    actionToList.add(Arrays.toString(dragOption.getSelectedObjects()));
+                    for (int i = 0; i < 10; i++) {
+                        if (actionList.get(i).getText().isEmpty()) {
+                            actionList.get(i).setText(Arrays.toString(dragOption.getSelectedObjects()));
+                            break;
+                        }
+                    }
+                } else if (pressOption.isSelected()) {
+                    actionToList.add(Arrays.toString(pressOption.getSelectedObjects()));
+                    for (int i = 0; i < 10; i++) {
+                        if (actionList.get(i).getText().isEmpty()) {
+                            actionList.get(i).setText(Arrays.toString(pressOption.getSelectedObjects()));
+                            break;
+                        }
                     }
                 }
-            } else if ( pressOption.isSelected()) {
-                actionToList.add(Arrays.toString(pressOption.getSelectedObjects()));
-                for (int i = 0; i < 10; i++) {
-                    if (actionList.get(i).getText().isEmpty()){
-                        actionList.get(i).setText(Arrays.toString(pressOption.getSelectedObjects()));
-                        break;
-                    }
-                }
-            }
-        });
+            });
         removeFromList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-        removeFromList.addActionListener(e -> {
-            if ( actionToList.isEmpty()){
-                addToList.setEnabled(true);
-            }else {
-                removeFromList.setEnabled(true);
-            }
-            if (!actionToList.isEmpty()){
-                for(JCheckBox box:actionList){
-                    if (box.isSelected()){
-                        actionToList.remove(box.getText());
-                        box.setText("");
-                    }
+        for (ActionListener al : removeFromList.getActionListeners()) {
+            removeFromList.removeActionListener(al);
+        }
+            removeFromList.addActionListener(e -> {
+                if (actionToList.isEmpty()) {
+                    addToList.setEnabled(true);
+                } else {
+                    removeFromList.setEnabled(true);
                 }
-                addToList.setEnabled(true);
-            }
-        });
-
+                if (!actionToList.isEmpty()) {
+                    for (JCheckBox box : actionList) {
+                        if (box.isSelected()) {
+                            actionToList.remove(box.getText());
+                            box.setText("");
+                        }
+                    }
+                    addToList.setEnabled(true);
+                }
+            });
         listBox.add(confirm);
 
         //Adding/combining things together
@@ -360,7 +379,12 @@ public class TimeSet extends JPanel {
     public static int getChosenMonth() {return chosenMonth;}
 
     public static int getChosenYear() {return chosenYear;}
-    public static List<String> getActionToList() {return actionToList;}
+    public  List<String> getActionToList() {
+        return actionToList;
+    }
+    public  void setActionToList(List<String> actionToList) {
+        this.actionToList = actionToList;
+    }
     public String getHoursStart() {return hoursStart.getValue().toString();}
 
     public String getMinutesStart() {return minutesStart.getValue().toString();}
@@ -418,16 +442,31 @@ public class TimeSet extends JPanel {
             date = false;
             JOptionPane.showMessageDialog(null,"DATE INPUT WAS ALREADY PASSED","ERROR",JOptionPane.ERROR_MESSAGE);
         } else if (chosenYear== cal.get(GregorianCalendar.YEAR)) {
-            if (chosenMonth<cal.get(GregorianCalendar.MONTH)){
+            if ((chosenMonth+1)<cal.get(GregorianCalendar.MONTH)){
                 date = false;
                 JOptionPane.showMessageDialog(null,"DATE INPUT WAS ALREADY PASSED","ERROR",JOptionPane.ERROR_MESSAGE);
-            } else if (chosenMonth==cal.get(GregorianCalendar.MONTH)) {
-                if (chosenDay<cal.get(GregorianCalendar.YEAR)){
+            } else if ((chosenMonth+1)==cal.get(GregorianCalendar.MONTH)) {
+                if (chosenDay<cal.get(GregorianCalendar.DAY_OF_MONTH)){
                     date=false;
                     JOptionPane.showMessageDialog(null,"DATE INPUT WAS ALREADY PASSED","ERROR",JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
         return date;
+    }
+    public boolean isTodayValid(){
+        boolean validation=true;
+        LocalTime localTime = LocalTime.now();
+        GregorianCalendar cal = new GregorianCalendar();
+        if (chosenYear== cal.get(GregorianCalendar.YEAR) && (chosenMonth+1)==cal.get(GregorianCalendar.MONTH) && chosenDay==cal.get(GregorianCalendar.DAY_OF_MONTH)){
+            if (localTime.getHour()>Integer.parseInt(hoursStart.getValue().toString())){
+                validation=false;
+                JOptionPane.showMessageDialog(null,"TIME INPUT ALREADY PASSED","ERROR",JOptionPane.ERROR_MESSAGE);
+            } else if (localTime.getHour()==Integer.parseInt(hoursStart.getValue().toString()) && localTime.getMinute()>Integer.parseInt(minutesStart.getValue().toString())) {
+                validation=false;
+                JOptionPane.showMessageDialog(null,"TIME INPUT ALREADY PASSED","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        return validation;
     }
 }

@@ -5,9 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 import java.util.List;
 
 public class Window extends JFrame implements ActionListener,Utils {
@@ -15,7 +13,7 @@ public class Window extends JFrame implements ActionListener,Utils {
 
     private InfoPanel infoPanel; // Shows the list of actions that user have made
     private Instructions instructions; // Shows information of how to use the app
-    private List<String> listOfAction =new ArrayList<>();
+    private List<String> listOfAction = new ArrayList<>();
     private String startHour = "0";
     private String startMinute = "0";
     private String startSecond = "0";
@@ -46,6 +44,8 @@ public class Window extends JFrame implements ActionListener,Utils {
     private DataContainer data;
     private DataHandler handler = new DataHandler();
     private String nameOf;
+    private ActionWindow actionWindow;
+    private List<DataContainer> dataContainer;
     public Window(){
         //Window setting
         this.setTitle("Robotic Calendar");
@@ -78,10 +78,18 @@ public class Window extends JFrame implements ActionListener,Utils {
         actionPoint.setFocusPainted(false);
 
         //Adds actions to the 3 buttons mentioned before
+        for (ActionListener al : infoPoint.getActionListeners()) {
+            infoPoint.removeActionListener(al);
+        }
         infoPoint.addActionListener(this);
+        for (ActionListener al : timingPoint.getActionListeners()) {
+            timingPoint.removeActionListener(al);
+        }
         timingPoint.addActionListener(this);
+        for (ActionListener al : actionPoint.getActionListeners()) {
+            actionPoint.removeActionListener(al);
+        }
         actionPoint.addActionListener(this);
-
         //Sets "box of navigation" panel
         boxOfNavigation.setBackground(Color.gray);
         boxOfNavigation.setPreferredSize(new Dimension((windowWidth/2)-8,windowHeight/10));
@@ -110,10 +118,20 @@ public class Window extends JFrame implements ActionListener,Utils {
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         confirmOption.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        for (ActionListener al : confirmOption.getActionListeners()) {
+            confirmOption.removeActionListener(al);
+        }
         confirmOption.addActionListener(this);
+
+        for (ActionListener al : confirmSelection.getActionListeners()) {
+            confirmSelection.removeActionListener(al);
+        }
         confirmSelection.addActionListener(this);
         startButton.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
         startButton.setBackground(Color.LIGHT_GRAY);
+        for (ActionListener al : startButton.getActionListeners()) {
+            startButton.removeActionListener(al);
+        }
         startButton.addActionListener(this);
         //Adds/makes the operations
         this.add(boxOfNavigation);
@@ -140,6 +158,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.dataContainer = dataContainers;
 
         //Sets "info point" button
         infoPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
@@ -164,9 +183,19 @@ public class Window extends JFrame implements ActionListener,Utils {
         actionPoint.setFocusPainted(false);
 
         //Adds actions to the 3 buttons mentioned before
+        for (ActionListener al : infoPoint.getActionListeners()) {
+            infoPoint.removeActionListener(al);
+        }
         infoPoint.addActionListener(this);
+        for (ActionListener al : timingPoint.getActionListeners()) {
+            timingPoint.removeActionListener(al);
+        }
         timingPoint.addActionListener(this);
+        for (ActionListener al : actionPoint.getActionListeners()) {
+            actionPoint.removeActionListener(al);
+        }
         actionPoint.addActionListener(this);
+
 
         //Sets "box of navigation" panel
         boxOfNavigation.setBackground(Color.gray);
@@ -196,12 +225,17 @@ public class Window extends JFrame implements ActionListener,Utils {
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         confirmOption.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-        confirmOption.addActionListener(this);
-        confirmSelection.addActionListener(this);
+        if (confirmOption.getActionListeners().length<1){
+            confirmOption.addActionListener(this);
+        }
+        if (confirmSelection.getActionListeners().length<1) {
+            confirmSelection.addActionListener(this);
+        }
         startButton.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
         startButton.setBackground(Color.LIGHT_GRAY);
-        startButton.addActionListener(this);
-
+        if (startButton.getActionListeners().length<1) {
+            startButton.addActionListener(this);
+        }
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
 
         for (int i = 0; i < dataContainers.size(); i++) {
@@ -250,10 +284,12 @@ public class Window extends JFrame implements ActionListener,Utils {
         }
         timer.setVisible(e.getSource() == timingPoint);
         confirmOption.setVisible(e.getSource() == timingPoint);
+        confirmSelection.setVisible(e.getSource()==actionPoint);
         calendar.setVisible(e.getSource() == infoPoint);
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
-        if (e.getSource() == confirmOption && isFull() && timer.isTimeValid() && timer.isDateValid()){
+        action.setVisible(e.getSource() == actionPoint);
+        if (e.getSource() == confirmOption && isFull() && timer.isTimeValid() && timer.isDateValid() && timer.isTodayValid()){
             dateATime.add(timer.getChosenYear());
             dateATime.add(timer.getChosenMonth()+1);
             dateATime.add(timer.getChosenDay());
@@ -282,20 +318,19 @@ public class Window extends JFrame implements ActionListener,Utils {
             dateATime.add(Integer.valueOf(endHour));
             dateATime.add(Integer.valueOf(endMinute));
             dateATime.add(Integer.valueOf(endSecond));
-            this.remove(timer);
-            timer=new TimeSet(windowWidth,windowHeight,confirmOption);
-            this.add(timer);
             actionPoint.setEnabled(e.getSource() == confirmOption);
             this.remove(action);
             this.action =new MAM(windowWidth,windowHeight, listOfAction, Integer.parseInt(startHour),
                     Integer.parseInt(startMinute), Integer.parseInt(startSecond), Integer.parseInt(endHour),
                     Integer.parseInt(endMinute), Integer.parseInt(endSecond),this,confirmSelection);
             this.add(action);
+            this.remove(timer);
+            timer=new TimeSet(windowWidth,windowHeight,confirmOption);
+            this.add(timer);
         }
         else if (e.getSource() == confirmOption && !isFull()) { //!timer.isTimeValid() &&
             JOptionPane.showMessageDialog(null,"ERROR IN TIME INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        action.setVisible(e.getSource() == actionPoint);
         if (e.getSource()==confirmSelection){
             int amountOfGiven =0,givenEnd=0; // need to fix transitions effect between this class and windows class
             if (action.isMapsFull()){
@@ -312,13 +347,17 @@ public class Window extends JFrame implements ActionListener,Utils {
                     //<--
 //                    File file = new File("test.txt");
                     data = new DataContainer(dateATime,action.getSavingsMap(),nameOf);
+                    action.setCurrentIndex(0);
+                    action.setSavingsMap(new HashMap<>());
+                    dateATime = new ArrayList<>();
                     handler.addDataContainer(data);
                     actionPoint.setEnabled(false);
+                    startHour="0";startMinute="0";startSecond="0";endHour="0";endMinute="0";endSecond="0";
                     this.remove(action);
-                    this.action =new MAM(windowWidth,windowHeight, listOfAction, Integer.parseInt(startHour),
-                            Integer.parseInt(startMinute), Integer.parseInt(startSecond), Integer.parseInt(endHour),
-                            Integer.parseInt(endMinute), Integer.parseInt(endSecond),this,confirmSelection);
-                    this.add(action);
+//                    this.action =new MAM(windowWidth,windowHeight, null, Integer.parseInt(startHour),
+//                            Integer.parseInt(startMinute), Integer.parseInt(startSecond), Integer.parseInt(endHour),
+//                            Integer.parseInt(endMinute), Integer.parseInt(endSecond),this,confirmSelection);
+//                    this.add(action);
                 }else {
                     JOptionPane.showMessageDialog(null,
                             "YOUR TIME INPUT WASN'T RIGHT PLEASE CHANGE INPUT\n"+"Given time:"+amountOfGiven+" and not lower or same to:"+ givenEnd,
@@ -342,8 +381,10 @@ public class Window extends JFrame implements ActionListener,Utils {
                         localDateTimes.add(LocalDateTime.of(containers.get(i).getDateATime().get(0),containers.get(i).getDateATime().get(1),containers.get(i).getDateATime().get(2),
                                 containers.get(i).getDateATime().get(3),containers.get(i).getDateATime().get(4),containers.get(i).getDateATime().get(5)));
                     }
+                    LocalDateTime earliestDate = localDateTimes.get(0);
                     for (int i = 0; i < containers.size(); i++) {
-                        if(localDateTimes.get(i).isBefore(localDateTimes.get(0))){
+                        if(localDateTimes.get(i).isBefore(earliestDate)){
+                            earliestDate =localDateTimes.get(i);
                             theEarliest=i;
                         }
                     }
@@ -351,9 +392,12 @@ public class Window extends JFrame implements ActionListener,Utils {
                         if (containers.get(i).getDateATime().get(0)==cal.get(GregorianCalendar.YEAR) &&
                                 containers.get(i).getDateATime().get(1)==cal.get(GregorianCalendar.MONTH)&&
                         containers.get(i).getDateATime().get(2)==cal.get(GregorianCalendar.DAY_OF_MONTH)){
-                            //<-- start the first action and after finishing delete that action
+                            System.out.println("the nearest is: ");
+                            this.setVisible(false);
+                            actionWindow = new ActionWindow(containers.get(theEarliest).getActions(),windowWidth,windowHeight,Window.this,theEarliest);
+                            break;
+
                         }else {
-                            //<-- look at chats response
                             String[] myChoices = {"Yes", "No"};
                             int choiceMassage =JOptionPane.showOptionDialog(
                                     null,
@@ -366,8 +410,24 @@ public class Window extends JFrame implements ActionListener,Utils {
                                     myChoices,
                                     myChoices[0]);
                             if (choiceMassage!=-1 && choiceMassage!=1){
-                                
+                                System.out.println("He clicked yes");
+                                this.setVisible(false);
+                                actionWindow = new ActionWindow(containers.get(theEarliest).getActions(),windowWidth,windowHeight,Window.this,theEarliest);
+                                break;
                             }
+                        }
+                    }
+                    //<--
+                    for (int i = 0; i < dataContainer.size(); i++) {
+                        for (int j = 0; j < dataContainer.get(i).getDateATime().size(); j++) {
+                            String thePlan = timer.getPlans(dataContainer.get(i).getDateATime().get(0),dataContainer.get(i).getDateATime().get(1),dataContainer.get(i).getDateATime().get(2),
+                                    dataContainer.get(i).getDateATime().get(3),dataContainer.get(i).getDateATime().get(4),dataContainer.get(i).getDateATime().get(5),
+                                    dataContainer.get(i).getDateATime().get(6),dataContainer.get(i).getDateATime().get(7),dataContainer.get(i).getDateATime().get(8));
+                            infoPanel = new InfoPanel(windowWidth,windowHeight,thePlan,dataContainer.get(i).getDateATime().get(2),dataContainer.get(i).getDateATime().get(1),dataContainer.get(i).getDateATime().get(0),
+                                    String.valueOf(dataContainer.get(i).getDateATime().get(5)),String.valueOf(dataContainer.get(i).getDateATime().get(4)),String.valueOf(dataContainer.get(i).getDateATime().get(3)));
+
+                            this.calendar = new CalendarForProject(windowWidth,windowHeight,dataContainer.get(i).getNameOf(), dataContainer.get(i).getDateATime().get(0),
+                                    dataContainer.get(i).getDateATime().get(1) , dataContainer.get(i).getDateATime().get(2));
                         }
                     }
                 }

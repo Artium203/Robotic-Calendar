@@ -368,7 +368,7 @@ public class Window extends JFrame implements ActionListener,Utils {
             }
         }
         if (e.getSource()==startButton){
-                if (handler.readDataFromFile()==null){
+                if (handler.readDataFromFile()==null || handler.readDataFromFile().isEmpty()){
                     JOptionPane.showMessageDialog(null,
                             "THERE IS NOTHING TO START",
                             "ERROR",JOptionPane.WARNING_MESSAGE);
@@ -418,6 +418,9 @@ public class Window extends JFrame implements ActionListener,Utils {
                         }
                     }
                     //<--
+                    this.remove(infoPanel);
+                    this.remove(calendar);
+                    this.remove(instructions);
                     for (int i = 0; i < dataContainer.size(); i++) {
                         for (int j = 0; j < dataContainer.get(i).getDateATime().size(); j++) {
                             String thePlan = timer.getPlans(dataContainer.get(i).getDateATime().get(0),dataContainer.get(i).getDateATime().get(1),dataContainer.get(i).getDateATime().get(2),
@@ -430,6 +433,10 @@ public class Window extends JFrame implements ActionListener,Utils {
                                     dataContainer.get(i).getDateATime().get(1) , dataContainer.get(i).getDateATime().get(2));
                         }
                     }
+                    this.add(calendar);
+                    this.add(infoPanel);
+                    instructions = new Instructions(windowWidth,windowHeight,startButton);
+                    this.add(instructions);
                 }
         }
     }

@@ -20,7 +20,9 @@ public class Main {
             }
             else if (dataContainers==null) {
                 Window window = new Window();
-            } else {
+            } else if (dataContainers.isEmpty()){
+                Window window = new Window();
+            }else {
                 Window window = new Window(dataContainers);
             }
 //            file.delete();

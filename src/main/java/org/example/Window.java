@@ -421,16 +421,18 @@ public class Window extends JFrame implements ActionListener,Utils {
                     this.remove(infoPanel);
                     this.remove(calendar);
                     this.remove(instructions);
-                    for (int i = 0; i < dataContainer.size(); i++) {
-                        for (int j = 0; j < dataContainer.get(i).getDateATime().size(); j++) {
-                            String thePlan = timer.getPlans(dataContainer.get(i).getDateATime().get(0),dataContainer.get(i).getDateATime().get(1),dataContainer.get(i).getDateATime().get(2),
-                                    dataContainer.get(i).getDateATime().get(3),dataContainer.get(i).getDateATime().get(4),dataContainer.get(i).getDateATime().get(5),
-                                    dataContainer.get(i).getDateATime().get(6),dataContainer.get(i).getDateATime().get(7),dataContainer.get(i).getDateATime().get(8));
-                            infoPanel = new InfoPanel(windowWidth,windowHeight,thePlan,dataContainer.get(i).getDateATime().get(2),dataContainer.get(i).getDateATime().get(1),dataContainer.get(i).getDateATime().get(0),
-                                    String.valueOf(dataContainer.get(i).getDateATime().get(5)),String.valueOf(dataContainer.get(i).getDateATime().get(4)),String.valueOf(dataContainer.get(i).getDateATime().get(3)));
+                    if (!dataContainer.isEmpty()) {
+                        for (int i = 0; i < dataContainer.size(); i++) {
+                            for (int j = 0; j < dataContainer.get(i).getDateATime().size(); j++) {
+                                String thePlan = timer.getPlans(dataContainer.get(i).getDateATime().get(0), dataContainer.get(i).getDateATime().get(1), dataContainer.get(i).getDateATime().get(2),
+                                        dataContainer.get(i).getDateATime().get(3), dataContainer.get(i).getDateATime().get(4), dataContainer.get(i).getDateATime().get(5),
+                                        dataContainer.get(i).getDateATime().get(6), dataContainer.get(i).getDateATime().get(7), dataContainer.get(i).getDateATime().get(8));
+                                infoPanel = new InfoPanel(windowWidth, windowHeight, thePlan, dataContainer.get(i).getDateATime().get(2), dataContainer.get(i).getDateATime().get(1), dataContainer.get(i).getDateATime().get(0),
+                                        String.valueOf(dataContainer.get(i).getDateATime().get(5)), String.valueOf(dataContainer.get(i).getDateATime().get(4)), String.valueOf(dataContainer.get(i).getDateATime().get(3)));
 
-                            this.calendar = new CalendarForProject(windowWidth,windowHeight,dataContainer.get(i).getNameOf(), dataContainer.get(i).getDateATime().get(0),
-                                    dataContainer.get(i).getDateATime().get(1) , dataContainer.get(i).getDateATime().get(2));
+                                this.calendar = new CalendarForProject(windowWidth, windowHeight, dataContainer.get(i).getNameOf(), dataContainer.get(i).getDateATime().get(0),
+                                        dataContainer.get(i).getDateATime().get(1), dataContainer.get(i).getDateATime().get(2));
+                            }
                         }
                     }
                     this.add(calendar);

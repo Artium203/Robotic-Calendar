@@ -20,7 +20,9 @@ public class Instructions extends JPanel {
         instructionsArea.setEnabled(false);
         instructionsArea.setAutoscrolls(true);
         instructionsArea.setPreferredSize(new Dimension((((windowWidth-16)/2)+(windowWidth-16)/7)+clearSpace,(windowHeight/2)-(windowHeight/10)-25));
-        instructionsArea.setText("Instructions here. Will be placed after checkups");
+        instructionsArea.setText("For a start you will need to enter your timing and demands.\n " +
+                "Click on the set time afterwards you are done you will be asked to set each of the actions you wanted. When all is done you may click on the start button.\n" +
+                "To see when you set the action you can see it in the list or calendar");
         //Adds to panel
         this.add(instructionsArea);
         this.add(startButton);

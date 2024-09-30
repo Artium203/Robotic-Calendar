@@ -12,9 +12,10 @@ import java.util.Map;
 public class ActionWindow extends JFrame {
     private RobotRunner[] operations;
     private Window window;
-    private final JButton FORWARD=new JButton(new ImageIcon("src/Resources/forward.png"));
-    private final JButton BACKWARD= new JButton(new ImageIcon("src/Resources/backwards.png"));
-    private final JButton PAUSE_RESUME= new JButton(new ImageIcon("src/Resources/pause.png"));
+    private final JButton FORWARD=new JButton("⏭");
+    private final JButton BACKWARD= new JButton("⏮");
+    //►
+    private final JButton PAUSE_RESUME= new JButton("⏸");
     private int index;
     private int currenIndex=0;
     public ActionWindow(Map<Integer,List<Integer>> map,int windowWidth,int windowHeight,Window window,int index){
@@ -27,12 +28,11 @@ public class ActionWindow extends JFrame {
         this.setResizable(false);
         this.setSize(windowWidth/4,windowHeight/8);
         this.setLocation((windowWidth-this.getWidth())/2,0);
+//        this.setOpacity(0.5f);
         this.setVisible(true);
-        JPanel panelButton = new JPanel();
-        panelButton.add(BACKWARD);
-        panelButton.add(PAUSE_RESUME);
-        panelButton.add(FORWARD);
-        this.add(panelButton);
+        this.add(BACKWARD);
+        this.add(PAUSE_RESUME);
+        this.add(FORWARD);
         BACKWARD.setEnabled(currenIndex>0);
         FORWARD.setEnabled(currenIndex<map.size()-1);
 
@@ -69,10 +69,10 @@ public class ActionWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (operations[currenIndex].isPaused()) {
                     operations[currenIndex].resume();
-                    PAUSE_RESUME.setText("Pause");
+                    PAUSE_RESUME.setText("⏸");
                 } else {
                     operations[currenIndex].pause();
-                    PAUSE_RESUME.setText("Resume");
+                    PAUSE_RESUME.setText("►");
                 }
             }
         });
@@ -103,6 +103,8 @@ public class ActionWindow extends JFrame {
             } else {
                 // If all tasks are finished, close ActionWindow and show the first frame
                 SwingUtilities.invokeLater(() -> {
+                    DataHandler dataHandler =new DataHandler();
+                    dataHandler.removeDataFromFile(index);
                     window.setVisible(true); // Make first frame visible
                     dispose(); // Close this window
                 });

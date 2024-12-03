@@ -46,43 +46,6 @@ public class RobotRunner {
             this.actLocation= new Point(actions.get(9),actions.get(10));
             running=true;
             paused=false;
-        //Make it to a mathod for only one action that gets his needs
-//        try {
-//            Robot robot = new Robot();
-//            Calendar calendar = new GregorianCalendar();
-//            Time time = new Time(calendar.getTime().getHours(),calendar.getTime().getMinutes(),calendar.getTime().getSeconds());
-//            Time givenTime = new Time(calendar.getTime().getHours()+HOL,calendar.getTime().getMinutes()+MOL,calendar.getTime().getSeconds()+SOL);
-//            int delay = (HOR*60*60+MOR*60+SOR)*1000;
-//            if (isLoop){
-//                robot.mouseMove(actLocation.x, actLocation.y);
-//                while (time.toLocalTime().getHour() != givenTime.toLocalTime().getHour() ||
-//                        time.toLocalTime().getMinute() != givenTime.toLocalTime().getMinute() ||
-//                        time.toLocalTime().getSecond() != givenTime.toLocalTime().getSecond()){
-//                    calendar = new GregorianCalendar();
-//                    time = new Time(calendar.getTime().getHours(),calendar.getTime().getMinutes(),calendar.getTime().getSeconds());
-//                    robot.setAutoDelay(delay);
-//                    if (isPress) {
-//                        robot.mousePress(InputEvent.BUTTON1_MASK);
-//                        robot.mouseRelease(InputEvent.BUTTON1_MASK);
-//                    } else {
-//                        robot.mouseWheel(2);
-//                    }
-//                }
-//            }else {
-//                robot.mouseMove(actLocation.x, actLocation.y);
-//                for (int i = 0; i < repeater; i++) {
-//                    robot.setAutoDelay(delay);
-//                    if (isPress) {
-//                        robot.mousePress(InputEvent.BUTTON1_MASK);
-//                        robot.mouseRelease(InputEvent.BUTTON1_MASK);
-//                    } else {
-//                        robot.mouseWheel(2);
-//                    }
-//                }
-//            }
-//        } catch (AWTException e) {
-//            throw new RuntimeException(e);
-//        }
     }
     public void execute(){
         try {

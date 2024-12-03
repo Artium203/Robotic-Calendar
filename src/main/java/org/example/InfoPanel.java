@@ -33,7 +33,9 @@ public class InfoPanel extends JPanel {
     private List<String> fixed;
 
 
-    public InfoPanel(int windowWidth, int windowHeight,String plans, int day,int month, int year, String seconds, String minutes , String hours){
+    public InfoPanel(int windowWidth, int windowHeight,String plans,
+                     int day,int month, int year,
+                     String seconds, String minutes , String hours){
         this.setLayout(new FlowLayout(FlowLayout.RIGHT));
         this.setVisible(false);
         this.setBackground(Color.red);
@@ -58,7 +60,7 @@ public class InfoPanel extends JPanel {
         listPanel.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));
         listActionTime = new JLabel();
         listActionTime.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));
-        addToLastTwoPlans(plans);
+        addToPlans(plans);
         fixed = plansList.stream().distinct().collect(Collectors.toList());
         listActionTime.setText("<html> "+ lastTwoPlansString()+ "</html>");
         listPanel.add(listActionTime);
@@ -73,7 +75,7 @@ public class InfoPanel extends JPanel {
         }
         return get.toString();
     }
-    public void addToLastTwoPlans(String plan){
+    public void addToPlans(String plan){
         if (currentYear<chosenYear){
             if (this.plansList.size() > 9){
                 plansList.remove(0);

@@ -442,6 +442,8 @@ public class MAM extends JPanel implements ButtonPlace{
         boxOfCommand.add(timeMonitor);
         boxOfCommand.add(location);
         boxOfCommand.add(instructions);
+        //Actions
+
 
         this.add(boxList);
         this.add(boxOfCommand);
@@ -471,7 +473,8 @@ public class MAM extends JPanel implements ButtonPlace{
         boolean result =false;
         int count = 0;
         for (int i = 0; i < sizeOfList; i++) {
-            if (savingsMap.get(i).get(0)==1 && (savingsMap.get(i).get(5)> 0 || savingsMap.get(i).get(6)> 0 || savingsMap.get(i).get(7)>30) ){
+            if (savingsMap.get(i).get(0)==1 &&
+                    (savingsMap.get(i).get(5)> 0 || savingsMap.get(i).get(6)> 0 || savingsMap.get(i).get(7)>30) ){
                 count++;
             }
             if (savingsMap.get(i).get(9)!=0){
@@ -509,6 +512,11 @@ public class MAM extends JPanel implements ButtonPlace{
     public static int getEndSecond() {
         return endSecond;
     }
-    public void setSavingsMap(Map<Integer, List<Integer>> savingsMap) {this.savingsMap = savingsMap;}
+    public void setSavingsMap() {
+        for (int i = 0; i < this.savingsMap.size(); i++) {
+            this.savingsMap.remove(i);
+        }
+//        this.savingsMap = savingsMap;
+    }
     public void setCurrentIndex(int currentIndex) {this.currentIndex = currentIndex;}
 }

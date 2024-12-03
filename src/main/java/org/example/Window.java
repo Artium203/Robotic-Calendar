@@ -36,6 +36,9 @@ public class Window extends JFrame implements ActionListener,Utils {
     //User's width/height window
     private final int windowWidth = size.width;
     private final int windowHeight = size.height;
+    private final short YEAR=0,MOUNTH=1,DAY=2;
+    private final short HS=3,MS=4,SS=5,HE=6,ME=7,SE=8;
+
 
     private static JPanel boxOfNavigation = new JPanel(); // Box of the 3 buttons mentioned before
     private static JPanel boxOfWindowOp = new JPanel(); //Box of the 2 window buttons
@@ -239,16 +242,14 @@ public class Window extends JFrame implements ActionListener,Utils {
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
 
         for (int i = 0; i < dataContainers.size(); i++) {
-            for (int j = 0; j < dataContainers.get(i).getDateATime().size(); j++) {
-                String thePlan = timer.getPlans(dataContainers.get(i).getDateATime().get(0),dataContainers.get(i).getDateATime().get(1),dataContainers.get(i).getDateATime().get(2),
-                        dataContainers.get(i).getDateATime().get(3),dataContainers.get(i).getDateATime().get(4),dataContainers.get(i).getDateATime().get(5),
-                        dataContainers.get(i).getDateATime().get(6),dataContainers.get(i).getDateATime().get(7),dataContainers.get(i).getDateATime().get(8));
-                infoPanel = new InfoPanel(windowWidth,windowHeight,thePlan,dataContainers.get(i).getDateATime().get(2),dataContainers.get(i).getDateATime().get(1),dataContainers.get(i).getDateATime().get(0),
-                        String.valueOf(dataContainers.get(i).getDateATime().get(5)),String.valueOf(dataContainers.get(i).getDateATime().get(4)),String.valueOf(dataContainers.get(i).getDateATime().get(3)));
-
-                this.calendar = new CalendarForProject(windowWidth,windowHeight,dataContainers.get(i).getNameOf(), dataContainers.get(i).getDateATime().get(0),
-                        dataContainers.get(i).getDateATime().get(1) , dataContainers.get(i).getDateATime().get(2));
-            }
+            String thePlan = timer.getPlans(dataContainers.get(i).getDateATime().get(YEAR),dataContainers.get(i).getDateATime().get(MOUNTH),dataContainers.get(i).getDateATime().get(DAY),
+                    dataContainers.get(i).getDateATime().get(HS),dataContainers.get(i).getDateATime().get(MS),dataContainers.get(i).getDateATime().get(SS),
+                    dataContainers.get(i).getDateATime().get(HE),dataContainers.get(i).getDateATime().get(ME),dataContainers.get(i).getDateATime().get(SE));
+            infoPanel = new InfoPanel(windowWidth,windowHeight,thePlan,dataContainers.get(i).getDateATime().get(DAY),dataContainers.get(i).getDateATime().get(MOUNTH),dataContainers.get(i).getDateATime().get(YEAR),
+                    String.valueOf(dataContainers.get(i).getDateATime().get(SS)),String.valueOf(dataContainers.get(i).getDateATime().get(MS)),String.valueOf(dataContainers.get(i).getDateATime().get(HS)));
+            //Calendar needs to get a list of dates then changing it to a new o
+            this.calendar = new CalendarForProject(windowWidth,windowHeight,dataContainers.get(i).getNameOf(), dataContainers.get(i).getDateATime().get(YEAR),
+                    dataContainers.get(i).getDateATime().get(MOUNTH) , dataContainers.get(i).getDateATime().get(DAY));
         }
         //Adds/makes the operations
         this.add(boxOfNavigation);
@@ -347,10 +348,10 @@ public class Window extends JFrame implements ActionListener,Utils {
                     //<--
 //                    File file = new File("test.txt");
                     data = new DataContainer(dateATime,action.getSavingsMap(),nameOf);
-                    action.setCurrentIndex(0);
-                    action.setSavingsMap(new HashMap<>());
-                    dateATime = new ArrayList<>();
                     handler.addDataContainer(data);
+                    action.setCurrentIndex(0);
+                    action.setSavingsMap();
+                    dateATime = new ArrayList<>();
                     actionPoint.setEnabled(false);
                     startHour="0";startMinute="0";startSecond="0";endHour="0";endMinute="0";endSecond="0";
                     this.remove(action);

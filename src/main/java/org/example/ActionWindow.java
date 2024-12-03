@@ -44,6 +44,7 @@ public class ActionWindow extends JFrame {
                 dispose();  // Close the current window
             }
         });
+        System.out.println(map);
         operations= new RobotRunner[map.size()];
         for (int i = 0; i < map.size(); i++) {
             operations[i]=new RobotRunner(map.get(i));

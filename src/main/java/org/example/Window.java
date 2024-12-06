@@ -290,7 +290,9 @@ public class Window extends JFrame implements ActionListener,Utils {
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
         action.setVisible(e.getSource() == actionPoint);
-        if (e.getSource() == confirmOption && isFull() && timer.isTimeValid() && timer.isDateValid() && timer.isTodayValid()){
+        if (e.getSource() == confirmOption && isFull() &&
+                timer.isTimeValid() && timer.isDateValid() && timer.isTodayValid()
+                && timer.getActionToList().size()>1){
             dateATime.add(timer.getChosenYear());
             dateATime.add(timer.getChosenMonth()+1);
             dateATime.add(timer.getChosenDay());
@@ -331,6 +333,8 @@ public class Window extends JFrame implements ActionListener,Utils {
         }
         else if (e.getSource() == confirmOption && !isFull()) { //!timer.isTimeValid() &&
             JOptionPane.showMessageDialog(null,"ERROR IN TIME INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
+        } else if (e.getSource() == confirmOption && timer.getActionToList().size()<=1) {
+            JOptionPane.showMessageDialog(null,"ERROR AMOUNT OF ACTIONS CAN'T BE ONE OR LESS","ERROR",JOptionPane.ERROR_MESSAGE);
         }
         if (e.getSource()==confirmSelection){
             int amountOfGiven =0,givenEnd=0; // need to fix transitions effect between this class and windows class

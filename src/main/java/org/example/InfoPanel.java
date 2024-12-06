@@ -33,28 +33,21 @@ public class InfoPanel extends JPanel {
     private List<String> fixed;
 
 
-    public InfoPanel(int windowWidth, int windowHeight,String plans,
-                     int day,int month, int year,
-                     String seconds, String minutes , String hours){
+    public InfoPanel(int windowWidth, int windowHeight,String plans, int day,int month, int year, String seconds, String minutes , String hours){
         this.setLayout(new FlowLayout(FlowLayout.RIGHT));
         this.setVisible(false);
         this.setBackground(Color.red);
         this.setPreferredSize(new Dimension((windowWidth/2)-17,windowHeight/2));
-
         chosenYear=year;
         chosenMonth=month;
         chosenDay=day;
         chosenStartHours= Integer.parseInt(hours);
         chosenStartMinutes= Integer.parseInt(minutes);
         chosenStartSeconds= Integer.parseInt(seconds);
-//        System.out.println(chosenDay+"/"+chosenMonth+"/"+chosenYear);
-//        System.out.println(currentDay+"/"+currentMonth+"/"+currentYear);
         calendar.setTime(cal.getTime());
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinut= calendar.get(Calendar.MINUTE);
         currentSecond = calendar.get(Calendar.SECOND);
-
-
         listPanel = new JPanel();
         listPanel.setBackground(Color.gray);
         listPanel.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));

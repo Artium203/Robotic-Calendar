@@ -13,7 +13,7 @@ public class MAM extends JPanel implements ButtonPlace{
     private JPanel boxList; // Contains checkers of user's input
     private List<JCheckBox> performanceList; // The checkers of user input
     private JPanel boxOfCommand; // Box the contains the commands for the checked action, info of it's input and explanation
-
+    
     private JPanel repeat; // The repeater  option
     private JCheckBox loop; // The looper (if user want it to be in loops)
     private JSpinner countOfRepeat; // The amount of the action to repeat itself

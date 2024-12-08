@@ -414,11 +414,18 @@ public class Window extends JFrame implements ActionListener,Utils {
                                     null,
                                     myChoices,
                                     myChoices[0]);
-                            if (choiceMassage!=-1 && choiceMassage!=1){
+                            if (choiceMassage!=-1 && choiceMassage!=1 && containers.size()==1){
                                 System.out.println("He clicked yes");
                                 this.setVisible(false);
                                 actionWindow = new ActionWindow(containers.get(theEarliest).getActions(),windowWidth,windowHeight,Window.this,theEarliest);
                                 break;
+                            } else if (choiceMassage!=-1 && choiceMassage!=1 && containers.size()>1) {
+                                int selected = choices();
+                                if (selected!=-1){
+                                this.setVisible(false);
+                                actionWindow = new ActionWindow(containers.get(selected).getActions(),windowWidth,windowHeight,Window.this,theEarliest);
+                                break;
+                                }
                             }
                         }
                     }
@@ -426,7 +433,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                     this.remove(infoPanel);
                     this.remove(calendar);
                     this.remove(instructions);
-                    if (!dataContainer.isEmpty()) {
+                    if (!dataContainer.isEmpty() && dataContainer!=null) {
                         for (int i = 0; i < dataContainer.size(); i++) {
                             for (int j = 0; j < dataContainer.get(i).getDateATime().size(); j++) {
                                 String thePlan = timer.getPlans(dataContainer.get(i).getDateATime().get(0), dataContainer.get(i).getDateATime().get(1), dataContainer.get(i).getDateATime().get(2),
@@ -458,5 +465,23 @@ public class Window extends JFrame implements ActionListener,Utils {
     @Override
     public void setWindowVisibility(boolean visible) {
         this.setVisible(visible);
+    }
+
+    private int choices(){
+        List<DataContainer> containers = handler.readDataFromFile();
+        String[] hisTasks = new String[containers.size()];
+        for (int i = 0; i < containers.size(); i++) {
+            hisTasks[i] = containers.get(i).getNameOf();
+        }
+        int choiceMassage =JOptionPane.showOptionDialog(
+                null,
+                "Witch task would you like to start?",
+                "Choose Your Task",
+                JOptionPane.OK_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                hisTasks,
+                hisTasks[0]);
+        return choiceMassage;
     }
 }

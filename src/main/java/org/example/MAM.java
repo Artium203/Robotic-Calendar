@@ -47,13 +47,13 @@ public class MAM extends JPanel implements ButtonPlace{
 
     //    private JLabel timeChecker;
 //    private final JButton confirmSelection = new JButton("Confirm Your Selection");
-    private int HOURS;
-    private int MINUTES;
-    private int SECONDS;
+//    private int HOURS;
+//    private int MINUTES;
+//    private int SECONDS;
 
     //In future wait
     private List<Integer> saveDataOfIndex;
-    private Timer actionLife;
+//    private Timer actionLife;
     private static int currentIndex = 0;
     List<Boolean> isSelectedOnThePast = new ArrayList<>();
 
@@ -178,6 +178,7 @@ public class MAM extends JPanel implements ButtonPlace{
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         lifeHour.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
 
+
         lifeMinute = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         ((JSpinner.DefaultEditor) lifeMinute.getEditor()).getTextField().setEditable(false);
         lifeMinute.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Minute"),
@@ -265,6 +266,9 @@ public class MAM extends JPanel implements ButtonPlace{
                     isSelectedOnThePast.add(i, false);
                 }
             }
+//            if (actionList.size()==1 && isMapsFull()){
+//
+//            }
             // In testing
             for (ActionListener al : next.getActionListeners()){
                 next.removeActionListener(al);

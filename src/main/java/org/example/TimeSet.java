@@ -10,7 +10,7 @@ import java.util.List;
 public class TimeSet extends JPanel {
 
     private List<String> actionToList;// Will be used to put on a list
-    private static List<String> plans;
+//    private static List<String> plans;
 
     private static List<JCheckBox> actionList;
 
@@ -172,10 +172,6 @@ public class TimeSet extends JPanel {
         textForInstruction.setBounds(0,400,250,70);
         buttonGroup.add(dragOption);
         buttonGroup.add(pressOption);
-
-
-
-        //I changed here ^ the type of how you implement the font so please feel free to adjust it
 
         actionList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {

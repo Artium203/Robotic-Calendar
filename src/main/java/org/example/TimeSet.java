@@ -465,4 +465,12 @@ public class TimeSet extends JPanel {
         }
         return validation;
     }
+//    public void setTodefult(){
+//        dateBox.removeAll();
+//        addOrRemoveBox.removeAll();
+//        timeBox.removeAll();
+//        listBox.removeAll();
+//        boxOfBoxes.removeAll();
+//        this.removeAll();
+//    }
 }

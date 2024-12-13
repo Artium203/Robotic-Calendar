@@ -2,6 +2,8 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.Clock;
@@ -31,6 +33,17 @@ public class InfoPanel extends JPanel {
     private int chosenStartMinutes;
     private int chosenStartSeconds;
     private List<String> fixed;
+//    Font customFontSized;
+//
+//    {
+//        try {
+//            customFontSized = Font.createFont(Font.TRUETYPE_FONT,new File("src/Resources/Pixel.ttf")).deriveFont(20f);
+//        } catch (FontFormatException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
     public InfoPanel(int windowWidth, int windowHeight,String plans, int day,int month, int year, String seconds, String minutes , String hours){
@@ -56,6 +69,7 @@ public class InfoPanel extends JPanel {
         addToPlans(plans);
         fixed = plansList.stream().distinct().collect(Collectors.toList());
         listActionTime.setText("<html> "+ lastTwoPlansString()+ "</html>");
+//        listActionTime.setFont(customFontSized.deriveFont(15f));
         listPanel.add(listActionTime);
         this.add(listPanel);
     }
@@ -122,5 +136,9 @@ public class InfoPanel extends JPanel {
                 }
             }
         }
+    }
+    public void setToDefult(){
+        plansList.clear();
+        fixed.clear();
     }
 }

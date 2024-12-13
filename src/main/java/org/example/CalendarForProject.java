@@ -49,10 +49,12 @@ public class CalendarForProject extends JPanel {
         }
 
         //needs to get them into list
-        givenYears.add(chosenYear);
-        givenMonths.add(chosenMonth);
-        givenDays.add(chosenDay);
-        names.add(nameAction);
+        if (chosenDay!=0) {
+            givenYears.add(chosenYear);
+            givenMonths.add(chosenMonth);
+            givenDays.add(chosenDay);
+            names.add(nameAction);
+        }
         this.chosenYear = chosenYear;
         this.chosenMonth = chosenMonth;
         this.chosenDay = chosenDay;
@@ -61,6 +63,7 @@ public class CalendarForProject extends JPanel {
         lblMonth = new JLabel("January");
         btnPrev = new JButton("Prev");
         btnNext = new JButton("Next");
+
         mtblCalendar = new DefaultTableModel() {
             public boolean isCellEditable(int rowIndex, int mColIndex) {
                 return false;
@@ -219,5 +222,11 @@ public class CalendarForProject extends JPanel {
             }
             refreshCalendar(currentMonth, currentYear);
         }
+    }
+    public void setToDefult(){
+        givenYears.clear();
+        givenMonths.clear();
+        names.clear();
+        givenDays.clear();
     }
 }

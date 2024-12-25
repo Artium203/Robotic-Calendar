@@ -23,6 +23,7 @@ public class Window extends JFrame implements ActionListener,Utils {
     private String endHour = "0";
     private String endMinute = "0";
     private String endSecond = "0";
+    private final Icon icon = new ImageIcon("src/Resources/cosmetics/images3.png");
     private static final JButton infoPoint = new JButton("Calendar"); // Button that transitions to the calendar of actions/explanation
 
     private CalendarForProject calendar; // The calendar of years/months/days that may or may not add actions to it
@@ -32,7 +33,6 @@ public class Window extends JFrame implements ActionListener,Utils {
     private MAM action; // Sets the time of each action that the user gave and the potions of each action that user gave
     private static final JButton exit = new JButton(new ImageIcon("src/Resources/x.png")); // Exits/closes the window
     private static final JButton goDown = new JButton(new ImageIcon("src/Resources/hide.png")); // Hides/minimises the window
-
     private static final JButton confirmOption = new JButton("CONFIRM");
     private static final JButton confirmSelection = new JButton("Confirm Your Selection");
     private static final JButton startButton = new JButton("start"); // To start/continue the action
@@ -54,6 +54,7 @@ public class Window extends JFrame implements ActionListener,Utils {
     private ActionWindow actionWindow;
     private List<DataContainer> dataContainer;
     Font customFontSized;
+    private final Image background = new ImageIcon("C:\\Users\\artem\\OneDrive\\תמונות\\Saved Pictures\\download.jpg").getImage();
 
     {
         try {
@@ -72,6 +73,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
+        this.setBackground(Color.gray);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         //Sets "info point" button
@@ -170,6 +172,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
+        this.setContentPane(new JLabel(new ImageIcon("C:\\Users\\artem\\OneDrive\\תמונות\\Saved Pictures\\download.jpg")));
         this.setVisible(true);
     }
     public Window(List<DataContainer> dataContainers){ // if data exits then loud it
@@ -180,14 +183,19 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.setBackground(Color.GRAY);
         this.dataContainer = dataContainers;
 
 
         //Sets "info point" button
-        infoPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-        infoPoint.setFont(customFontSized.deriveFont(30f));
+//        infoPoint.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
+        infoPoint.setFont(customFontSized.deriveFont(15f));
+        infoPoint.setIcon(icon);
+        infoPoint.setHorizontalTextPosition(SwingConstants.CENTER);
+        infoPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
+        infoPoint.setIconTextGap(-65);
         infoPoint.setForeground(Color.white);
-        infoPoint.setBackground(Color.blue);
+//        infoPoint.setBackground(Color.blue);
         infoPoint.setFocusPainted(false);
 
         //Sets "timing point" button
@@ -222,12 +230,15 @@ public class Window extends JFrame implements ActionListener,Utils {
 
         //Sets "box of navigation" panel
         boxOfNavigation.setBackground(Color.gray);
-        boxOfNavigation.setPreferredSize(new Dimension((windowWidth/2)-8,windowHeight/10));
+//        boxOfNavigation.setPreferredSize(new Dimension((windowWidth/2)-8,windowHeight/10));
         boxOfNavigation.setLayout(new FlowLayout(FlowLayout.CENTER,1,1));
         //Adds to the "box of navigation" panel the 3 buttons mentioned before
-        boxOfNavigation.add(infoPoint);
-        boxOfNavigation.add(timingPoint);
-        boxOfNavigation.add(actionPoint);
+//        boxOfNavigation.add(infoPoint);
+//        boxOfNavigation.add(timingPoint);
+//        boxOfNavigation.add(actionPoint);
+        this.add(infoPoint);
+        this.add(timingPoint);
+        this.add(actionPoint);
 
         //Sets the button of "exit" that exits/closes the window and adds action to it
         exit.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
@@ -276,7 +287,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                     dataContainers.get(i).getDateATime().get(MOUNTH) , dataContainers.get(i).getDateATime().get(DAY));
         }
         //Adds/makes the operations
-        this.add(boxOfNavigation);
+//        this.add(boxOfNavigation);
         this.add(boxOfWindowOp);
         this.add(timer);
         this.action =new MAM(windowWidth,windowHeight,listOfAction, Integer.parseInt(startHour),Integer.parseInt(startMinute),
@@ -452,7 +463,9 @@ public class Window extends JFrame implements ActionListener,Utils {
                                     containers.remove(selected);
                                     break;
                                 }
+                                break;
                             }
+                            break;
                         }
                     }
                     //<--
@@ -476,6 +489,8 @@ public class Window extends JFrame implements ActionListener,Utils {
                                         containers.get(i).getDateATime().get(1), containers.get(i).getDateATime().get(2));
                             }
                         }
+                        this.add(calendar);
+                        this.add(infoPanel);
                     }else {
                         infoPanel.setToDefult();
                         calendar.setToDefult();
@@ -523,7 +538,6 @@ public class Window extends JFrame implements ActionListener,Utils {
                 // Load the audio file
                 File audioFile = new File(path);
                 AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-
                 // Get the Clip instance
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioStream);

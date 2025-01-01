@@ -1,5 +1,6 @@
 package org.example;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -33,24 +34,23 @@ public class InfoPanel extends JPanel {
     private int chosenStartMinutes;
     private int chosenStartSeconds;
     private List<String> fixed;
-//    Font customFontSized;
-//
-//    {
-//        try {
-//            customFontSized = Font.createFont(Font.TRUETYPE_FONT,new File("src/Resources/Pixel.ttf")).deriveFont(20f);
-//        } catch (FontFormatException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    private final Image backgroundImage;
+
+    {
+        try {
+            backgroundImage = ImageIO.read(new File("src/Resources/cosmetics/hd_restoration_result_image.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public InfoPanel(int windowWidth, int windowHeight,String plans, int day,int month, int year, String seconds, String minutes , String hours){
-        this.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.setLayout(new BorderLayout());
         this.setVisible(false);
         this.setBackground(Color.red);
         this.setPreferredSize(new Dimension((windowWidth/2)-17,windowHeight/2));
+//        backgroundLabel.setSize(new Dimension((windowWidth/2)-17,windowHeight/2));
         chosenYear=year;
         chosenMonth=month;
         chosenDay=day;
@@ -62,16 +62,17 @@ public class InfoPanel extends JPanel {
         currentMinut= calendar.get(Calendar.MINUTE);
         currentSecond = calendar.get(Calendar.SECOND);
         listPanel = new JPanel();
-        listPanel.setBackground(Color.gray);
+//        listPanel.setBackground(Color.gray);
         listPanel.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));
         listActionTime = new JLabel();
-        listActionTime.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));
+//        listActionTime.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));
         addToPlans(plans);
         fixed = plansList.stream().distinct().collect(Collectors.toList());
+        listActionTime.setHorizontalAlignment(SwingConstants.CENTER);
+        listActionTime.setVerticalAlignment(SwingConstants.CENTER);
         listActionTime.setText("<html> "+ lastTwoPlansString()+ "</html>");
-//        listActionTime.setFont(customFontSized.deriveFont(15f));
-        listPanel.add(listActionTime);
-        this.add(listPanel);
+//        listPanel.add(listActionTime);
+        this.add(listActionTime,BorderLayout.CENTER);
     }
     public String lastTwoPlansString(){
         StringBuilder get = new StringBuilder();
@@ -140,5 +141,10 @@ public class InfoPanel extends JPanel {
     public void setToDefult(){
         plansList.clear();
         fixed.clear();
+    }
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Draw the background image
+        g.drawImage(backgroundImage, 0, -50, getWidth(), getHeight()+100, this);
     }
 }

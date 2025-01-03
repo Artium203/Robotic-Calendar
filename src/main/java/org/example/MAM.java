@@ -82,8 +82,8 @@ public class MAM extends JPanel implements ButtonPlace{
             backGImageList = ImageIO.read(new File("src/Resources/cosmetics/hd_restoration_result_image - Copy.png"));
             backGImage = ImageIO.read(new File("src/Resources/cosmetics/ezgif.com-cropfgt.png"));
             backIChecker= ImageIO.read(new File("src/Resources/cosmetics/checker_text.png"));
-            backGImageIn = ImageIO.read(new File("C:\\Users\\artem\\OneDrive\\תמונות\\Saved Pictures\\52ukVp-ezgif.com-crop (1)ds.png"));
-            backGImageRock= ImageIO.read(new File("C:\\Users\\artem\\OneDrive\\תמונות\\Saved Pictures\\woodenRock-buttons.png"));
+            backGImageIn = ImageIO.read(new File("src/Resources/cosmetics/52ukVp-ezgif.com-crop (1)ds.png"));
+            backGImageRock= ImageIO.read(new File("src/Resources/cosmetics/woodenRock-buttons.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -253,8 +253,12 @@ public class MAM extends JPanel implements ButtonPlace{
         nextOrPrevious.setLayout(new BorderLayout(0, 10));
         nextOrPrevious.setBorder(setBorders("              Go Back/Go Forward"));
         next.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
+        next.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(next)2.png"));
+        next.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(next)2 - Copy.png"));
         saveDataOfIndex = new ArrayList<>();
         previous.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
+        previous.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(per).png"));
+        previous.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(perv)2 - Copy.png"));
         previous.setEnabled(false);
         nextOrPrevious.add(next, BorderLayout.NORTH);
         nextOrPrevious.add(previous, BorderLayout.SOUTH);
@@ -270,10 +274,11 @@ public class MAM extends JPanel implements ButtonPlace{
         timeMonitor.setLayout(new FlowLayout(FlowLayout.CENTER,45,30));
         timeMonitor.setEnabled(false);
         confirmSelection.setPreferredSize(new Dimension((windowWidth/3)-4,(windowHeight/5)-3));
-        confirmSelection.setIcon(new ImageIcon("C:\\Users\\artem\\OneDrive\\תמונות\\Saved Pictures\\ezgif.com-cropsd3.png"));
-        confirmSelection.setSelectedIcon(new ImageIcon("C:\\Users\\artem\\OneDrive\\תמונות\\Saved Pictures\\ezgif.com-cropsd3(selected).png"));
+        confirmSelection.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-cropsd3.png"));
+        confirmSelection.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-cropsd3(selected).png"));
         confirmSelection.setHorizontalTextPosition(SwingConstants.CENTER);
         confirmSelection.setVerticalTextPosition(SwingConstants.CENTER);
+        confirmSelection.setBorderPainted(false);
         confirmSelection.setOpaque(false);
         confirmSelection.setEnabled(false);
         timeMonitor.add(confirmSelection);

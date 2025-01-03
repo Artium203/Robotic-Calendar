@@ -112,6 +112,7 @@ public class TimeSet extends JPanel {
                 confirm.setFont(new Font("Colonna MT", Font.BOLD, 33));
             }
         });
+        confirm.setSelectedIcon(null);
 
         //Container's sets
         boxOfBoxes = new JPanel();

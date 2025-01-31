@@ -1,5 +1,9 @@
 package org.example;
 
+import com.sun.javafx.fxml.builder.JavaFXSceneBuilder;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.File;
@@ -9,7 +13,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class Main {
+public class Main{
     public static void main(String[] args) {
         try {
             File file = new File("C:\\Users\\Public\\Documents\\test.txt");

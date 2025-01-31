@@ -62,7 +62,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
-        this.setBackground(Color.gray);
+//        this.setBackground(Color.gray);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         //Sets "info point" button
@@ -143,8 +143,10 @@ public class Window extends JFrame implements ActionListener,Utils {
         }
         confirmSelection.addActionListener(this);
         startButton.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
+        startButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        startButton.setVerticalTextPosition(SwingConstants.CENTER);
         startButton.setHorizontalAlignment(SwingConstants.CENTER);
-        startButton.setVerticalAlignment(SwingConstants.TOP);
+        startButton.setVerticalAlignment(SwingConstants.CENTER);
         startButton.setContentAreaFilled(false);
 //        startButton.setBackground(Color.LIGHT_GRAY);
 
@@ -177,7 +179,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.setBackground(Color.GRAY);
+//        this.setBackground(Color.GRAY);
         this.dataContainer = dataContainers;
 
 
@@ -197,7 +199,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         timingPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
         timingPoint.setIconTextGap(-55);
         timingPoint.setForeground(Color.white);
-        timingPoint.setBackground(Color.blue);
+//        timingPoint.setBackground(Color.blue);
         timingPoint.setFocusPainted(false);
 
         //Sets "action point" button
@@ -207,7 +209,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         actionPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
         actionPoint.setIconTextGap(-55);
         actionPoint.setForeground(Color.white);
-        actionPoint.setBackground(Color.blue);
+//        actionPoint.setBackground(Color.blue);
         actionPoint.setEnabled(false);
         actionPoint.setFocusPainted(false);
 

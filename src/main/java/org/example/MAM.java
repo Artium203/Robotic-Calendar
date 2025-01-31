@@ -96,7 +96,7 @@ public class MAM extends JPanel implements ButtonPlace{
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
         this.setVisible(false);
-        this.setBackground(Color.green);
+//        this.setBackground(Color.green);
         this.utils = util;
         sizeOfList = actionList.size();
         endHour=endHourGiven;
@@ -111,7 +111,7 @@ public class MAM extends JPanel implements ButtonPlace{
             }
         };
         boxList.setPreferredSize(new Dimension(windowWidth / 4, 31 + (windowHeight / 6) * 5));
-        boxList.setBackground(Color.DARK_GRAY);
+//        boxList.setBackground(Color.DARK_GRAY);
         boxList.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("List Of Commands"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         ButtonGroup checkGroup = new ButtonGroup();
@@ -120,7 +120,7 @@ public class MAM extends JPanel implements ButtonPlace{
         //Settings of the commands box
         boxOfCommand = new JPanel();
         boxOfCommand.setPreferredSize(new Dimension(windowWidth - (windowWidth / 4) - 25, 31 + (windowHeight / 6) * 5));
-        boxOfCommand.setBackground(Color.orange);
+//        boxOfCommand.setBackground(Color.orange);
         boxOfCommand.setLayout(new GridLayout(3, 3));
 
         //Settings of the repeater channel
@@ -131,7 +131,7 @@ public class MAM extends JPanel implements ButtonPlace{
             }
         };
         repeat.setBorder(setBorders("              Repeats"));
-        repeat.setBackground(Color.cyan);
+//        repeat.setBackground(Color.cyan);
         repeat.setLayout(new FlowLayout(FlowLayout.CENTER));
         //Loop declares if there shall be a loop
         loop = new JCheckBox("Loop?"){
@@ -211,7 +211,7 @@ public class MAM extends JPanel implements ButtonPlace{
                 g.drawImage(backGImage, -30, -15 , getWidth()+56, getHeight()+35, this);
             }
         };
-        timeToLive.setBackground(Color.PINK);
+//        timeToLive.setBackground(Color.PINK);
         timeToLive.setBorder(setBorders("              Time For Loop To Live"));
         lifeHour = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
 
@@ -249,17 +249,21 @@ public class MAM extends JPanel implements ButtonPlace{
                 g.drawImage(backGImage, -30, -15 , getWidth()+56, getHeight()+35, this);
             }
         };
-        nextOrPrevious.setBackground(Color.red);
+//        nextOrPrevious.setBackground(Color.red);
         nextOrPrevious.setLayout(new BorderLayout(0, 10));
         nextOrPrevious.setBorder(setBorders("              Go Back/Go Forward"));
         next.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
         next.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(next)2.png"));
         next.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(next)2 - Copy.png"));
+        next.setOpaque(false);
+        next.setBorderPainted(false);
         saveDataOfIndex = new ArrayList<>();
         previous.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
         previous.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(per).png"));
         previous.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(perv)2 - Copy.png"));
         previous.setEnabled(false);
+        previous.setOpaque(false);
+        previous.setBorderPainted(false);
         nextOrPrevious.add(next, BorderLayout.NORTH);
         nextOrPrevious.add(previous, BorderLayout.SOUTH);
 
@@ -270,7 +274,7 @@ public class MAM extends JPanel implements ButtonPlace{
                 g.drawImage(backGImageRock, -30, -23 , getWidth()+66, getHeight()+35, this);
             }
         };
-        timeMonitor.setBackground(Color.GREEN);
+//        timeMonitor.setBackground(Color.GREEN);
         timeMonitor.setLayout(new FlowLayout(FlowLayout.CENTER,45,30));
         timeMonitor.setEnabled(false);
         confirmSelection.setPreferredSize(new Dimension((windowWidth/3)-4,(windowHeight/5)-3));
@@ -281,6 +285,8 @@ public class MAM extends JPanel implements ButtonPlace{
         confirmSelection.setBorderPainted(false);
         confirmSelection.setOpaque(false);
         confirmSelection.setEnabled(false);
+        confirmSelection.setContentAreaFilled(false);
+        confirmSelection.setFocusPainted(false);
         timeMonitor.add(confirmSelection);
 
         //User's pointer for the location of current action
@@ -290,7 +296,7 @@ public class MAM extends JPanel implements ButtonPlace{
                 g.drawImage(backGImage, -30, -15 , getWidth()+56, getHeight()+35, this);
             }
         };
-        location.setBackground(Color.MAGENTA);
+//        location.setBackground(Color.MAGENTA);
         location.setLayout(new GridLayout());
         location.setBorder(setBorders("              Point Robot's Action Point"));
         for (ActionListener al : pointLocation.getActionListeners()){
@@ -312,7 +318,7 @@ public class MAM extends JPanel implements ButtonPlace{
                 g.drawImage(backGImageIn, -52, -15 , getWidth()+116, getHeight()+35, this);
             }
         };
-        instructions.setBackground(Color.yellow);
+//        instructions.setBackground(Color.yellow);
         instructions.setBorder(setBorders("              Help For Understatement"));
         instructions.setLayout(new GridLayout());
         instructionsText = new JLabel("<html>              The first box of settings you enter the repeat of the action if you<br>               want it to loop you will be asked for how long.<br>               You will be asked to set the position of where the mouse shall be.<br>               To proceed click next and to check back click back.<br>               When you end your input click on the back button so it will<br>                be saved and then click continue.</html>");

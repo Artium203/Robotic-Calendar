@@ -24,7 +24,7 @@ public class Instructions extends JPanel {
         //Panel sets
         this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         this.setVisible(false);
-        this.setBackground(Color.gray);
+//        this.setBackground(Color.gray);
         this.setPreferredSize(new Dimension(windowWidth-16,(windowHeight/2)-(windowHeight/10)-20));
         //Text and button sets
         int clearSpace = (windowWidth-16)-(((windowWidth-16)/2)+(windowWidth-16)/7)-(windowWidth-16)/8;

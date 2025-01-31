@@ -48,7 +48,7 @@ public class InfoPanel extends JPanel {
     public InfoPanel(int windowWidth, int windowHeight,String plans, int day,int month, int year, String seconds, String minutes , String hours){
         this.setLayout(new BorderLayout());
         this.setVisible(false);
-        this.setBackground(Color.red);
+//        this.setBackground(Color.red);
         this.setPreferredSize(new Dimension((windowWidth/2)-17,windowHeight/2));
 //        backgroundLabel.setSize(new Dimension((windowWidth/2)-17,windowHeight/2));
         chosenYear=year;

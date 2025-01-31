@@ -62,7 +62,7 @@ public class LocationFinder extends JFrame {
                 }
             }
         };
-        panel.setBackground(Color.WHITE);
+//        panel.setBackground(Color.WHITE);
 
         // Add mouse listener to the panel
         panel.addMouseListener(new MouseAdapter() {

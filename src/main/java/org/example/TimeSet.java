@@ -96,11 +96,13 @@ public class TimeSet extends JPanel {
         this.setLayout(new GridLayout());
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
         this.setVisible(false);
-        this.setBackground(Color.gray);
+//        this.setBackground(Color.gray);
         confirm.setFont(new Font("Colonna MT", Font.BOLD, 33));
         confirm.setVerticalAlignment(SwingConstants.NORTH);
         confirm.setOpaque(false);
         confirm.setBorderPainted(false);
+        confirm.setContentAreaFilled(false);
+        confirm.setFocusPainted(false);
         confirm.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -118,7 +120,7 @@ public class TimeSet extends JPanel {
         boxOfBoxes = new JPanel();
         boxOfBoxes.setLayout(new GridLayout(2, 2));
         boxOfBoxes.setPreferredSize(new Dimension(windowWidth / 2 + (windowWidth - ((windowWidth / 2) + (windowWidth / 3) + 150)), windowHeight - (windowHeight / 10) - 20));
-        boxOfBoxes.setBackground(Color.cyan);
+//        boxOfBoxes.setBackground(Color.cyan);
 
 
         //Sub panel section
@@ -180,7 +182,7 @@ public class TimeSet extends JPanel {
         };
         listBox.setLayout(new GridBagLayout());
         listBox.setPreferredSize(new Dimension(betterSize - windowWidth / 4, windowHeight - (windowHeight / 10) - 20));
-        listBox.setBackground(Color.GREEN);
+//        listBox.setBackground(Color.GREEN);
         listBoxInner = new JPanel(new FlowLayout(FlowLayout.CENTER));
         listBoxInner.setPreferredSize(new Dimension(betterSize - windowWidth / 4, (windowHeight - (windowHeight / 10) - 20)-250));
         listBoxInner.setOpaque(false);
@@ -287,6 +289,8 @@ public class TimeSet extends JPanel {
         addToList.setVerticalTextPosition(SwingConstants.CENTER);
         addToList.setOpaque(false);
         addToList.setBorderPainted(false);
+        addToList.setContentAreaFilled(false);
+        addToList.setFocusPainted(false);
         addToList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         for (ActionListener al : addToList.getActionListeners()) {
             addToList.removeActionListener(al);
@@ -320,6 +324,8 @@ public class TimeSet extends JPanel {
         removeFromList.setVerticalTextPosition(SwingConstants.CENTER);
         removeFromList.setOpaque(false);
         removeFromList.setBorderPainted(false);
+        removeFromList.setFocusPainted(false);
+        removeFromList.setContentAreaFilled(false);
         removeFromList.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
         for (ActionListener al : removeFromList.getActionListeners()) {
             removeFromList.removeActionListener(al);

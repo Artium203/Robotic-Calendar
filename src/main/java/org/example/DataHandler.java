@@ -52,9 +52,14 @@ public class DataHandler {
         }
     }
     public void removeDataFromFile(int index){
+
         List<DataContainer> dataContainers = readDataFromFile();
         // Add the new DataContainer to the list
-        if (dataContainers!=null){
+        if (dataContainers!=null && dataContainers.size()==1){
+            dataContainers.remove(index);
+            writeDataToFile(dataContainers);
+        }
+        else if (dataContainers!=null && dataContainers.size()>1){
             dataContainers.remove(index);
             writeDataToFile(dataContainers);
         }

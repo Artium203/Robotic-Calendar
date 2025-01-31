@@ -106,6 +106,7 @@ public class ActionWindow extends JFrame {
                 SwingUtilities.invokeLater(() -> {
                     DataHandler dataHandler =new DataHandler();
                     dataHandler.removeDataFromFile(index);
+                    stopAllOperations();
                     window.setVisible(true); // Make first frame visible
                     dispose(); // Close this window
                 });

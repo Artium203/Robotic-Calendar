@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.Data.DataContainer;
+import org.example.Data.DataHandler;
+import org.example.MakeAMove.MAM;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +35,7 @@ public class Window extends JFrame implements ActionListener,Utils {
     private static final JButton actionPoint = new JButton("Make A Move"); // Button that transitions to the MAM (Make A Move)
     private MAM action; // Sets the time of each action that the user gave and the potions of each action that user gave
     private static final JButton exit = new JButton(new ImageIcon("src/Resources/cosmetics/images3X.png")); // Exits/closes the window
+    private static LocalClock localClock = new LocalClock();
     private static final JButton goDown = new JButton(new ImageIcon("src/Resources/cosmetics/image_hide.png")); // Hides/minimises the window
     private static final JButton confirmOption = new JButton("CONFIRM?");
     private static final JButton confirmSelection = new JButton("Confirm Your Selection");
@@ -243,6 +248,7 @@ public class Window extends JFrame implements ActionListener,Utils {
 //        boxOfWindowOp.setBackground(Color.gray);
         boxOfWindowOp.setPreferredSize(new Dimension((windowWidth/2)-8,icon.getIconHeight()-5));
         boxOfWindowOp.setLayout(new FlowLayout(FlowLayout.RIGHT,5,1));
+        boxOfWindowOp.add(localClock);
         boxOfWindowOp.add(goDown);
         boxOfWindowOp.add(exit);
 

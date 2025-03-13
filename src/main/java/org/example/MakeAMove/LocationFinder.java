@@ -1,10 +1,12 @@
-package org.example;
+package org.example.MakeAMove;
+
+import org.example.ButtonPlace;
+import org.example.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.awt.image.MultiResolutionImage;
 
 public class LocationFinder extends JFrame {

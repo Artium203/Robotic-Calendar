@@ -1,7 +1,8 @@
-package org.example;
+package org.example.MakeAMove;
 
+import org.example.ButtonPlace;
+import org.example.Utils;
 import org.example.cosmetics.GradientTitled;
-import org.example.cosmetics.ImageBorder;
 import org.example.cosmetics.MyCheckBoxUI;
 
 import javax.imageio.ImageIO;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-public class MAM extends JPanel implements ButtonPlace{
+public class MAM extends JPanel implements ButtonPlace {
 
     private Utils utils;
     private JPanel boxList; // Contains checkers of user's input

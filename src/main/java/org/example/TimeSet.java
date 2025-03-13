@@ -543,7 +543,11 @@ public class TimeSet extends JPanel {
                 if (Integer.parseInt(minutesStart.getValue().toString())<Integer.parseInt(minutesEnd.getValue().toString())){
                     time =true;
                 } else if (Integer.parseInt(minutesStart.getValue().toString())==Integer.parseInt(minutesEnd.getValue().toString())) {
-                    if (Integer.parseInt(secondStart.getValue().toString())<Integer.parseInt(secondEnd.getValue().toString())){
+                    if (Integer.parseInt(secondStart.getValue().toString())==0 && Integer.parseInt(secondEnd.getValue().toString())>=30){
+                        time =true;
+                    }
+                   else if (Integer.parseInt(secondStart.getValue().toString())<Integer.parseInt(secondEnd.getValue().toString()) &&
+                            Integer.parseInt(secondStart.getValue().toString())!=0){
                         time =true;
                     }
                 }

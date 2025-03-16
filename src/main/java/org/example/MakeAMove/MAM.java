@@ -322,7 +322,13 @@ public class MAM extends JPanel implements ButtonPlace {
 //        instructions.setBackground(Color.yellow);
         instructions.setBorder(setBorders("              Help For Understatement"));
         instructions.setLayout(new GridLayout());
-        instructionsText = new JLabel("<html>              The first box of settings you enter the repeat of the action if you<br>               want it to loop you will be asked for how long.<br>               You will be asked to set the position of where the mouse shall be.<br>               To proceed click next and to check back click back.<br>               When you end your input click on the back button so it will<br>                be saved and then click continue.</html>");
+        instructionsText = new JLabel("<html>              The first box of settings you enter the repeat of the action if you<br>" +
+                "               want it to loop you will be asked for how long.<br>" +
+                "               You will be asked to set the position of where the mouse shall be.<br>" +
+                "               To proceed click next and to check back click back.<br>" +
+                "               When you end your input click on the back button so it will<br>" +
+                "                be saved and then click continue, make sure to time them<br>" +
+                "                correctly from your previous input.</html>");
         instructionsText.setForeground(Color.WHITE);
         instructionsText.setPreferredSize(new Dimension(windowWidth / 3,windowHeight/4));
         instructionsText.setHorizontalAlignment(SwingConstants.CENTER);

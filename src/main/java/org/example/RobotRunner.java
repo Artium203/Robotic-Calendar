@@ -24,8 +24,9 @@ public class RobotRunner {
     private volatile boolean running;
     private volatile boolean paused;
     // A need to add remaining time and buttons for stoping,pusing, (maybe skipping)
+    int iTheRunner;
 
-    public RobotRunner(List<Integer> actions){
+    public RobotRunner(List<Integer> actions,int whoruns){
             if (actions.get(0)==11){
                 isPress=true;
             }else {
@@ -46,6 +47,7 @@ public class RobotRunner {
             this.actLocation= new Point(actions.get(9),actions.get(10));
             running=true;
             paused=false;
+            this.iTheRunner = whoruns;
     }
     public void execute(){
         try {
@@ -53,6 +55,7 @@ public class RobotRunner {
             Calendar calendar = new GregorianCalendar();
             Time time = new Time(calendar.getTime().getHours(),calendar.getTime().getMinutes(),calendar.getTime().getSeconds());
             Time givenTime = new Time(calendar.getTime().getHours()+HOL,calendar.getTime().getMinutes()+MOL,calendar.getTime().getSeconds()+SOL);
+            System.out.println("The "+ iTheRunner+ " is running");
             int delay = (HOR*60*60+MOR*60+SOR)*1000;
             if (isLoop){
                 robot.mouseMove(actLocation.x, actLocation.y);
@@ -97,6 +100,7 @@ public class RobotRunner {
     }
     public void stop() {
         running = false; // Set running to false to stop the operations
+        System.out.println("The "+ iTheRunner+" has stopped");
     }
     public synchronized void pause() {
         paused = true;
@@ -108,4 +112,5 @@ public class RobotRunner {
     public boolean isPaused() {
         return paused;
     }
+    public boolean isRunning(){return running;}
 }

@@ -3,6 +3,8 @@ package org.example;
 import org.example.Data.DataContainer;
 import org.example.Data.DataHandler;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;

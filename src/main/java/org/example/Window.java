@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
 
@@ -277,7 +278,7 @@ public class Window extends JFrame implements ActionListener,Utils {
             startButton.addActionListener(this);
         }
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
-
+        expirationDate();
         for (int i = 0; i < dataContainers.size(); i++) {
             String thePlan = timer.getPlans(dataContainers.get(i).getDateATime().get(YEAR),dataContainers.get(i).getDateATime().get(MOUNTH),dataContainers.get(i).getDateATime().get(DAY),
                     dataContainers.get(i).getDateATime().get(HS),dataContainers.get(i).getDateATime().get(MS),dataContainers.get(i).getDateATime().get(SS),
@@ -444,7 +445,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                             int choiceMassage =JOptionPane.showOptionDialog(
                                     null,
                                     "Today there are no events.\n " +
-                                            "Would you like to skip to the nearest event?",
+                                            "Would you like to skip/jump back to the one of the events?",
                                     "Choice massage",
                                     JOptionPane.OK_OPTION,
                                     JOptionPane.INFORMATION_MESSAGE,
@@ -522,7 +523,9 @@ public class Window extends JFrame implements ActionListener,Utils {
         List<DataContainer> containers = handler.readDataFromFile();
         String[] hisTasks = new String[containers.size()];
         for (int i = 0; i < containers.size(); i++) {
-            hisTasks[i] = containers.get(i).getNameOf();
+            hisTasks[i] = "<html>"+containers.get(i).getNameOf()+"<br>"+
+                    containers.get(i).getDateATime().get(0) +"/"+containers.get(i).getDateATime().get(1)+"/"
+                    +containers.get(i).getDateATime().get(2)+"</html>";
         }
         int choiceMassage = JOptionPane.showOptionDialog(
                 null,
@@ -555,5 +558,20 @@ public class Window extends JFrame implements ActionListener,Utils {
                 e.printStackTrace();
             }
         }
-
+        public void expirationDate(){
+            List<LocalDateTime> localDateTimes = new ArrayList<>();
+            List<DataContainer> containers = handler.readDataFromFile();
+            for (DataContainer container : containers) {
+                localDateTimes.add(LocalDateTime.of(container.getDateATime().get(0), container.getDateATime().get(1),
+                        container.getDateATime().get(2), container.getDateATime().get(3), container.getDateATime().get(4),
+                        container.getDateATime().get(5)
+                ));
+            }
+            LocalDateTime threeMonthsAgo = LocalDateTime.now().minus(3, ChronoUnit.MONTHS);
+            for (int i = 0; i < localDateTimes.size(); i++) {
+                if (localDateTimes.get(i).isBefore(threeMonthsAgo)) {
+                    handler.removeDataFromFile(i);
+                }
+            }
+        }
     }

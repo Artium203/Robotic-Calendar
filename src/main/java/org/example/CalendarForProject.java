@@ -51,7 +51,7 @@ public class CalendarForProject extends JPanel {
         //needs to get them into list
         if (chosenDay!=0) {
             givenYears.add(chosenYear);
-            givenMonths.add(chosenMonth);
+            givenMonths.add(chosenMonth-1);
             givenDays.add(chosenDay);
             names.add(nameAction);
         }
@@ -164,7 +164,6 @@ public class CalendarForProject extends JPanel {
                 }
             }
             if (there){
-                System.out.println(names.get(jj));
                 mtblCalendar.setValueAt(names.get(jj) , row , column);
                 there=false;
             }

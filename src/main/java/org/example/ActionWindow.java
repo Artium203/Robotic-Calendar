@@ -20,9 +20,8 @@ public class ActionWindow extends JFrame {
     private final JButton PAUSE_RESUME= new JButton("⏸");
     private int index;
     private int currenIndex=0;
-    private boolean pressedForward = false;
-    private boolean pressedBackward = false;
-    private volatile boolean isRunning = false;
+    private Thread currentThread = null;  // Track the currently running thread
+
 
     public ActionWindow(Map<Integer,List<Integer>> map,int windowWidth,int windowHeight,Window window,int index){
         this.window=window;
@@ -58,23 +57,7 @@ public class ActionWindow extends JFrame {
             operations[i]=new RobotRunner(map.get(i),i);
             System.out.println(i);
         }
-        new Thread(()->{
-            runCurrentOperation();
-//            afterActionsComplete();
-        }).start();
-        BACKWARD.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (currenIndex > 0) {
-                    // Stop the current task and move backward
-                    operations[currenIndex].stop();
-                    currenIndex--;
-                    stopCurrentTaskAndRunNext();
-                    pressedBackward = true;
-                    updateButtons();
-                }
-            }
-        });
+        runCurrentTask();
 
         PAUSE_RESUME.addActionListener(new ActionListener() {
             @Override
@@ -92,57 +75,48 @@ public class ActionWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (currenIndex < operations.length - 1) {
-                    // Stop the current task and move forward
                     operations[currenIndex].stop();
                     currenIndex++;
-                    stopCurrentTaskAndRunNext();
-                    pressedForward = true;
-                    updateButtons();
+                    if (!operations[currenIndex].isRunning()) {
+                        operations[currenIndex].runAgain();
+                    }
+                    runCurrentTask();
+                    updateButtonStates();
                 }
             }
         });
-//        window.setVisible(true);
-//        DataHandler dataHandler =new DataHandler();
-//        dataHandler.removeDataFromFile(index);
-//        dispose();
-    }
-    private synchronized void runCurrentOperation() {
-        new Thread(() -> {
-            if (currenIndex < operations.length) {
-                // Ensure that the task is executed if it's not stopped
-                RobotRunner currentOperation = operations[currenIndex];
-                if (currentOperation != null && currentOperation.isRunning()) {
-                    // Execute the task
-                    currentOperation.execute();
+
+        BACKWARD.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currenIndex > 0) {
+                    operations[currenIndex].stop();
+                    currenIndex--;
+                    if (!operations[currenIndex].isRunning()) {
+                        operations[currenIndex].runAgain();
+                    }
+                    runCurrentTask();
+                    updateButtonStates();
                 }
             }
-
-            // After the task is completed, update the index if no buttons were pressed
-            if (!pressedForward && !pressedBackward) {
-                currenIndex++;
-            }
-
-            pressedBackward = false;
-            pressedForward = false;
-            updateButtons();
-
-            // Check if there are more tasks left to run, if yes, run the next one
-            if (currenIndex < operations.length) {
-                runCurrentOperation();  // Recursively call to run the next task
-            } else {
-                // If all tasks are done, clean up and exit
-                DataHandler dataHandler = new DataHandler();
-                dataHandler.removeDataFromFile(index);
-                stopAllOperations();
-
-                SwingUtilities.invokeLater(() -> {
-                    window.setVisible(true);
-                    dispose();
-                });
-            }
-        }).start();
+        });
     }
-    private void updateButtons() {
+    private void runCurrentTask() {
+//        // Stop the current running task if it exists
+//        if (currentThread != null && currentThread.isAlive()) {
+//            operations[currenIndex].stop();  // Stop the current task
+//        }
+
+        // Start the new task in a new thread
+        currentThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                operations[currenIndex].execute();  // Run the current task
+            }
+        });
+        currentThread.start();
+    }
+    private void updateButtonStates() {
         BACKWARD.setEnabled(currenIndex > 0);
         FORWARD.setEnabled(currenIndex < operations.length - 1);
     }
@@ -151,25 +125,13 @@ public class ActionWindow extends JFrame {
             if (operation != null) {
                 operation.stop();
             }// Stop each operation
+
         }
-    }
-    private void stopCurrentTaskAndRunNext() {
-        // Stop the current task when a button is pressed (forward/backward)
-        if (operations[currenIndex] != null) {
-            operations[currenIndex].stop();
+        if (currentThread != null && currentThread.isAlive()) {
+            currentThread.interrupt();  // Interrupt the current task if it's running
         }
 
-        // Start the new task based on the button pressed
-        runCurrentOperation();
     }
 
-//    private void afterActionsComplete() {
-//        SwingUtilities.invokeLater(() -> {
-////            DataHandler dataHandler =new DataHandler();
-////            dataHandler.removeDataFromFile(index);
-//            window.setVisible(true); // Make the first frame visible again
-//            dispose(); // Close the ActionWindow
-//        });
-//    }
 
 }

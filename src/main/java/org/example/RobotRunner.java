@@ -113,4 +113,5 @@ public class RobotRunner {
         return paused;
     }
     public boolean isRunning(){return running;}
+    public void runAgain(){running=true;}
 }

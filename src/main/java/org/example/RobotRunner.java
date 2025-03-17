@@ -94,6 +94,7 @@ public class RobotRunner {
                     }
                 }
             }
+            System.out.println(iTheRunner+" has finished");
         } catch (AWTException | InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -21,6 +21,7 @@ public class ActionWindow extends JFrame {
     private int index;
     private int currenIndex=0;
     private Thread currentThread = null;  // Track the currently running thread
+    private boolean pressedForward=false,pressedBackward=false;
 
 
     public ActionWindow(Map<Integer,List<Integer>> map,int windowWidth,int windowHeight,Window window,int index){
@@ -112,6 +113,21 @@ public class ActionWindow extends JFrame {
             @Override
             public void run() {
                 operations[currenIndex].execute();  // Run the current task
+                if (currenIndex+1 < operations.length ){
+                    if (!pressedForward && !pressedBackward) {
+                        currenIndex++;
+                    }
+                    pressedBackward = false;pressedForward = false;
+                    SwingUtilities.invokeLater(()->{runCurrentTask();});
+                }else {
+                    SwingUtilities.invokeLater(() -> {
+                        DataHandler dataHandler =new DataHandler();
+                        dataHandler.removeDataFromFile(index);
+                        stopAllOperations();
+                        window.setVisible(true); // Make first frame visible
+                        dispose(); // Close this window
+                    });
+                }
             }
         });
         currentThread.start();

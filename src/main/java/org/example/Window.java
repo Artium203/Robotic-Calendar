@@ -509,9 +509,12 @@ public class Window extends JFrame implements ActionListener,Utils {
     }
 
     private boolean isFull() {
-        return (timer.getChosenYear() != 0 && timer.getChosenMonth()+1 != 0 && !timer.getHoursEnd().isEmpty()
-                && !timer.getHoursStart().isEmpty() && !timer.getMinutesEnd().isEmpty() &&!timer.getMinutesStart().isEmpty()
-                && !timer.getSecondEnd().isEmpty() && !timer.getSecondStart().isEmpty() && !timer.getActionToList().isEmpty());
+        return (timer.getChosenYear() != 0 && timer.getChosenMonth()+1 != 0 && timer.getChosenMonth() != 0
+                && !timer.getHoursEnd().isEmpty()
+                && timer.getChosenDay() !=0 && !timer.getHoursStart().isEmpty() &&
+                !timer.getMinutesEnd().isEmpty() &&!timer.getMinutesStart().isEmpty()
+                && !timer.getSecondEnd().isEmpty() && !timer.getSecondStart().isEmpty()
+                && !timer.getActionToList().isEmpty());
         //need to add other parts like
     }
 

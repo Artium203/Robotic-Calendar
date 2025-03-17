@@ -494,7 +494,8 @@ public class TimeSet extends JPanel {
     //Getters
     public static int getChosenDay() {return chosenDay;}
 
-    public static int getChosenMonth() {return chosenMonth;}
+    public static int getChosenMonth() {
+        return chosenMonth;}
 
     public static int getChosenYear() {return chosenYear;}
     public  List<String> getActionToList() {
@@ -574,6 +575,20 @@ public class TimeSet extends JPanel {
                 }
             }
         }
+        if (chosenYear<=0){
+            date = false;
+            JOptionPane.showMessageDialog(null,"ERROR IN DATE INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
+        } else if (chosenYear>= cal.get(GregorianCalendar.YEAR)) {
+            if (chosenMonth+1<=0){
+                date = false;
+                JOptionPane.showMessageDialog(null,"ERROR IN DATE INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
+            } else if ((chosenMonth+1)>=cal.get(GregorianCalendar.MONTH)) {
+                if (chosenDay<=0){
+                    date = false;
+                    JOptionPane.showMessageDialog(null,"ERROR IN DATE INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
         return date;
     }
     public boolean isTodayValid(){
@@ -591,6 +606,7 @@ public class TimeSet extends JPanel {
         }
         return validation;
     }
+
 //    public void setTodefult(){
 //        dateBox.removeAll();
 //        addOrRemoveBox.removeAll();

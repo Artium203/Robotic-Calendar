@@ -48,9 +48,7 @@ public class InfoPanel extends JPanel {
     public InfoPanel(int windowWidth, int windowHeight,String plans, int day,int month, int year, String seconds, String minutes , String hours){
         this.setLayout(new BorderLayout());
         this.setVisible(false);
-//        this.setBackground(Color.red);
         this.setPreferredSize(new Dimension((windowWidth/2)-17,windowHeight/2));
-//        backgroundLabel.setSize(new Dimension((windowWidth/2)-17,windowHeight/2));
         chosenYear=year;
         chosenMonth=month;
         chosenDay=day;
@@ -62,16 +60,13 @@ public class InfoPanel extends JPanel {
         currentMinut= calendar.get(Calendar.MINUTE);
         currentSecond = calendar.get(Calendar.SECOND);
         listPanel = new JPanel();
-//        listPanel.setBackground(Color.gray);
         listPanel.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));
         listActionTime = new JLabel();
-//        listActionTime.setPreferredSize(new Dimension((windowWidth/2)-27,(windowHeight/2)-(windowHeight/60)));
         addToPlans(plans);
         fixed = plansList.stream().distinct().collect(Collectors.toList());
         listActionTime.setHorizontalAlignment(SwingConstants.CENTER);
         listActionTime.setVerticalAlignment(SwingConstants.CENTER);
         listActionTime.setText("<html> "+ lastTwoPlansString()+ "</html>");
-//        listPanel.add(listActionTime);
         this.add(listActionTime,BorderLayout.CENTER);
     }
     public String lastTwoPlansString(){

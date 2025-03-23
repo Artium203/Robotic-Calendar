@@ -20,7 +20,7 @@ public class ActionWindow extends JFrame {
     private final JButton PAUSE_RESUME= new JButton("⏸");
     private int index;
     private int currenIndex=0;
-    private Thread currentThread = null;  // Track the currently running thread
+    private Thread currentThread = null;
     private boolean pressedForward=false,pressedBackward=false;
 
 
@@ -48,8 +48,8 @@ public class ActionWindow extends JFrame {
                 stopAllOperations();
                 DataHandler dataHandler =new DataHandler();
                 dataHandler.removeDataFromFile(index);
-                window.setVisible(true);  // Make the previous window visible again
-                dispose();  // Close the current window
+                window.setVisible(true);
+                dispose();
             }
         });
         System.out.println(map);
@@ -103,16 +103,11 @@ public class ActionWindow extends JFrame {
         });
     }
     private void runCurrentTask() {
-//        // Stop the current running task if it exists
-//        if (currentThread != null && currentThread.isAlive()) {
-//            operations[currenIndex].stop();  // Stop the current task
-//        }
 
-        // Start the new task in a new thread
         currentThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                operations[currenIndex].execute();  // Run the current task
+                operations[currenIndex].execute();
                 if (currenIndex+1 < operations.length ){
                     if (!pressedForward && !pressedBackward) {
                         currenIndex++;
@@ -124,8 +119,8 @@ public class ActionWindow extends JFrame {
                         DataHandler dataHandler =new DataHandler();
                         dataHandler.removeDataFromFile(index);
                         stopAllOperations();
-                        window.setVisible(true); // Make first frame visible
-                        dispose(); // Close this window
+                        window.setVisible(true);
+                        dispose();
                     });
                 }
             }
@@ -140,14 +135,13 @@ public class ActionWindow extends JFrame {
         for (RobotRunner operation : operations) {
             if (operation != null) {
                 operation.stop();
-            }// Stop each operation
+            }
 
         }
         if (currentThread != null && currentThread.isAlive()) {
-            currentThread.interrupt();  // Interrupt the current task if it's running
+            currentThread.interrupt();
         }
 
     }
-
 
 }

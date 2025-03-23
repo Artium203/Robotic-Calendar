@@ -97,7 +97,6 @@ public class MAM extends JPanel implements ButtonPlace {
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
         this.setVisible(false);
-//        this.setBackground(Color.green);
         this.utils = util;
         sizeOfList = actionList.size();
         endHour=endHourGiven;
@@ -112,7 +111,6 @@ public class MAM extends JPanel implements ButtonPlace {
             }
         };
         boxList.setPreferredSize(new Dimension(windowWidth / 4, 31 + (windowHeight / 6) * 5));
-//        boxList.setBackground(Color.DARK_GRAY);
         boxList.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("List Of Commands"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         ButtonGroup checkGroup = new ButtonGroup();
@@ -121,7 +119,6 @@ public class MAM extends JPanel implements ButtonPlace {
         //Settings of the commands box
         boxOfCommand = new JPanel();
         boxOfCommand.setPreferredSize(new Dimension(windowWidth - (windowWidth / 4) - 25, 31 + (windowHeight / 6) * 5));
-//        boxOfCommand.setBackground(Color.orange);
         boxOfCommand.setLayout(new GridLayout(3, 3));
 
         //Settings of the repeater channel
@@ -132,7 +129,6 @@ public class MAM extends JPanel implements ButtonPlace {
             }
         };
         repeat.setBorder(setBorders("              Repeats"));
-//        repeat.setBackground(Color.cyan);
         repeat.setLayout(new FlowLayout(FlowLayout.CENTER));
         //Loop declares if there shall be a loop
         loop = new JCheckBox("Loop?"){
@@ -155,18 +151,14 @@ public class MAM extends JPanel implements ButtonPlace {
             loop.addActionListener(e -> {
                 if (loop.isSelected()) {
                     countOfRepeat.setEnabled(false);
-//                confirmRepeat.setEnabled(false);
                     lifeHour.setEnabled(true);
                     lifeMinute.setEnabled(true);
                     lifeSecond.setEnabled(true);
-//                confirmLoop.setEnabled(true);
                 } else {
                     countOfRepeat.setEnabled(true);
-//                confirmRepeat.setEnabled(true);
                     lifeHour.setEnabled(false);
                     lifeMinute.setEnabled(false);
                     lifeSecond.setEnabled(false);
-//                confirmLoop.setEnabled(false);
                 }
             });
         repeat.add(loop);
@@ -203,7 +195,6 @@ public class MAM extends JPanel implements ButtonPlace {
         repeat.add(frequencyAmountHour);
         repeat.add(frequencyAmountMinute);
         repeat.add(frequencyAmountSecond);
-//        repeat.add(confirmRepeat);
 
         // Same thing as the repeater but without amount only loop
         timeToLive = new JPanel(){
@@ -212,7 +203,6 @@ public class MAM extends JPanel implements ButtonPlace {
                 g.drawImage(backGImage, -30, -15 , getWidth()+56, getHeight()+35, this);
             }
         };
-//        timeToLive.setBackground(Color.PINK);
         timeToLive.setBorder(setBorders("              Time For Loop To Live"));
         lifeHour = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
 
@@ -236,12 +226,9 @@ public class MAM extends JPanel implements ButtonPlace {
         lifeHour.setEnabled(false);
         lifeMinute.setEnabled(false);
         lifeSecond.setEnabled(false);
-//        confirmLoop.setPreferredSize(new Dimension((windowWidth/6)-4,(windowHeight/10)-3));
-//        confirmLoop.setEnabled(false);
         timeToLive.add(lifeHour);
         timeToLive.add(lifeMinute);
         timeToLive.add(lifeSecond);
-//        timeToLive.add(confirmLoop);
 
         //The buttons for going back or forward from the list
         nextOrPrevious = new JPanel(){
@@ -345,16 +332,11 @@ public class MAM extends JPanel implements ButtonPlace {
                 performanceList.get(i).setEnabled(false);
                 performanceList.get(0).setSelected(true);
                 isSelectedOnThePast.add(0, true);
-//                if (i == currentIndex) {
-//                }
+
                 if (i > 0) { // In testing
                     isSelectedOnThePast.add(i, false);
                 }
             }
-//            if (actionList.size()==1 && isMapsFull()){
-//
-//            }
-            // In testing
             for (ActionListener al : next.getActionListeners()){
                 next.removeActionListener(al);
             }
@@ -537,11 +519,6 @@ public class MAM extends JPanel implements ButtonPlace {
         this.add(boxList);
         this.add(boxOfCommand);
     }
-//    private void updateText(){
-//        timeChecker.setText(HOURS + ":" +
-//                MINUTES + ":" +
-//                SECONDS);
-//    }
 
     private boolean isFull(){
         boolean result = false;
@@ -605,7 +582,6 @@ public class MAM extends JPanel implements ButtonPlace {
         for (int i = 0; i < this.savingsMap.size(); i++) {
             this.savingsMap.remove(i);
         }
-//        this.savingsMap = savingsMap;
     }
     public void setCurrentIndex(int currentIndex) {this.currentIndex = currentIndex;}
     private TitledBorder setBorders(String text){

@@ -58,7 +58,6 @@ public class Window extends JFrame implements ActionListener,Utils {
     private String nameOf;
     private ActionWindow actionWindow;
     private List<DataContainer> dataContainer;
-    private final Image background = new ImageIcon("C:\\Users\\artem\\OneDrive\\תמונות\\Saved Pictures\\download.jpg").getImage();
 
 
     public Window(){
@@ -109,10 +108,7 @@ public class Window extends JFrame implements ActionListener,Utils {
             actionPoint.removeActionListener(al);
         }
         actionPoint.addActionListener(this);
-        //Sets "box of navigation" panel
-//        boxOfNavigation.setBackground(Color.gray);
-//        boxOfNavigation.setPreferredSize(new Dimension((windowWidth/2)-8,windowHeight/10));
-//        boxOfNavigation.setLayout(new FlowLayout(FlowLayout.CENTER,1,1));
+
         //Adds to the "box of navigation" panel the 3 buttons mentioned before
         this.add(infoPoint);
         this.add(timingPoint);
@@ -161,6 +157,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         }
         startButton.addActionListener(this);
         //Adds/makes the operations
+        expirationDate();
         this.add(boxOfWindowOp);
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
         infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0");
@@ -312,14 +309,15 @@ public class Window extends JFrame implements ActionListener,Utils {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==exit){
-            System.exit(0); // Faster exit than dispose
+            System.exit(0);
 //            this.dispose();
         }
         if (e.getSource()==goDown){
             this.setState(JFrame.ICONIFIED); // Makes the window hide
         }
-        if (e.getSource()==infoPoint||e.getSource()==timingPoint || e.getSource()==actionPoint){
-            sounds("src/Resources/knock_back.wav");
+        if (e.getSource()==infoPoint||e.getSource()==timingPoint || e.getSource()==actionPoint ||
+                e.getSource()==exit|| e.getSource()==goDown || e.getSource()==confirmOption){
+            sounds("src/Resources/guids/click_sound.wav");
         }
         timer.setVisible(e.getSource() == timingPoint);
         confirmOption.setVisible(e.getSource() == timingPoint);
@@ -375,7 +373,7 @@ public class Window extends JFrame implements ActionListener,Utils {
             JOptionPane.showMessageDialog(null,"ERROR AMOUNT OF ACTIONS CAN'T BE ONE OR LESS","ERROR",JOptionPane.ERROR_MESSAGE);
         }
         if (e.getSource()==confirmSelection){
-            int amountOfGiven =0,givenEnd=0; // need to fix transitions effect between this class and windows class
+            int amountOfGiven =0,givenEnd=0;
             if (action.isMapsFull()){
                 for (int i = 0; i < action.getSavingsMap().size(); i++) {
                     if (action.getSavingsMap().get(i).get(0)==1){
@@ -388,7 +386,6 @@ public class Window extends JFrame implements ActionListener,Utils {
                 if (amountOfGiven<=givenEnd){
                     JOptionPane.showMessageDialog(null,"YOUR TIME WAS SUCCESSFULLY RECEIVED","ACCEPTED",JOptionPane.INFORMATION_MESSAGE);
                     //<--
-//                    File file = new File("test.txt");
                     data = new DataContainer(dateATime,action.getSavingsMap(),nameOf);
                     handler.addDataContainer(data);
                     action.setCurrentIndex(0);
@@ -397,10 +394,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                     actionPoint.setEnabled(false);
                     startHour="0";startMinute="0";startSecond="0";endHour="0";endMinute="0";endSecond="0";
                     this.remove(action);
-//                    this.action =new MAM(windowWidth,windowHeight, null, Integer.parseInt(startHour),
-//                            Integer.parseInt(startMinute), Integer.parseInt(startSecond), Integer.parseInt(endHour),
-//                            Integer.parseInt(endMinute), Integer.parseInt(endSecond),this,confirmSelection);
-//                    this.add(action);
+//
                 }else {
                     JOptionPane.showMessageDialog(null,
                             "YOUR TIME INPUT WASN'T RIGHT PLEASE CHANGE INPUT\n"+"Given time:"+amountOfGiven+" and not lower or same to:"+ givenEnd,

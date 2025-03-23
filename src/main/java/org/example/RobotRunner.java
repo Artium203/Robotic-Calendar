@@ -23,7 +23,6 @@ public class RobotRunner {
     private boolean isPress;
     private volatile boolean running;
     private volatile boolean paused;
-    // A need to add remaining time and buttons for stoping,pusing, (maybe skipping)
     int iTheRunner;
 
     public RobotRunner(List<Integer> actions,int whoruns){
@@ -64,7 +63,7 @@ public class RobotRunner {
                         time.toLocalTime().getSecond() != givenTime.toLocalTime().getSecond())){
                     synchronized (this) {
                         while (paused) {
-                            wait(); // Wait until notified to resume
+                            wait();
                         }
                     }
                     calendar = new GregorianCalendar();
@@ -82,7 +81,7 @@ public class RobotRunner {
                 for (int i = 0; running && i < repeater; i++) {
                     synchronized (this) {
                         while (paused) {
-                            wait(); // Wait until notified to resume
+                            wait();
                         }
                     }
                     robot.setAutoDelay(delay);
@@ -100,7 +99,7 @@ public class RobotRunner {
         }
     }
     public void stop() {
-        running = false; // Set running to false to stop the operations
+        running = false;
         System.out.println("The "+ iTheRunner+" has stopped");
     }
     public synchronized void pause() {
@@ -108,7 +107,7 @@ public class RobotRunner {
     }
     public synchronized void resume() {
         paused = false;
-        notify(); // Notify the waiting thread to resume
+        notify();
     }
     public boolean isPaused() {
         return paused;

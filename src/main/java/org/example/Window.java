@@ -43,13 +43,14 @@ public class Window extends JFrame implements ActionListener,Utils {
     private static final JButton startButton = new JButton("Start",new ImageIcon("src/Resources/cosmetics/ezgif.com-resize.png")); // To start/continue the action
     private static final Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Gets the size of user's window
     //User's width/height window
+
     private final int windowWidth = size.width;
     private final int windowHeight = size.height;
     private final short YEAR=0,MOUNTH=1,DAY=2;
     private final short HS=3,MS=4,SS=5,HE=6,ME=7,SE=8;
 
 
-//    private static JPanel boxOfNavigation = new JPanel(); // Box of the 3 buttons mentioned before
+    //    private static JPanel boxOfNavigation = new JPanel(); // Box of the 3 buttons mentioned before
     private static JPanel boxOfWindowOp = new JPanel(); //Box of the 2 window buttons
     //    private static JPanel panel3 = new JPanel();
     private List<Integer> dateATime = new ArrayList<>();
@@ -60,6 +61,21 @@ public class Window extends JFrame implements ActionListener,Utils {
     private List<DataContainer> dataContainer;
 
 
+    //daniel/
+    private  static final double ASPECT_RATIO = 16.0 /9.0;
+    private void minAR(){
+        int width = getWidth();
+        int height = (int) (width / ASPECT_RATIO);
+
+        if (height > getHeight()){
+            height = getHeight();
+            width = (int) (width * ASPECT_RATIO);
+        }
+        setSize(width,height);
+    }
+    //daniel/
+
+
     public Window(){
         //Window setting
         this.setTitle("Robotic Calendar");
@@ -67,6 +83,17 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
+
+
+        //daniel/
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                minAR();
+            }
+        });
+        //daniel/
+
+        
 //        this.setBackground(Color.gray);
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -184,6 +211,14 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 //        this.setBackground(Color.GRAY);
         this.dataContainer = dataContainers;
+
+        //daniel/
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                minAR();
+            }
+        });
+        //daniel/
 
 
         //Sets "info point" button
@@ -371,6 +406,8 @@ public class Window extends JFrame implements ActionListener,Utils {
             JOptionPane.showMessageDialog(null,"ERROR IN TIME INPUT","ERROR",JOptionPane.ERROR_MESSAGE);
         } else if (e.getSource() == confirmOption && timer.getActionToList().size()<=1) {
             JOptionPane.showMessageDialog(null,"ERROR AMOUNT OF ACTIONS CAN'T BE ONE OR LESS","ERROR",JOptionPane.ERROR_MESSAGE);
+        } else if (e.getSource() == confirmOption && !timer.isTimeValid()) {
+            JOptionPane.showMessageDialog(null,"ERROR TIME ISN'T VALID OR NOT LONGER THEN 30 SEC","ERROR",JOptionPane.ERROR_MESSAGE);
         }
         if (e.getSource()==confirmSelection){
             int amountOfGiven =0,givenEnd=0;

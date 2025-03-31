@@ -38,7 +38,7 @@ public class Instructions extends JPanel {
         instructionsArea.setPreferredSize(new Dimension((((windowWidth-16)/2)+(windowWidth-16)/7)+clearSpace,(windowHeight/2)-(windowHeight/10)-25));
         instructionsArea.setText("\n           For a start you will need to enter your timing and demands.\n " +
                 "          Click on the set time afterwards you are done you will be asked to set each\n"+"           of the actions you wanted. When all is done you may click on the start button.\n" +
-                "           To see when you set the action you can see it in the list or calendar");
+                "           To see when you set the action you can see it in the list or calendar (only when they are set!)\n");
 
         //Adds to panel
         this.add(instructionsArea);

@@ -135,7 +135,7 @@ public class CalendarForProject extends JPanel {
         if (month == 11 && year >= realYear + 100) {
             btnNext.setEnabled(false);
         } //Too late
-        lblMonth.setText(months[month]); //Refresh the month label (at the top)
+        lblMonth.setText(year+"||"+months[month]); //Refresh the month label (at the top)
         lblMonth.setHorizontalAlignment(JLabel.CENTER);
 
         //Clear table

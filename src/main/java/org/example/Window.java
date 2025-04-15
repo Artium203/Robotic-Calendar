@@ -17,6 +17,9 @@ import java.util.List;
 
 public class Window extends JFrame implements ActionListener,Utils {
     private static Container panel; // Contains the frame of the window mainly used of the calendar at the moment
+    public final int BASE_WIDTH = 1360;
+    public final int BASE_HEIGHT = 760;
+
 
     private InfoPanel infoPanel; // Shows the list of actions that user have made
     private Instructions instructions; // Shows information of how to use the app
@@ -27,25 +30,24 @@ public class Window extends JFrame implements ActionListener,Utils {
     private String endHour = "0";
     private String endMinute = "0";
     private String endSecond = "0";
-    private final Icon icon = new ImageIcon("src/Resources/cosmetics/images3.png");
-    private static final JButton infoPoint = new JButton("Calendar"); // Button that transitions to the calendar of actions/explanation
+    private static final JButton  infoPoint = new JButton("Calendar"); // Button that transitions to the calendar of actions/explanation
 
     private CalendarForProject calendar; // The calendar of years/months/days that may or may not add actions to it
     private static final JButton timingPoint = new JButton("Set Time"); // Button that transitions to the timing of action (10 actions counts as 1)
     private static TimeSet timer; // Sets the time and actions of user's input
     private static final JButton actionPoint = new JButton("Make A Move"); // Button that transitions to the MAM (Make A Move)
     private MAM action; // Sets the time of each action that the user gave and the potions of each action that user gave
-    private static final JButton exit = new JButton(new ImageIcon("src/Resources/cosmetics/images3X.png")); // Exits/closes the window
+    private static ImageIcon scaleExit = new ImageIcon("src/Resources/cosmetics/images3X.png");
     private static LocalClock localClock = new LocalClock();
-    private static final JButton goDown = new JButton(new ImageIcon("src/Resources/cosmetics/image_hide.png")); // Hides/minimises the window
+    private static ImageIcon scaleGoDown = new ImageIcon("src/Resources/cosmetics/image_hide.png");
     private static final JButton confirmOption = new JButton("CONFIRM?");
     private static final JButton confirmSelection = new JButton("Confirm Your Selection");
-    private static final JButton startButton = new JButton("Start",new ImageIcon("src/Resources/cosmetics/ezgif.com-resize.png")); // To start/continue the action
+    private static final JButton startButton = new JButton("Start"); // To start/continue the action
     private static final Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Gets the size of user's window
     //User's width/height window
 
-    private final int windowWidth = size.width;
-    private final int windowHeight = size.height;
+    private int windowWidth = size.width;
+    private int windowHeight = size.height;
     private final short YEAR=0,MOUNTH=1,DAY=2;
     private final short HS=3,MS=4,SS=5,HE=6,ME=7,SE=8;
 
@@ -59,24 +61,40 @@ public class Window extends JFrame implements ActionListener,Utils {
     private String nameOf;
     private ActionWindow actionWindow;
     private List<DataContainer> dataContainer;
+    public double scaleX = (double) windowWidth / BASE_WIDTH;
+    public double scaleY = (double) windowHeight / BASE_HEIGHT;
+    private ImageIcon buttonIcon = new ImageIcon("src/Resources/cosmetics/ezgif.com-resize.png");
+    private int scaledWidth = (int)(buttonIcon.getIconWidth() * scaleX);
+    private int scaledHeight = (int)(buttonIcon.getIconHeight() * scaleY);
+    private Image scaledImage = buttonIcon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+    private ImageIcon scaleIcon=new ImageIcon("src/Resources/cosmetics/images3.png");
+    private final Icon icon = new ImageIcon(scaleIcon.getImage().getScaledInstance((int)(scaleIcon.getIconWidth()*scaleX), (int)(scaleIcon.getIconHeight()*scaleY), Image.SCALE_DEFAULT));
+    private final JButton exit = new JButton(new ImageIcon(scaleExit.getImage().getScaledInstance((int)(scaleExit.getIconWidth()*scaleX), (int)(scaleExit.getIconHeight()*scaleY), Image.SCALE_SMOOTH))); // Exits/closes the window
+    private final JButton goDown = new JButton(new ImageIcon(scaleGoDown.getImage().getScaledInstance((int)(scaleGoDown.getIconWidth()*scaleX), (int)(scaleGoDown.getIconHeight()*scaleY), Image.SCALE_SMOOTH))); // Hides/minimises the window
+
+
+
 
 
     //daniel/
-    private  static final double ASPECT_RATIO = 16.0 /9.0;
     private void minAR(){
-        int width = getWidth();
-        int height = (int) (width / ASPECT_RATIO);
-
-        if (height > getHeight()){
-            height = getHeight();
-            width = (int) (width * ASPECT_RATIO);
+        Dimension newSize = Toolkit.getDefaultToolkit().getScreenSize();
+        if (windowWidth!= newSize.width || windowHeight!= newSize.height) {
+            JOptionPane.showMessageDialog(null, "THIS WINDOW WILL BE CLOSE PLEASE REOPEN SO THE SIZE WILL FEEL RIGHT", "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
-        setSize(width,height);
     }
     //daniel/
 
 
     public Window(){
+        //daniel/
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                minAR();
+            }
+        });
+        //daniel/
         //Window setting
         this.setTitle("Robotic Calendar");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -85,13 +103,6 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setUndecorated(true);
 
 
-        //daniel/
-        addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                minAR();
-            }
-        });
-        //daniel/
 
         
 //        this.setBackground(Color.gray);
@@ -99,28 +110,34 @@ public class Window extends JFrame implements ActionListener,Utils {
 
         //Sets "info point" button
         infoPoint.setIcon(icon);
-        infoPoint.setHorizontalTextPosition(SwingConstants.CENTER);
-        infoPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
-        infoPoint.setIconTextGap(-55);
+        infoPoint.setPreferredSize(new Dimension((windowWidth/6)-4,icon.getIconHeight()-5));
+        infoPoint.setIconTextGap((int)(-55*scaleY));
         infoPoint.setForeground(Color.white);
         infoPoint.setFocusPainted(false);
+        infoPanel.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
+        infoPoint.setHorizontalTextPosition(SwingConstants.CENTER);
+        infoPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
 
         //Sets "timing point" button
         timingPoint.setIcon(icon);
-        timingPoint.setHorizontalTextPosition(SwingConstants.CENTER);
-        timingPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
-        timingPoint.setIconTextGap(-55); // need to make this number as an int textGap
+        timingPoint.setIconTextGap((int)(-55*scaleY)); // need to make this number as an int textGap
+        timingPoint.setPreferredSize(new Dimension((windowWidth/6)-4,icon.getIconHeight()-5));
         timingPoint.setForeground(Color.white);
         timingPoint.setFocusPainted(false);
+        timingPoint.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
+        timingPoint.setHorizontalTextPosition(SwingConstants.CENTER);
+        timingPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
 
         //Sets "action point" button
         actionPoint.setIcon(icon);
-        actionPoint.setHorizontalTextPosition(SwingConstants.CENTER);
-        actionPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
-        actionPoint.setIconTextGap(-55);
+        actionPoint.setIconTextGap((int)(-55*scaleY));
+        actionPoint.setPreferredSize(new Dimension((windowWidth/6)-4,icon.getIconHeight()-5));
         actionPoint.setForeground(Color.white);
         actionPoint.setEnabled(false);
         actionPoint.setFocusPainted(false);
+        actionPoint.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
+        actionPoint.setHorizontalTextPosition(SwingConstants.CENTER);
+        actionPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
 
         //Adds actions to the 3 buttons mentioned before
         for (ActionListener al : infoPoint.getActionListeners()) {
@@ -177,6 +194,8 @@ public class Window extends JFrame implements ActionListener,Utils {
         startButton.setHorizontalAlignment(SwingConstants.CENTER);
         startButton.setVerticalAlignment(SwingConstants.CENTER);
         startButton.setContentAreaFilled(false);
+        startButton.setFont(new Font("SansSerif", Font.PLAIN, (int)(22*scaleY)));
+        startButton.setIcon(new ImageIcon(scaledImage));
 //        startButton.setBackground(Color.LIGHT_GRAY);
 
         for (ActionListener al : startButton.getActionListeners()) {
@@ -187,14 +206,14 @@ public class Window extends JFrame implements ActionListener,Utils {
         expirationDate();
         this.add(boxOfWindowOp);
         timer = new TimeSet(windowWidth,windowHeight,confirmOption);
-        infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0");
+        infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0",scaleX,scaleY);
         this.add(timer);
         this.calendar = new CalendarForProject(windowWidth,windowHeight,"", 0, 0 , 0);
         this.action =new MAM(windowWidth,windowHeight,listOfAction, Integer.parseInt(startHour),Integer.parseInt(startMinute),
                 Integer.parseInt(startSecond),Integer.parseInt(endHour),Integer.parseInt(endMinute),Integer.parseInt(endSecond)
                 ,this,confirmSelection);
         this.add(action);
-        instructions = new Instructions(windowWidth,windowHeight,startButton);
+        instructions = new Instructions(windowWidth,windowHeight,startButton,scaleX,scaleY);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
@@ -202,6 +221,13 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setVisible(true);
     }
     public Window(List<DataContainer> dataContainers){ // if data exits then loud it
+        //daniel/
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                minAR();
+            }
+        });
+        //daniel/
         //Window setting
         this.setTitle("Robotic Calendar");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -212,44 +238,40 @@ public class Window extends JFrame implements ActionListener,Utils {
 //        this.setBackground(Color.GRAY);
         this.dataContainer = dataContainers;
 
-        //daniel/
-        addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                minAR();
-            }
-        });
-        //daniel/
 
 
         //Sets "info point" button
         infoPoint.setIcon(icon);
         infoPoint.setPreferredSize(new Dimension((windowWidth/6)-4,icon.getIconHeight()-5));
-        infoPoint.setHorizontalTextPosition(SwingConstants.CENTER);
-        infoPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
-        infoPoint.setIconTextGap(-55);
+        infoPoint.setIconTextGap((int)(-55*scaleY));
         infoPoint.setForeground(Color.white);
         infoPoint.setFocusPainted(false);
+        infoPoint.setFont(new Font("SansSerif", Font.BOLD, (int)(12*scaleY)));
+        infoPoint.setHorizontalTextPosition(SwingConstants.CENTER);
+        infoPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
 
         //Sets "timing point" button
         timingPoint.setIcon(icon);
         timingPoint.setPreferredSize(new Dimension((windowWidth/6)-4,icon.getIconHeight()-5));
-        timingPoint.setHorizontalTextPosition(SwingConstants.CENTER);
-        timingPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
-        timingPoint.setIconTextGap(-55);
+        timingPoint.setIconTextGap((int)(-55*scaleY));
         timingPoint.setForeground(Color.white);
+        timingPoint.setFont(new Font("SansSerif", Font.BOLD, (int)(12*scaleY)));
 //        timingPoint.setBackground(Color.blue);
         timingPoint.setFocusPainted(false);
+        timingPoint.setHorizontalTextPosition(SwingConstants.CENTER);
+        timingPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
 
         //Sets "action point" button
         actionPoint.setIcon(icon);
         actionPoint.setPreferredSize(new Dimension((windowWidth/6)-4,icon.getIconHeight()-5));
-        actionPoint.setHorizontalTextPosition(SwingConstants.CENTER);
-        actionPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
-        actionPoint.setIconTextGap(-55);
+        actionPoint.setIconTextGap((int)(-55*scaleY));
         actionPoint.setForeground(Color.white);
 //        actionPoint.setBackground(Color.blue);
         actionPoint.setEnabled(false);
         actionPoint.setFocusPainted(false);
+        actionPoint.setFont(new Font("SansSerif", Font.BOLD, (int)(12*scaleY)));
+        actionPoint.setHorizontalTextPosition(SwingConstants.CENTER);
+        actionPoint.setVerticalTextPosition(SwingConstants.BOTTOM);
 
         //Adds actions to the 3 buttons mentioned before
         for (ActionListener al : infoPoint.getActionListeners()) {
@@ -305,6 +327,8 @@ public class Window extends JFrame implements ActionListener,Utils {
         startButton.setHorizontalAlignment(SwingConstants.CENTER);
         startButton.setVerticalAlignment(SwingConstants.CENTER);
         startButton.setContentAreaFilled(false);
+        startButton.setFont(new Font("SansSerif", Font.PLAIN, (int)(22*scaleY)));
+        startButton.setIcon(new ImageIcon(scaledImage));
 //        startButton.setBackground(Color.LIGHT_GRAY);
         if (startButton.getActionListeners().length<1) {
             startButton.addActionListener(this);
@@ -316,7 +340,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                     dataContainers.get(i).getDateATime().get(HS),dataContainers.get(i).getDateATime().get(MS),dataContainers.get(i).getDateATime().get(SS),
                     dataContainers.get(i).getDateATime().get(HE),dataContainers.get(i).getDateATime().get(ME),dataContainers.get(i).getDateATime().get(SE));
             infoPanel = new InfoPanel(windowWidth,windowHeight,thePlan,dataContainers.get(i).getDateATime().get(DAY),dataContainers.get(i).getDateATime().get(MOUNTH),dataContainers.get(i).getDateATime().get(YEAR),
-                    String.valueOf(dataContainers.get(i).getDateATime().get(SS)),String.valueOf(dataContainers.get(i).getDateATime().get(MS)),String.valueOf(dataContainers.get(i).getDateATime().get(HS)));
+                    String.valueOf(dataContainers.get(i).getDateATime().get(SS)),String.valueOf(dataContainers.get(i).getDateATime().get(MS)),String.valueOf(dataContainers.get(i).getDateATime().get(HS)),scaleX,scaleY);
             //Calendar needs to get a list of dates then changing it to a new o
             this.calendar = new CalendarForProject(windowWidth,windowHeight,dataContainers.get(i).getNameOf(), dataContainers.get(i).getDateATime().get(YEAR),
                     dataContainers.get(i).getDateATime().get(MOUNTH) , dataContainers.get(i).getDateATime().get(DAY));
@@ -329,7 +353,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                 Integer.parseInt(startSecond),Integer.parseInt(endHour),Integer.parseInt(endMinute),Integer.parseInt(endSecond)
                 ,this,confirmSelection);
         this.add(action);
-        instructions = new Instructions(windowWidth,windowHeight,startButton);
+        instructions = new Instructions(windowWidth,windowHeight,startButton,scaleX,scaleY);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
@@ -374,10 +398,10 @@ public class Window extends JFrame implements ActionListener,Utils {
             this.remove(infoPanel);
             infoPanel = new InfoPanel(windowWidth,windowHeight,timer.getPlans(),
                     timer.getChosenDay(),timer.getChosenMonth()+1,timer.getChosenYear(),
-                    timer.getSecondStart(),timer.getMinutesStart(),timer.getHoursStart());
+                    timer.getSecondStart(),timer.getMinutesStart(),timer.getHoursStart(),scaleX,scaleY);
             this.add(infoPanel);
             this.remove(instructions);
-            instructions = new Instructions(windowWidth,windowHeight,startButton);
+            instructions = new Instructions(windowWidth,windowHeight,startButton,scaleX,scaleY);
             this.add(instructions);
             listOfAction = timer.getActionToList();
             startHour =timer.getHoursStart();
@@ -517,7 +541,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                                         containers.get(i).getDateATime().get(3), containers.get(i).getDateATime().get(4), containers.get(i).getDateATime().get(5),
                                         containers.get(i).getDateATime().get(6), containers.get(i).getDateATime().get(7), containers.get(i).getDateATime().get(8));
                                 infoPanel = new InfoPanel(windowWidth, windowHeight, thePlan, containers.get(i).getDateATime().get(2), containers.get(i).getDateATime().get(1), containers.get(i).getDateATime().get(0),
-                                        String.valueOf(containers.get(i).getDateATime().get(5)), String.valueOf(containers.get(i).getDateATime().get(4)), String.valueOf(containers.get(i).getDateATime().get(3)));
+                                        String.valueOf(containers.get(i).getDateATime().get(5)), String.valueOf(containers.get(i).getDateATime().get(4)), String.valueOf(containers.get(i).getDateATime().get(3)),scaleX,scaleY);
 
                                 this.calendar = new CalendarForProject(windowWidth, windowHeight, containers.get(i).getNameOf(), containers.get(i).getDateATime().get(0),
                                         containers.get(i).getDateATime().get(1), containers.get(i).getDateATime().get(2));
@@ -528,12 +552,12 @@ public class Window extends JFrame implements ActionListener,Utils {
                     }else {
                         infoPanel.setToDefult();
                         calendar.setToDefult();
-                        infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0");
+                        infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0",scaleX,scaleY);
                         this.calendar = new CalendarForProject(windowWidth,windowHeight,"", 0, 0 , 0);
                         this.add(calendar);
                         this.add(infoPanel);
                     }
-                    instructions = new Instructions(windowWidth,windowHeight,startButton);
+                    instructions = new Instructions(windowWidth,windowHeight,startButton,scaleX,scaleY);
                     this.add(instructions);
                 }
         }

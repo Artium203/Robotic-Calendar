@@ -35,6 +35,8 @@ public class InfoPanel extends JPanel {
     private int chosenStartSeconds;
     private List<String> fixed;
     private final Image backgroundImage;
+    private double givenScaleX;
+    private double givenScaleY;
 
     {
         try {
@@ -45,10 +47,13 @@ public class InfoPanel extends JPanel {
     }
 
 
-    public InfoPanel(int windowWidth, int windowHeight,String plans, int day,int month, int year, String seconds, String minutes , String hours){
+    public InfoPanel(int windowWidth, int windowHeight,String plans, int day,int month, int year, String seconds, String minutes , String hours
+    ,double scaleX,double scaleY) {
         this.setLayout(new BorderLayout());
         this.setVisible(false);
         this.setPreferredSize(new Dimension((windowWidth/2)-17,windowHeight/2));
+        givenScaleX = scaleX;
+        givenScaleY = scaleY;
         chosenYear=year;
         chosenMonth=month;
         chosenDay=day;
@@ -67,6 +72,7 @@ public class InfoPanel extends JPanel {
         listActionTime.setHorizontalAlignment(SwingConstants.CENTER);
         listActionTime.setVerticalAlignment(SwingConstants.CENTER);
         listActionTime.setText("<html> "+ lastTwoPlansString()+ "</html>");
+        listActionTime.setFont(new Font("Arial", Font.PLAIN, (int) (12*scaleY)));
         this.add(listActionTime,BorderLayout.CENTER);
     }
     public String lastTwoPlansString(){
@@ -140,6 +146,6 @@ public class InfoPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Draw the background image
-        g.drawImage(backgroundImage, 0, -50, getWidth(), getHeight()+100, this);
+        g.drawImage(backgroundImage, (int) (0*givenScaleX),(int) (-50*givenScaleY), getWidth(),(int) (getHeight()+100*givenScaleY), this);
     }
 }

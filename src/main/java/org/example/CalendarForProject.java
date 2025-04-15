@@ -37,7 +37,7 @@ public class CalendarForProject extends JPanel {
         this.setLayout(new BorderLayout());
         this.setVisible(false);
         this.setPreferredSize(new Dimension(windowWidth / 2, windowHeight / 2));
-        this.setBackground(Color.blue);
+        this.setBackground(new Color(223, 218, 104));
 
         //Look and feel
         try {
@@ -154,6 +154,7 @@ public class CalendarForProject extends JPanel {
         //Draw calendar
         boolean there = false;
         int jj = 0;
+        String tasks="";
         for (int i = 1; i <= nod; i++) {
             int row = ((i + som - 2) / 7);
             int column = (i + som - 2) % 7;
@@ -163,6 +164,7 @@ public class CalendarForProject extends JPanel {
                     jj=j;
                 }
             }
+            tasks =names.get(jj)+"\n"+tasks;
             if (there){
                 mtblCalendar.setValueAt(names.get(jj) , row , column);
                 there=false;

@@ -9,7 +9,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Instructions extends JPanel {
+public class Instructions extends JLayeredPane {
 //    private static final JButton startButton = new JButton("start"); // To start/continue the action
     private final JTextPane instructionsArea; // Helps the user around
     Image backgroundImage;

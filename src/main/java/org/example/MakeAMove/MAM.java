@@ -77,6 +77,7 @@ public class MAM extends JPanel implements ButtonPlace {
     private final Image backGImageIn;
     private final Image backGImageRock;
     private final Image backIChecker;
+    private double givenScaleX, givenScaleY;
 
     {
         try {
@@ -92,7 +93,8 @@ public class MAM extends JPanel implements ButtonPlace {
 
     public MAM(int windowWidth, int windowHeight, List<String> actionList,
                int startHour, int startMinute, int startSecond, int endHourGiven,
-               int endMinuteGiven, int endSecondGiven, Utils util,JButton confirmSelection) {
+               int endMinuteGiven, int endSecondGiven, Utils util,JButton confirmSelection,
+               double scaleX, double scaleY) {
         //Setting for class MAM
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
@@ -102,6 +104,8 @@ public class MAM extends JPanel implements ButtonPlace {
         endHour=endHourGiven;
         endMinute=endMinuteGiven;
         endSecond=endSecondGiven;
+        givenScaleX = scaleX;
+        givenScaleY = scaleY;
 
         //Setting for List of Check boxes
         boxList = new JPanel(){
@@ -167,22 +171,22 @@ public class MAM extends JPanel implements ButtonPlace {
         countOfRepeat = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
         countOfRepeat.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
         countOfRepeat.setBorder(new GradientTitled("Counter",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,1,0,0,0));
+                null,(int)(1*scaleX),0,0,0));
         ((JSpinner.DefaultEditor) countOfRepeat.getEditor()).getTextField().setEditable(false);
         repeat.add(countOfRepeat);
 
         // Time input for the action to repeat
         frequencyAmountHour = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         frequencyAmountHour.setBorder(new GradientTitled("Hours",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,1,0,0,0));
+                null,(int)(1*scaleX),0,0,0));
 
         frequencyAmountMinute = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         frequencyAmountMinute.setBorder(new GradientTitled("Minutes",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,1,0,0,0));
+                null,(int)(1*scaleX),0,0,0));
 
         frequencyAmountSecond = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         frequencyAmountSecond.setBorder(new GradientTitled("Seconds",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,1,0,0,0));
+                null,(int)(1*scaleX),0,0,0));
 
         ((JSpinner.DefaultEditor) frequencyAmountHour.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) frequencyAmountMinute.getEditor()).getTextField().setEditable(false);
@@ -200,7 +204,7 @@ public class MAM extends JPanel implements ButtonPlace {
         timeToLive = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImage, -30, -15 , getWidth()+56, getHeight()+35, this);
+                g.drawImage(backGImage, (int)(-30*scaleX), (int)(-15*scaleY) ,(int) (getWidth()+56*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
         timeToLive.setBorder(setBorders("              Time For Loop To Live"));
@@ -208,20 +212,20 @@ public class MAM extends JPanel implements ButtonPlace {
 
         ((JSpinner.DefaultEditor) lifeHour.getEditor()).getTextField().setEditable(false);
         lifeHour.setBorder(new GradientTitled("Hour",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,1,0,0,0));
+                null,(int)(1*scaleX),0,0,0));
         lifeHour.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
 
 
         lifeMinute = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         ((JSpinner.DefaultEditor) lifeMinute.getEditor()).getTextField().setEditable(false);
         lifeMinute.setBorder(new GradientTitled("Minute",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,1,0,0,0));
+                null,(int)(1*scaleX),0,0,0));
         lifeMinute.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
 
         lifeSecond = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         ((JSpinner.DefaultEditor) lifeSecond.getEditor()).getTextField().setEditable(false);
         lifeSecond.setBorder(new GradientTitled("Second",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,1,0,0,0));
+                null,(int)(1*scaleX),0,0,0));
         lifeSecond.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
         lifeHour.setEnabled(false);
         lifeMinute.setEnabled(false);
@@ -234,7 +238,7 @@ public class MAM extends JPanel implements ButtonPlace {
         nextOrPrevious = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImage, -30, -15 , getWidth()+56, getHeight()+35, this);
+                g.drawImage(backGImage, (int)(-30*scaleX), (int)(-15*scaleY) , (int)(getWidth()+56*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
 //        nextOrPrevious.setBackground(Color.red);
@@ -259,7 +263,7 @@ public class MAM extends JPanel implements ButtonPlace {
         timeMonitor = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImageRock, -30, -23 , getWidth()+66, getHeight()+35, this);
+                g.drawImage(backGImageRock, (int)(-30*scaleX), (int)(-23*scaleY) , (int)(getWidth()+66*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
 //        timeMonitor.setBackground(Color.GREEN);
@@ -281,7 +285,7 @@ public class MAM extends JPanel implements ButtonPlace {
         location = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImage, -30, -15 , getWidth()+56, getHeight()+35, this);
+                g.drawImage(backGImage, (int)(-30*scaleX), (int)(-15*scaleY) , (int)(getWidth()+56*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
 //        location.setBackground(Color.MAGENTA);
@@ -293,7 +297,7 @@ public class MAM extends JPanel implements ButtonPlace {
             pointLocation.addActionListener(e -> {
                 utils.setWindowVisibility(false);
                 SwingUtilities.invokeLater(() -> {
-                    LocationFinder gui = new LocationFinder(utils, this, pointLocation.getWidth(), pointLocation.getHeight());
+                    LocationFinder gui = new LocationFinder(utils, this, pointLocation.getWidth(), pointLocation.getHeight(),scaleX,scaleY);
                     gui.setVisible(true);
                 });
             });
@@ -303,7 +307,7 @@ public class MAM extends JPanel implements ButtonPlace {
         instructions = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImageIn, -52, -15 , getWidth()+116, getHeight()+35, this);
+                g.drawImage(backGImageIn, (int)(-52*scaleX), (int)(-15*scaleY) , (int)(getWidth()+116*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
 //        instructions.setBackground(Color.yellow);
@@ -322,7 +326,7 @@ public class MAM extends JPanel implements ButtonPlace {
 
         if (!actionList.isEmpty()) {
             for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
-                performanceList.add(new MyCheckBoxUI(actionList.get(i),"src/Resources/cosmetics/checker_text.png"));
+                performanceList.add(new MyCheckBoxUI(actionList.get(i),"src/Resources/cosmetics/checker_text.png",scaleX,scaleY));
                 performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
                 performanceList.get(i).setText(actionList.get(i));
                 performanceList.get(i).setIcon(new ImageIcon("src/Resources/cosmetics/checker_empty.png"));
@@ -586,9 +590,9 @@ public class MAM extends JPanel implements ButtonPlace {
     public void setCurrentIndex(int currentIndex) {this.currentIndex = currentIndex;}
     private TitledBorder setBorders(String text){
         TitledBorder titledBorder = new GradientTitled(text,new Color(255, 255, 255), new Color(250, 250, 250),
-                "src/Resources/cosmetics/Iron_frame.png",null,12,0,24,0);
+                "src/Resources/cosmetics/Iron_frame.png",null,(int)(12*givenScaleX),0,(int)(24*givenScaleX),0);
         titledBorder.setTitlePosition(TitledBorder.BELOW_TOP);
-        titledBorder.setTitleFont(new Font("Arial" , Font.BOLD , 16));
+        titledBorder.setTitleFont(new Font("Arial" , Font.BOLD , (int)(16*givenScaleY)));
         return titledBorder;
     }
 }

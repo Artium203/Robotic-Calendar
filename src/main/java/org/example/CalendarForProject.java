@@ -31,13 +31,16 @@ public class CalendarForProject extends JPanel {
     private static DefaultTableModel mtblCalendar; //Table model
     private static JScrollPane stblCalendar; //The scrollPanel
     private static int realYear, realMonth, realDay, currentYear, currentMonth;
+    private double givenScaleX,givenScaleY;
 
-    public CalendarForProject(int windowWidth, int windowHeight, String nameAction, int chosenYear, int chosenMonth, int chosenDay) {
+    public CalendarForProject(int windowWidth, int windowHeight, String nameAction, int chosenYear, int chosenMonth, int chosenDay,double scaleX,double scaleY) {
 
         this.setLayout(new BorderLayout());
         this.setVisible(false);
         this.setPreferredSize(new Dimension(windowWidth / 2, windowHeight / 2));
         this.setBackground(new Color(223, 218, 104));
+        givenScaleX = scaleX;
+        givenScaleY = scaleY;
 
         //Look and feel
         try {
@@ -62,7 +65,9 @@ public class CalendarForProject extends JPanel {
 
         lblMonth = new JLabel("January");
         btnPrev = new JButton("Prev");
+        btnPrev.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         btnNext = new JButton("Next");
+        btnNext.setFont(new Font("SansSerif", Font.BOLD, (int)(12*scaleY)));
 
         mtblCalendar = new DefaultTableModel() {
             public boolean isCellEditable(int rowIndex, int mColIndex) {
@@ -70,6 +75,7 @@ public class CalendarForProject extends JPanel {
             }
         };
         tblCalendar = new JTable(mtblCalendar);
+        tblCalendar.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
 
         stblCalendar = new JScrollPane(tblCalendar);
         this.add(stblCalendar, BorderLayout.CENTER);
@@ -84,8 +90,9 @@ public class CalendarForProject extends JPanel {
         this.add(btnNext, BorderLayout.EAST);
 
         // Sets
-        lblMonth.setPreferredSize(new Dimension(50, 20));
+        lblMonth.setPreferredSize(new Dimension((int)(50*scaleX), (int)(20*scaleY)));
         lblMonth.setHorizontalTextPosition(JLabel.CENTER);
+        lblMonth.setFont(new Font("SansSerif", Font.BOLD, (int)(12*scaleY)));
 
         //Get real month/year
         GregorianCalendar cal = new GregorianCalendar(); //Create calendar
@@ -113,7 +120,7 @@ public class CalendarForProject extends JPanel {
         tblCalendar.setRowSelectionAllowed(true);
         tblCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //Set row/column count
-        tblCalendar.setRowHeight(38);
+        tblCalendar.setRowHeight((int)(38*scaleY));
         mtblCalendar.setColumnCount(7);
         mtblCalendar.setRowCount(6);
 

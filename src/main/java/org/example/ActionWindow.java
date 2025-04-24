@@ -24,7 +24,7 @@ public class ActionWindow extends JFrame {
     private boolean pressedForward=false,pressedBackward=false;
 
 
-    public ActionWindow(Map<Integer,List<Integer>> map,int windowWidth,int windowHeight,Window window,int index){
+    public ActionWindow(Map<Integer,List<Integer>> map,int windowWidth,int windowHeight,Window window,int index,double scaleX,double scaleY){
         this.window=window;
         this.index=index;
         this.setTitle("Actions");
@@ -36,6 +36,9 @@ public class ActionWindow extends JFrame {
         this.setLocation((windowWidth-this.getWidth())/2,0);
 //        this.setOpacity(0.5f);
         this.setVisible(true);
+        BACKWARD.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
+        PAUSE_RESUME.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
+        FORWARD.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
         this.add(BACKWARD);
         this.add(PAUSE_RESUME);
         this.add(FORWARD);

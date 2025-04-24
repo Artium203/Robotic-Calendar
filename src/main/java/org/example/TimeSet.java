@@ -75,6 +75,8 @@ public class TimeSet extends JPanel {
     private final Image backGImageList;
     private final Image backGImageName;
 
+    private double givenScaleX, givenScaleY;
+
     private final ImageIcon backButton= new ImageIcon("src/Resources/cosmetics/wooden-buttons.png");
     private final ImageIcon backIChecker = new ImageIcon("src/Resources/cosmetics/checker_text.png");
 
@@ -91,13 +93,15 @@ public class TimeSet extends JPanel {
 
 
 
-    public TimeSet(int windowWidth,int windowHeight, JButton confirm) {
+    public TimeSet(int windowWidth,int windowHeight, JButton confirm,double scaleX,double scaleY) {
         //Panel layout and dimensions
         this.setLayout(new GridLayout());
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
         this.setVisible(false);
+        givenScaleX = scaleX;
+        givenScaleY = scaleY;
 //        this.setBackground(Color.gray);
-        confirm.setFont(new Font("Colonna MT", Font.BOLD, 33));
+        confirm.setFont(new Font("Colonna MT", Font.BOLD, (int)(33*scaleY)));
         confirm.setVerticalAlignment(SwingConstants.NORTH);
         confirm.setOpaque(false);
         confirm.setBorderPainted(false);
@@ -106,12 +110,12 @@ public class TimeSet extends JPanel {
         confirm.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                confirm.setFont(new Font("Colonna MT", Font.BOLD, 22));
+                confirm.setFont(new Font("Colonna MT", Font.BOLD, (int)(22*scaleY)));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                confirm.setFont(new Font("Colonna MT", Font.BOLD, 33));
+                confirm.setFont(new Font("Colonna MT", Font.BOLD, (int)(33*scaleY)));
             }
         });
         confirm.setSelectedIcon(null);
@@ -128,7 +132,7 @@ public class TimeSet extends JPanel {
         dateBox = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImageDate, -30, -13, getWidth()+66, getHeight()+35, this);
+                g.drawImage(backGImageDate, (int)(-30*scaleX), (int)(-13*scaleY), (int)(getWidth()+66*scaleX), (int)(getHeight()+35*scaleY), this);
 
             }
         };
@@ -140,29 +144,29 @@ public class TimeSet extends JPanel {
         performanceBox = new JPanel(){
             protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(backGImageDate, -35, -23, getWidth()+76, getHeight()+45, this);
+            g.drawImage(backGImageDate, (int)(-35*scaleX), (int)(-23*scaleY), (int)(getWidth()+76*scaleX), (int)(getHeight()+45*scaleY), this);
             }
         };
         performanceBox.setLayout(new FlowLayout(FlowLayout.CENTER,20,25));
-        performanceBox.setPreferredSize(new Dimension(400, (windowHeight - (windowHeight / 10) - 20) / 2));
+        performanceBox.setPreferredSize(new Dimension((int)(400*scaleX), (windowHeight - (windowHeight / 10) - 20) / 2));
 
 
         //Time box's sets
         timeBox = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImageDate, -30, -13, getWidth()+66, getHeight()+35, this);
+                g.drawImage(backGImageDate, (int)(-30*scaleX), (int)(-13*scaleY), (int)(getWidth()+66*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
         timeBox.setLayout(new FlowLayout(FlowLayout.CENTER,5,30));
-        timeBox.setPreferredSize(new Dimension(430, (windowHeight - (windowHeight / 10) - 20) / 2));
+        timeBox.setPreferredSize(new Dimension((int)(430*scaleX), (windowHeight - (windowHeight / 10) - 20) / 2));
 
 
         //Sets of add/remove to/from a list box
         addOrRemoveBox = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImageDate, -30, -23 , getWidth()+66, getHeight()+35, this);
+                g.drawImage(backGImageDate, (int)(-30*scaleX), (int)(-23*scaleY) , (int)(getWidth()+66*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
         addOrRemoveBox.setLayout(new FlowLayout(FlowLayout.CENTER,5,45));
@@ -177,7 +181,7 @@ public class TimeSet extends JPanel {
         listBox = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImageList, -165, -95, getWidth()+windowWidth / 4, getHeight()+(windowHeight / 10)+60, this);
+                g.drawImage(backGImageList, (int)(-165*scaleX), (int)(-95*scaleY), (int)((getWidth()+windowWidth / 4)*scaleX), (int)(getHeight()+(windowHeight / 10)+60*scaleY), this);
             }
         };
         listBox.setLayout(new GridBagLayout());
@@ -191,26 +195,26 @@ public class TimeSet extends JPanel {
 
         // Date selection components
         textForDate = new JLabel("Choose a date for instruction:");
-        textForDate.setPreferredSize(new Dimension(450, 80));
-        textForDate.setFont(new Font("Arial", Font.BOLD, 22));
+        textForDate.setPreferredSize(new Dimension((int)(450*scaleX), (int)(80*scaleY)));
+        textForDate.setFont(new Font("Arial", Font.BOLD, (int)(22*scaleY)));
         add(textForDate);
 
         yearBox = new JComboBox<>(new Integer[]{0, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040});
-        yearBox.setPreferredSize(new Dimension(80, 50));
-        yearBox.setFont(new Font("Arial", Font.BOLD, 20));
-        yearBox.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        yearBox.setPreferredSize(new Dimension((int)(80*scaleX), (int)(50*scaleY)));
+        yearBox.setFont(new Font("Arial", Font.BOLD, (int)(20*scaleY)));
+        yearBox.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
 
 
         monthBox = new JComboBox<>(new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
-        monthBox.setPreferredSize(new Dimension(80, 50));
-        monthBox.setFont(new Font("Arial", Font.BOLD, 20));
-        monthBox.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        monthBox.setPreferredSize(new Dimension((int)(80*scaleX), (int)(50*scaleY)));
+        monthBox.setFont(new Font("Arial", Font.BOLD, (int)(20*scaleY)));
+        monthBox.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
         monthBox.setVisible(false);
 
         dayBox = new JComboBox<>();
-        dayBox.setPreferredSize(new Dimension(80, 50));
-        dayBox.setFont(new Font("Arial", Font.BOLD, 20));
-        dayBox.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        dayBox.setPreferredSize(new Dimension((int)(80*scaleX), (int)(50*scaleY)));
+        dayBox.setFont(new Font("Arial", Font.BOLD, (int)(20*scaleY)));
+        dayBox.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
         dayBox.setVisible(false);
 
 
@@ -231,34 +235,34 @@ public class TimeSet extends JPanel {
 
 
         //Sets of action (on a mouse)
-        textForInstruction = createTextLabel("Choose one of the following actions: ",  new Font("Arial", Font.BOLD, 16));
-        dragOption = createTextRadioButton("Scroll", 110, 60, new Font("Arial", Font.BOLD, 17));
+        textForInstruction = createTextLabel("Choose one of the following actions: ",  new Font("Arial", Font.BOLD, (int)(16*scaleY)));
+        dragOption = createTextRadioButton("Scroll", (int)(110*scaleX), (int)(60*scaleY), new Font("Arial", Font.BOLD, (int)(17*scaleY)));
         dragOption.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif_radio.png"));
         dragOption.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif_radioON.png"));
         dragOption.setHorizontalTextPosition(SwingConstants.CENTER);
         dragOption.setOpaque(false);
-        pressOption = createTextRadioButton("Press", 110, 60, new Font("Arial", Font.BOLD, 17));
+        pressOption = createTextRadioButton("Press", (int)(110*scaleX), (int)(60*scaleY), new Font("Arial", Font.BOLD, (int)(17*scaleY)));
         pressOption.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif_radio.png"));
         pressOption.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif_radioON.png"));
         pressOption.setHorizontalTextPosition(SwingConstants.CENTER);
         pressOption.setOpaque(false);
         nameAction = new JTextField(){
             protected void paintComponent(Graphics g) {
-                g.drawImage(backGImageName, -12, -5, getWidth()+30, getHeight()+8, this);
+                g.drawImage(backGImageName, (int)(-12*scaleX), (int)(-5*scaleY), (int)(getWidth()+30*scaleX), (int)(getHeight()+8*scaleY), this);
                 super.paintComponent(g);
             }
         };
         TitledBorder titledBorder = BorderFactory.createTitledBorder("        Name your action");
         titledBorder.setTitlePosition(TitledBorder.BELOW_TOP);
-        titledBorder.setTitleFont(new Font("Arial" , Font.BOLD , 13));
+        titledBorder.setTitleFont(new Font("Arial" , Font.BOLD , (int)(13*scaleY)));
         nameAction.setPreferredSize(new Dimension(windowWidth/5 , windowHeight/12));
         nameAction.setOpaque(false);
         nameAction.setForeground(Color.WHITE);
         nameAction.setHorizontalAlignment(JTextField.CENTER);
-        nameAction.setFont(new Font("Arial" , Font.BOLD , 18));
+        nameAction.setFont(new Font("Arial" , Font.BOLD , (int)(18*scaleY)));
         nameAction.setBorder(BorderFactory.createCompoundBorder(titledBorder,null));
         buttonGroup = new ButtonGroup();  // על מנת שתהיה למשתמש רק אופציה אחת לבחירה, נשתמש בדבר הבא
-        textForInstruction.setBounds(0,400,250,70);
+        textForInstruction.setBounds(0,(int)(400*scaleY),(int)(250*scaleX),(int)(70*scaleY));
         buttonGroup.add(dragOption);
         buttonGroup.add(pressOption);
 
@@ -267,7 +271,7 @@ public class TimeSet extends JPanel {
             actionList.add(new JCheckBox(){
                 protected void paintComponent(Graphics g) {
                     if (backIChecker != null) {
-                        g.drawImage(backIChecker.getImage(), 0, 0, getWidth(), getHeight(), this);
+                        g.drawImage(backIChecker.getImage(), 0, 0, (int)(getWidth()*scaleX), (int)(getHeight()*scaleY), this);
                     }
                     super.paintComponent(g);
                 }
@@ -363,17 +367,17 @@ public class TimeSet extends JPanel {
         //Sets of starting/ending time
 
         hoursStart = createSpinner( 23);
-        hoursStart.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        hoursStart.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
         hoursEnd = createSpinner(  23);
-        hoursEnd.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        hoursEnd.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
         minutesStart = createSpinner(59);
-        minutesStart.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        minutesStart.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
         minutesEnd = createSpinner(59);
-        minutesEnd.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        minutesEnd.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
         secondStart = createSpinner(59);
-        secondStart.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        secondStart.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
         secondEnd = createSpinner(59);
-        secondEnd.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets(3, 5, 3, 5),3,0));
+        secondEnd.setBorder(new ImageBorder("src/Resources/cosmetics/Iron_frame.png",true,new Insets((int)(3*scaleY), (int)(5*scaleX), (int)(3*scaleY), (int)(5*scaleX)),(int)(3*scaleX),0));
 
         StartText = createLabel("Choose time the robot will start the instruction:");
         hoursStartLabel = createLabel("Hour:");
@@ -451,7 +455,7 @@ public class TimeSet extends JPanel {
 
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setFont(new Font("Arial", Font.BOLD, 13));
+        label.setFont(new Font("Arial", Font.BOLD, (int) (13*givenScaleY)));
         label.setForeground(Color.BLACK);
         return label;
     }

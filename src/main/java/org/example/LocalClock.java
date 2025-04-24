@@ -12,10 +12,10 @@ public class LocalClock extends JPanel {
     protected static final DateFormat CLOCK_FORMAT = new SimpleDateFormat("hh:mm:ss a");
     private JLabel clock;
 
-    public LocalClock() {
+    public LocalClock(double scaleX, double scaleY) {
         setLayout(new GridBagLayout());
         clock = new JLabel("...");
-        clock.setFont(clock.getFont().deriveFont(Font.BOLD, 24f));
+        clock.setFont(clock.getFont().deriveFont(Font.BOLD, (int)(24f*scaleY)));
         add(clock);
         updateClock();
 

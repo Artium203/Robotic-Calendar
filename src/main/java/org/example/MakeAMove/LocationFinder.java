@@ -17,7 +17,8 @@ public class LocationFinder extends JFrame {
     private MultiResolutionImage image;
     private Image picture;
     private JButton location = new JButton("Confirm Location");
-    public LocationFinder(Utils utils,ButtonPlace buttonPlace,int width,int height){
+    private double givenScaleX, givenScaleY;
+    public LocationFinder(Utils utils,ButtonPlace buttonPlace,int width,int height,double scaleX,double scaleY) {
         this.place = buttonPlace;
         try {
             Rectangle rectangle = new Rectangle(size.width,size.height);
@@ -34,7 +35,7 @@ public class LocationFinder extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.utils = utils;
 
-        location.setPreferredSize(new Dimension(50,50));
+        location.setPreferredSize(new Dimension((int)(150*scaleX),(int)(50*scaleY)));
         location.setLocation(size.width/2,0);
         location.addActionListener(e -> {
             if (circle!=null) {

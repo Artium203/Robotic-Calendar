@@ -18,6 +18,7 @@ import java.util.List;
 
 public class CalendarForProject extends JPanel {
     private static JLabel lblMonth;
+    private JLayeredPane layeredPane;
 
     //User's map of dates input and the given time
     private static int chosenYear, chosenMonth, chosenDay;
@@ -32,6 +33,8 @@ public class CalendarForProject extends JPanel {
     private static JScrollPane stblCalendar; //The scrollPanel
     private static int realYear, realMonth, realDay, currentYear, currentMonth;
     private double givenScaleX,givenScaleY;
+    ImageIcon icon = new ImageIcon("src/Resources/cosmetics/info.png");
+    private JButton infoButton = new JButton();
 
     public CalendarForProject(int windowWidth, int windowHeight, String nameAction, int chosenYear, int chosenMonth, int chosenDay,double scaleX,double scaleY) {
 
@@ -41,6 +44,9 @@ public class CalendarForProject extends JPanel {
         this.setBackground(new Color(223, 218, 104));
         givenScaleX = scaleX;
         givenScaleY = scaleY;
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension((int)(100*scaleX), (int)(20*scaleY)));
+        layeredPane.setLayout(null);
 
         //Look and feel
         try {
@@ -62,8 +68,14 @@ public class CalendarForProject extends JPanel {
         this.chosenMonth = chosenMonth;
         this.chosenDay = chosenDay;
         this.nameAction = nameAction;
+        Image image = icon.getImage().getScaledInstance((int) (icon.getIconWidth()*scaleX), (int) (icon.getIconHeight()*scaleY), Image.SCALE_SMOOTH);
+        infoButton.setIcon(new ImageIcon(image));
+        infoButton.setBounds((int) (650*scaleX),0,(int) (20*scaleX), (int) (20*scaleY));
+        infoButton.setOpaque(false);
+        infoButton.setBorderPainted(false);
 
         lblMonth = new JLabel("January");
+        lblMonth.setBounds((int) (260*scaleX),0,(int)(100*scaleX), (int)(20*scaleY));
         btnPrev = new JButton("Prev");
         btnPrev.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         btnNext = new JButton("Next");
@@ -85,12 +97,15 @@ public class CalendarForProject extends JPanel {
         btnPrev.addActionListener(new btnPrev_Action());
         btnNext.addActionListener(new btnNext_Action());
 
-        this.add(lblMonth, BorderLayout.NORTH);
+        layeredPane.add(lblMonth,JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(infoButton,JLayeredPane.PALETTE_LAYER);
+
+        this.add(layeredPane, BorderLayout.NORTH);
         this.add(btnPrev, BorderLayout.WEST);
         this.add(btnNext, BorderLayout.EAST);
 
         // Sets
-        lblMonth.setPreferredSize(new Dimension((int)(50*scaleX), (int)(20*scaleY)));
+//        lblMonth.setPreferredSize(new Dimension((int)(50*scaleX), (int)(20*scaleY)));
         lblMonth.setHorizontalTextPosition(JLabel.CENTER);
         lblMonth.setFont(new Font("SansSerif", Font.BOLD, (int)(12*scaleY)));
 

@@ -78,6 +78,21 @@ public class MAM extends JPanel implements ButtonPlace {
     private final Image backGImageRock;
     private final Image backIChecker;
     private double givenScaleX, givenScaleY;
+    private ImageIcon unScaledIcon = new ImageIcon("src/Resources/cosmetics/checker_empty.png");
+    private ImageIcon unScaledCheckedIcon = new ImageIcon("src/Resources/cosmetics/checker.png");
+    ImageIcon icon = new ImageIcon("src/Resources/cosmetics/info.png");
+    private JButton infoButtonToLive = new JButton();
+    private JButton infoButtonRep = new JButton();
+    private JButton infoButtonNorP = new JButton();
+    private JButton infoButtonLoc = new JButton();
+    private JButton infoButtonList = new JButton();
+    private JButton infoButtonCon = new JButton();
+    private JLayeredPane layeredToLive = new JLayeredPane();
+    private JLayeredPane layeredRep = new JLayeredPane();
+    private JLayeredPane layeredNorP = new JLayeredPane();
+    private JLayeredPane layeredLoc = new JLayeredPane();
+    private JLayeredPane layeredList = new JLayeredPane();
+    private JLayeredPane layeredCon = new JLayeredPane();
 
     {
         try {
@@ -99,22 +114,39 @@ public class MAM extends JPanel implements ButtonPlace {
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setPreferredSize(new Dimension(windowWidth - 8, windowHeight - (windowHeight / 10) - 11));
         this.setVisible(false);
+        Image scaledImage = unScaledIcon.getImage().getScaledInstance((int) (unScaledIcon.getIconWidth()*scaleX), (int) (unScaledIcon.getIconHeight()*scaleY), Image.SCALE_SMOOTH);
+        Image scaledCheckerIcon = unScaledCheckedIcon.getImage().getScaledInstance((int) (unScaledCheckedIcon.getIconWidth()*scaleX), (int) (unScaledCheckedIcon.getIconHeight()*scaleY), Image.SCALE_SMOOTH);
         this.utils = util;
+        layeredList.setPreferredSize(new Dimension(windowWidth / 4, 31 + (windowHeight / 6) * 5));
         sizeOfList = actionList.size();
         endHour=endHourGiven;
         endMinute=endMinuteGiven;
         endSecond=endSecondGiven;
         givenScaleX = scaleX;
         givenScaleY = scaleY;
+        Image image = icon.getImage().getScaledInstance((int) (icon.getIconWidth()*scaleX), (int) (icon.getIconHeight()*scaleY), Image.SCALE_SMOOTH);
+        setInfoButton(infoButtonToLive, image);
+        infoButtonToLive.setBounds((int) (5*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
+        setInfoButton(infoButtonRep, image);
+        infoButtonRep.setBounds((int) (465*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
+        setInfoButton(infoButtonNorP, image);
+        infoButtonNorP.setBounds((int) (465*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
+        setInfoButton(infoButtonLoc, image);
+        infoButtonLoc.setBounds((int) (465*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
+        setInfoButton(infoButtonList, image);
+        infoButtonList.setBounds((int) (315*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
+        setInfoButton(infoButtonCon, image);
+        infoButtonCon.setBounds((int) (5*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
 
         //Setting for List of Check boxes
         boxList = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImageList, -74, -100, getWidth()+150, getHeight()+170, this);
+                g.drawImage(backGImageList, (int) (-84*scaleX), (int) (-100*scaleY), (int) (getWidth()+170*scaleX), (int) (getHeight()+170*scaleY), this);
             }
         };
-        boxList.setPreferredSize(new Dimension(windowWidth / 4, 31 + (windowHeight / 6) * 5));
+        boxList.setBounds((int) (-3*scaleX),0, (int) (355*scaleX), (int) (650*scaleY));
+//        boxList.setPreferredSize(new Dimension(windowWidth / 4, 31 + (windowHeight / 6) * 5));
         boxList.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("List Of Commands"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         ButtonGroup checkGroup = new ButtonGroup();
@@ -129,9 +161,10 @@ public class MAM extends JPanel implements ButtonPlace {
         repeat = new JPanel(){
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backGImage, -30, -15 , getWidth()+56, getHeight()+35, this);
+                g.drawImage(backGImage, (int)(-30*scaleX), (int)(-15*scaleY) , (int)(getWidth()+56*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
+        repeat.setBounds(0,0, (int) (500*scaleX), (int) (225*scaleY));
         repeat.setBorder(setBorders("              Repeats"));
         repeat.setLayout(new FlowLayout(FlowLayout.CENTER));
         //Loop declares if there shall be a loop
@@ -144,6 +177,7 @@ public class MAM extends JPanel implements ButtonPlace {
             }
         };
         loop.setOpaque(false);
+        loop.setFont(new Font("SansSerif", Font.PLAIN, (int) (12*scaleY)));
         loop.setIcon(new ImageIcon("src/Resources/cosmetics/checker_empty.png"));
         loop.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/checker.png"));
         loop.setPreferredSize(new Dimension(windowWidth / 15, (windowHeight / 10) - 15));
@@ -171,22 +205,25 @@ public class MAM extends JPanel implements ButtonPlace {
         countOfRepeat = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
         countOfRepeat.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
         countOfRepeat.setBorder(new GradientTitled("Counter",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,(int)(1*scaleX),0,0,0));
+                null,(int)(1*scaleX),0,0,0,scaleY));
         ((JSpinner.DefaultEditor) countOfRepeat.getEditor()).getTextField().setEditable(false);
         repeat.add(countOfRepeat);
 
         // Time input for the action to repeat
         frequencyAmountHour = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         frequencyAmountHour.setBorder(new GradientTitled("Hours",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,(int)(1*scaleX),0,0,0));
+                null,(int)(1*scaleX),0,0,0,scaleY));
+        frequencyAmountHour.setFont(new Font("SansSerif", Font.PLAIN, (int) (12*scaleY)));
 
         frequencyAmountMinute = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         frequencyAmountMinute.setBorder(new GradientTitled("Minutes",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,(int)(1*scaleX),0,0,0));
+                null,(int)(1*scaleX),0,0,0,scaleY));
+        frequencyAmountMinute.setFont(new Font("SansSerif", Font.PLAIN, (int) (12*scaleY)));
 
         frequencyAmountSecond = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         frequencyAmountSecond.setBorder(new GradientTitled("Seconds",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,(int)(1*scaleX),0,0,0));
+                null,(int)(1*scaleX),0,0,0,scaleY));
+        frequencyAmountSecond.setFont(new Font("SansSerif", Font.PLAIN, (int) (12*scaleY)));
 
         ((JSpinner.DefaultEditor) frequencyAmountHour.getEditor()).getTextField().setEditable(false);
         ((JSpinner.DefaultEditor) frequencyAmountMinute.getEditor()).getTextField().setEditable(false);
@@ -207,26 +244,30 @@ public class MAM extends JPanel implements ButtonPlace {
                 g.drawImage(backGImage, (int)(-30*scaleX), (int)(-15*scaleY) ,(int) (getWidth()+56*scaleX), (int)(getHeight()+35*scaleY), this);
             }
         };
+        timeToLive.setBounds(0,0, (int) (500*scaleX), (int) (225*scaleY));
         timeToLive.setBorder(setBorders("              Time For Loop To Live"));
         lifeHour = new JSpinner(new SpinnerNumberModel(0, 0, 23, 1));
+        lifeHour.setFont(new Font("SansSerif", Font.PLAIN, (int) (12*scaleY)));
 
         ((JSpinner.DefaultEditor) lifeHour.getEditor()).getTextField().setEditable(false);
         lifeHour.setBorder(new GradientTitled("Hour",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,(int)(1*scaleX),0,0,0));
+                null,(int)(1*scaleX),0,0,0,scaleY));
         lifeHour.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
 
 
         lifeMinute = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         ((JSpinner.DefaultEditor) lifeMinute.getEditor()).getTextField().setEditable(false);
         lifeMinute.setBorder(new GradientTitled("Minute",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,(int)(1*scaleX),0,0,0));
+                null,(int)(1*scaleX),0,0,0,scaleY));
         lifeMinute.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
+        lifeMinute.setFont(new Font("SansSerif", Font.PLAIN, (int) (12*scaleY)));
 
         lifeSecond = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         ((JSpinner.DefaultEditor) lifeSecond.getEditor()).getTextField().setEditable(false);
         lifeSecond.setBorder(new GradientTitled("Second",Color.BLACK,Color.black,"src/Resources/cosmetics/Iron_frame.png",
-                null,(int)(1*scaleX),0,0,0));
+                null,(int)(1*scaleX),0,0,0,scaleY));
         lifeSecond.setPreferredSize(new Dimension(windowWidth / 17, (windowHeight / 10) - 15));
+        lifeSecond.setFont(new Font("SansSerif", Font.PLAIN, (int) (12*scaleY)));
         lifeHour.setEnabled(false);
         lifeMinute.setEnabled(false);
         lifeSecond.setEnabled(false);
@@ -242,10 +283,12 @@ public class MAM extends JPanel implements ButtonPlace {
             }
         };
 //        nextOrPrevious.setBackground(Color.red);
+        nextOrPrevious.setBounds(0,0, (int) (500*scaleX), (int) (225*scaleY));
         nextOrPrevious.setLayout(new BorderLayout(0, 10));
         nextOrPrevious.setBorder(setBorders("              Go Back/Go Forward"));
         next.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
         next.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(next)2.png"));
+        next.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         next.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(next)2 - Copy.png"));
         next.setOpaque(false);
         next.setBorderPainted(false);
@@ -253,6 +296,7 @@ public class MAM extends JPanel implements ButtonPlace {
         previous.setPreferredSize(new Dimension(windowWidth / 6, windowHeight / 8));
         previous.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(per).png"));
         previous.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-crop(perv)2 - Copy.png"));
+        previous.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         previous.setEnabled(false);
         previous.setOpaque(false);
         previous.setBorderPainted(false);
@@ -267,12 +311,14 @@ public class MAM extends JPanel implements ButtonPlace {
             }
         };
 //        timeMonitor.setBackground(Color.GREEN);
+        timeMonitor.setBounds(0,0, (int) (500*scaleX), (int) (225*scaleY));
         timeMonitor.setLayout(new FlowLayout(FlowLayout.CENTER,45,30));
         timeMonitor.setEnabled(false);
         confirmSelection.setPreferredSize(new Dimension((windowWidth/3)-4,(windowHeight/5)-3));
         confirmSelection.setIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-cropsd3.png"));
         confirmSelection.setSelectedIcon(new ImageIcon("src/Resources/cosmetics/ezgif.com-cropsd3(selected).png"));
         confirmSelection.setHorizontalTextPosition(SwingConstants.CENTER);
+        confirmSelection.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         confirmSelection.setVerticalTextPosition(SwingConstants.CENTER);
         confirmSelection.setBorderPainted(false);
         confirmSelection.setOpaque(false);
@@ -289,8 +335,10 @@ public class MAM extends JPanel implements ButtonPlace {
             }
         };
 //        location.setBackground(Color.MAGENTA);
+        location.setBounds(0,0, (int) (500*scaleX), (int) (225*scaleY));
         location.setLayout(new GridLayout());
         location.setBorder(setBorders("              Point Robot's Action Point"));
+        pointLocation.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         for (ActionListener al : pointLocation.getActionListeners()){
             pointLocation.removeActionListener(al);
         }
@@ -321,16 +369,18 @@ public class MAM extends JPanel implements ButtonPlace {
                 "                be saved and then click continue, make sure to time them<br>" +
                 "                correctly from your previous input.</html>");
         instructionsText.setForeground(Color.WHITE);
+        instructionsText.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         instructionsText.setPreferredSize(new Dimension(windowWidth / 3,windowHeight/4));
         instructionsText.setHorizontalAlignment(SwingConstants.CENTER);
 
         if (!actionList.isEmpty()) {
             for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
                 performanceList.add(new MyCheckBoxUI(actionList.get(i),"src/Resources/cosmetics/checker_text.png",scaleX,scaleY));
-                performanceList.get(i).setPreferredSize(new Dimension((windowWidth / 6), (windowHeight / 10) - 15));
+                performanceList.get(i).setPreferredSize(new Dimension((int) (150*scaleX), (int) (65*scaleY)));
                 performanceList.get(i).setText(actionList.get(i));
-                performanceList.get(i).setIcon(new ImageIcon("src/Resources/cosmetics/checker_empty.png"));
-                performanceList.get(i).setSelectedIcon(new ImageIcon("src/Resources/cosmetics/checker.png"));
+                performanceList.get(i).setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
+                performanceList.get(i).setIcon(new ImageIcon(scaledImage));
+                performanceList.get(i).setSelectedIcon(new ImageIcon(scaledCheckerIcon));
                 boxList.add(performanceList.get(i));
                 checkGroup.add(performanceList.get(i));
                 performanceList.get(i).setEnabled(false);
@@ -511,16 +561,27 @@ public class MAM extends JPanel implements ButtonPlace {
 
 
         instructions.add(instructionsText);
-        boxOfCommand.add(repeat);
-        boxOfCommand.add(timeToLive);
-        boxOfCommand.add(nextOrPrevious);
-        boxOfCommand.add(timeMonitor);
-        boxOfCommand.add(location);
+        layeredRep.add(infoButtonRep,JLayeredPane.PALETTE_LAYER);
+        layeredRep.add(repeat,JLayeredPane.DEFAULT_LAYER);
+        boxOfCommand.add(layeredRep);
+        layeredToLive.add(infoButtonToLive,JLayeredPane.PALETTE_LAYER);
+        layeredToLive.add(timeToLive,JLayeredPane.DEFAULT_LAYER);
+        boxOfCommand.add(layeredToLive);
+        layeredNorP.add(infoButtonNorP,JLayeredPane.PALETTE_LAYER);
+        layeredNorP.add(nextOrPrevious,JLayeredPane.DEFAULT_LAYER);
+        boxOfCommand.add(layeredNorP);
+        layeredCon.add(infoButtonCon,JLayeredPane.PALETTE_LAYER);
+        layeredCon.add(timeMonitor,JLayeredPane.DEFAULT_LAYER);
+        boxOfCommand.add(layeredCon);
+        layeredLoc.add(infoButtonLoc,JLayeredPane.PALETTE_LAYER);
+        layeredLoc.add(location,JLayeredPane.DEFAULT_LAYER);
+        boxOfCommand.add(layeredLoc);
         boxOfCommand.add(instructions);
         //Actions
 
-
-        this.add(boxList);
+        layeredList.add(infoButtonList,JLayeredPane.PALETTE_LAYER);
+        layeredList.add(boxList,JLayeredPane.DEFAULT_LAYER);
+        this.add(layeredList);
         this.add(boxOfCommand);
     }
 
@@ -590,9 +651,14 @@ public class MAM extends JPanel implements ButtonPlace {
     public void setCurrentIndex(int currentIndex) {this.currentIndex = currentIndex;}
     private TitledBorder setBorders(String text){
         TitledBorder titledBorder = new GradientTitled(text,new Color(255, 255, 255), new Color(250, 250, 250),
-                "src/Resources/cosmetics/Iron_frame.png",null,(int)(12*givenScaleX),0,(int)(24*givenScaleX),0);
+                "src/Resources/cosmetics/Iron_frame.png",null,(int)(12*givenScaleX),0,(int)(24*givenScaleX),0,givenScaleY);
         titledBorder.setTitlePosition(TitledBorder.BELOW_TOP);
         titledBorder.setTitleFont(new Font("Arial" , Font.BOLD , (int)(16*givenScaleY)));
         return titledBorder;
+    }
+    private void setInfoButton(JButton button,Image image) {
+        button.setIcon(new ImageIcon(image));
+        button.setOpaque(false);
+        button.setBorderPainted(false);
     }
 }

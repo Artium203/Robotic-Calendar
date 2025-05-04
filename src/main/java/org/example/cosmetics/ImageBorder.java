@@ -10,10 +10,10 @@ public class ImageBorder implements Border {
     private final Insets inset;
     private final  int width,height;
 
-    public ImageBorder(String imagePath,boolean visabel,Insets insetses,int widthG,int heightG) {
+    public ImageBorder(String imagePath,boolean visabel,Insets inserts,int widthG,int heightG) {
         this.borderImage = new ImageIcon(imagePath).getImage();
         this.opaque = visabel;
-        this.inset=insetses;
+        this.inset=inserts;
         this.width =widthG;
         this.height=heightG;
     }

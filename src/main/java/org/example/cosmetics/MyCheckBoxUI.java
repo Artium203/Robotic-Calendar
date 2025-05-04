@@ -15,7 +15,7 @@ public class MyCheckBoxUI extends JCheckBox {
     }
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(backgroundImage, 0, 0,(int)(getWidth()*givenScaleX),(int)(getHeight()*givenScaleY), this);
+        g.drawImage(backgroundImage, 0, 0,getWidth(),getHeight(), this);
         super.paintComponent(g);
     }
 }

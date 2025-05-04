@@ -11,8 +11,9 @@ public class GradientTitled extends TitledBorder {
     private final Insets insets;
     private final int xG,yG,widthG,heightG;
 
-    public GradientTitled(String title, Color startColor, Color endColor,String imagePath, Insets insetsG,int x,int y,int width, int height){
+    public GradientTitled(String title, Color startColor, Color endColor,String imagePath, Insets insetsG,int x,int y,int width, int height,double scaleY){
         super(title);
+        this.setTitleFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         this.startColor = startColor;
         this.endColor = endColor;
         this.borderImage = new ImageIcon(imagePath).getImage();

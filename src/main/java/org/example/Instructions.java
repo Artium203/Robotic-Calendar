@@ -9,10 +9,11 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Instructions extends JLayeredPane {
+public class Instructions extends JPanel {
 //    private static final JButton startButton = new JButton("start"); // To start/continue the action
     private final JTextPane instructionsArea; // Helps the user around
     Image backgroundImage;
+    private JLayeredPane layeredPane;
 
     {
         try {
@@ -21,7 +22,8 @@ public class Instructions extends JLayeredPane {
             throw new RuntimeException(e);
         }
     }
-    private final int buttonWidth;
+    ImageIcon icon = new ImageIcon("src/Resources/cosmetics/info.png");
+    private JButton infoButton = new JButton();
     private double givenScaleX=1.0;
     private double givenScaley=1.0;
 
@@ -33,9 +35,18 @@ public class Instructions extends JLayeredPane {
         this.setPreferredSize(new Dimension(windowWidth-16,(windowHeight/2)-(windowHeight/10)-20));
         //Text and button sets
         int clearSpace = (windowWidth-16)-(((windowWidth-16)/2)+(windowWidth-16)/7)-(windowWidth-16)/8;
+        Image image = icon.getImage().getScaledInstance((int) (icon.getIconWidth()*scaleX), (int) (icon.getIconHeight()*scaleY), Image.SCALE_SMOOTH);
+        infoButton.setIcon(new ImageIcon(image));
+        infoButton.setPreferredSize(new Dimension((int) (50*scaleX), (int) (50*scaleY)));
+        infoButton.setOpaque(false);
+        infoButton.setBorderPainted(false);
         givenScaleX=scaleX;
         givenScaley=scaleY;
-        buttonWidth = startButton.getWidth();
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
+        infoButton.setBounds(layeredPane.getWidth()/2,0,(int) (50*scaleX), (int) (50*scaleY));
+        layeredPane.add(startButton,JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(infoButton,JLayeredPane.PALETTE_LAYER);
         instructionsArea = new JTextPane();
         instructionsArea.setEnabled(false);
         instructionsArea.setDisabledTextColor(Color.black);
@@ -53,10 +64,10 @@ public class Instructions extends JLayeredPane {
 
         //Adds to panel
         this.add(instructionsArea);
-        this.add(startButton);
+        this.add(layeredPane);
     }
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, (int)(-40*givenScaleX),(int) (-25*givenScaley), (int)(getWidth()-buttonWidth-105*givenScaleX), (int)(getHeight()*givenScaley), this);
+        g.drawImage(backgroundImage, (int)(-40*givenScaleX),(int) (-25*givenScaley), (int)(getWidth()-105*givenScaleX), (int)(getHeight()*givenScaley), this);
     }
 }

@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InfoPanel extends JPanel {
+public class InfoPanel extends JLayeredPane {
     private JPanel listPanel;
     private JLabel listActionTime;
 
@@ -37,6 +37,8 @@ public class InfoPanel extends JPanel {
     private final Image backgroundImage;
     private double givenScaleX;
     private double givenScaleY;
+    ImageIcon icon = new ImageIcon("src/Resources/cosmetics/info.png");
+    private JButton infoButton = new JButton();
 
     {
         try {
@@ -52,6 +54,11 @@ public class InfoPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.setVisible(false);
         this.setPreferredSize(new Dimension((windowWidth/2)-17,windowHeight/2));
+        Image image = icon.getImage().getScaledInstance((int) (icon.getIconWidth()*scaleX), (int) (icon.getIconHeight()*scaleY), Image.SCALE_SMOOTH);
+        infoButton.setIcon(new ImageIcon(image));
+        infoButton.setPreferredSize(new Dimension((int) (50*scaleX), (int) (50*scaleY)));
+        infoButton.setOpaque(false);
+        infoButton.setBorderPainted(false);
         givenScaleX = scaleX;
         givenScaleY = scaleY;
         chosenYear=year;
@@ -73,7 +80,8 @@ public class InfoPanel extends JPanel {
         listActionTime.setVerticalAlignment(SwingConstants.CENTER);
         listActionTime.setText("<html> "+ lastTwoPlansString()+ "</html>");
         listActionTime.setFont(new Font("Arial", Font.PLAIN, (int) (12*scaleY)));
-        this.add(listActionTime,BorderLayout.CENTER);
+        this.add(infoButton,BorderLayout.NORTH,JLayeredPane.PALETTE_LAYER);
+        this.add(listActionTime,BorderLayout.CENTER,JLayeredPane.DEFAULT_LAYER);
     }
     public String lastTwoPlansString(){
         StringBuilder get = new StringBuilder();
@@ -146,6 +154,6 @@ public class InfoPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Draw the background image
-        g.drawImage(backgroundImage, (int) (0*givenScaleX),(int) (-50*givenScaleY), getWidth(),(int) (getHeight()+100*givenScaleY), this);
+        g.drawImage(backgroundImage, 0,(int) (-50*givenScaleY), getWidth(),(int) (getHeight()+100*givenScaleY), this);
     }
 }

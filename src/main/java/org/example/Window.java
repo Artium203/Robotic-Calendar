@@ -18,7 +18,7 @@ import java.util.List;
 public class Window extends JFrame implements ActionListener,Utils {
     private static Container panel; // Contains the frame of the window mainly used of the calendar at the moment
     public final int BASE_WIDTH = 1360;
-    public final int BASE_HEIGHT = 760;
+    public final int BASE_HEIGHT = 768;
 
 
     private InfoPanel infoPanel; // Shows the list of actions that user have made
@@ -188,7 +188,7 @@ public class Window extends JFrame implements ActionListener,Utils {
             confirmSelection.removeActionListener(al);
         }
         confirmSelection.addActionListener(this);
-        startButton.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
+        startButton.setBounds(0,0,(windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25);
         startButton.setHorizontalTextPosition(SwingConstants.CENTER);
         startButton.setVerticalTextPosition(SwingConstants.CENTER);
         startButton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -321,7 +321,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         if (confirmSelection.getActionListeners().length<1) {
             confirmSelection.addActionListener(this);
         }
-        startButton.setPreferredSize(new Dimension((windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25));
+        startButton.setBounds(0,0,(windowWidth-16)/8,(windowHeight/2)-(windowHeight/10)-25);
         startButton.setHorizontalTextPosition(SwingConstants.CENTER);
         startButton.setVerticalTextPosition(SwingConstants.CENTER);
         startButton.setHorizontalAlignment(SwingConstants.CENTER);

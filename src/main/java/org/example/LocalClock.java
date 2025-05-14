@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.VoiceHandler.Voices;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

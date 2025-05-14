@@ -1,11 +1,16 @@
 package org.example;
 
+import org.example.VoiceHandler.VoiceManager;
+
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.GregorianCalendar;
 import javax.swing.*;
@@ -35,6 +40,7 @@ public class CalendarForProject extends JPanel {
     private double givenScaleX,givenScaleY;
     ImageIcon icon = new ImageIcon("src/Resources/cosmetics/info.png");
     private JButton infoButton = new JButton();
+
 
     public CalendarForProject(int windowWidth, int windowHeight, String nameAction, int chosenYear, int chosenMonth, int chosenDay,double scaleX,double scaleY) {
 
@@ -73,6 +79,17 @@ public class CalendarForProject extends JPanel {
         infoButton.setBounds((int) (650*scaleX),0,(int) (20*scaleX), (int) (20*scaleY));
         infoButton.setOpaque(false);
         infoButton.setBorderPainted(false);
+        for (ActionListener al : infoButton.getActionListeners()) {
+            infoButton.removeActionListener(al);
+        }
+        infoButton.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(0,18000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         lblMonth = new JLabel("January");
         lblMonth.setBounds((int) (260*scaleX),0,(int)(100*scaleX), (int)(20*scaleY));

@@ -2,6 +2,7 @@ package org.example.MakeAMove;
 
 import org.example.ButtonPlace;
 import org.example.Utils;
+import org.example.VoiceHandler.VoiceManager;
 import org.example.cosmetics.GradientTitled;
 import org.example.cosmetics.MyCheckBoxUI;
 
@@ -126,16 +127,82 @@ public class MAM extends JPanel implements ButtonPlace {
         givenScaleY = scaleY;
         Image image = icon.getImage().getScaledInstance((int) (icon.getIconWidth()*scaleX), (int) (icon.getIconHeight()*scaleY), Image.SCALE_SMOOTH);
         setInfoButton(infoButtonToLive, image);
+        for (ActionListener al : infoButtonToLive.getActionListeners()) {
+            infoButtonToLive.removeActionListener(al);
+        }
+        infoButtonToLive.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(124000*1000,127000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonToLive.setBounds((int) (5*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonRep, image);
+        for (ActionListener al : infoButtonRep.getActionListeners()) {
+            infoButtonRep.removeActionListener(al);
+        }
+        infoButtonRep.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(111000*1000,124000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonRep.setBounds((int) (465*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonNorP, image);
+        for (ActionListener al : infoButtonNorP.getActionListeners()) {
+            infoButtonNorP.removeActionListener(al);
+        }
+        infoButtonNorP.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(127000*1000,132000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonNorP.setBounds((int) (465*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonLoc, image);
+        for (ActionListener al : infoButtonLoc.getActionListeners()) {
+            infoButtonLoc.removeActionListener(al);
+        }
+        infoButtonLoc.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(132000*1000,139000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonLoc.setBounds((int) (465*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonList, image);
+        for (ActionListener al : infoButtonList.getActionListeners()) {
+            infoButtonList.removeActionListener(al);
+        }
+        infoButtonList.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(106000*1000,111000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonList.setBounds((int) (315*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonCon, image);
+        for (ActionListener al : infoButtonCon.getActionListeners()) {
+            infoButtonCon.removeActionListener(al);
+        }
+        infoButtonCon.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(139000*1000,167000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonCon.setBounds((int) (5*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
 
         //Setting for List of Check boxes

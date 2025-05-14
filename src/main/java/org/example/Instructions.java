@@ -1,11 +1,14 @@
 package org.example;
 
+import org.example.VoiceHandler.VoiceManager;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -40,6 +43,17 @@ public class Instructions extends JPanel {
         infoButton.setPreferredSize(new Dimension((int) (50*scaleX), (int) (50*scaleY)));
         infoButton.setOpaque(false);
         infoButton.setBorderPainted(false);
+        for (ActionListener al : infoButton.getActionListeners()) {
+            infoButton.removeActionListener(al);
+        }
+        infoButton.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(26000*1000,41500);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         givenScaleX=scaleX;
         givenScaley=scaleY;
         layeredPane = new JLayeredPane();

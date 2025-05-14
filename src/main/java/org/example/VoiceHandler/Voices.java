@@ -1,4 +1,4 @@
-package org.example;
+package org.example.VoiceHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +12,12 @@ import java.util.List;
 
 
 public class Voices extends JFrame {
+    private static final String[] AUDIO_EXTENSIONS = {".mp3", ".wav", ".ogg", ".flac", ".aac", ".m4a"};
+    private static final String[] VIDEO_EXTENSIONS = {".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv"};
     private DefaultComboBoxModel<File> fileComboBoxModel;
     private JComboBox<File> fileComboBox;
-    private File voicesFile = new File("C:\\Users\\Public\\Documents");
+    private File voicesFile = new File("src/main/java/org/example/VoiceHandler/Voices");
+    private JProgressBar progressBar;
     public Voices(double scaleX, double scaleY) {
         super("File Spinner Manager");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -23,7 +26,7 @@ public class Voices extends JFrame {
         if (!voicesFile.exists()) {
             voicesFile.mkdir();
         }
-
+        progressBar = new JProgressBar();
         fileComboBoxModel = new DefaultComboBoxModel<>();
         fileComboBox = new JComboBox<>(fileComboBoxModel);
         fileComboBox.setPreferredSize(new Dimension((int) (300*scaleX), (int) (25*scaleY)));
@@ -33,7 +36,7 @@ public class Voices extends JFrame {
 
         addButton.addActionListener(e -> addFile());
         removeButton.addActionListener(e -> removeSelectedFile());
-        fileComboBoxModel.addElement(new File("src/ImageTitledBorder.java"));
+        fileComboBoxModel.addElement(new File("src/main/java/org/example/VoiceHandler/defaultVoice.wav"));
         if (voicesFile.exists() && isFolderNotEmpty(voicesFile)) {
             for (File f : voicesFile.listFiles()) {
                 fileComboBoxModel.addElement(f);
@@ -43,18 +46,43 @@ public class Voices extends JFrame {
         JPanel topPanel = new JPanel();
         JLabel rules = new JLabel();
         rules.setFont(new Font("Serif", Font.BOLD, (int) (12*scaleY)));
-        rules.setText("Please select a file that is an audio or video");
+        rules.setText("Please select a file that is an audio or video for your voice");
         JTextArea selectedVoice = new JTextArea();
         selectedVoice.setPreferredSize(new Dimension((int) (300*scaleX), (int) (25*scaleY)));
         selectedVoice.setFont(new Font("Serif", Font.BOLD, (int) (12*scaleY)));
         selectedVoice.setText("Selected Voice:"+fileComboBoxModel.getElementAt(0));
         JButton confirm = new JButton("Confirm choice");
         confirm.addActionListener(e -> {
-            selectedVoice.setText("Selected Voice:"+fileComboBox.getSelectedItem().toString());
-            try {
-                copyFileToFolder(new File(fileComboBox.getSelectedItem().toString()),voicesFile);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            if (!isAudioOrVideoFile((File) fileComboBox.getSelectedItem())){
+                JOptionPane.showMessageDialog(null,"PLEASE PUT VIDEO FILE OR AUDIO FILE ONLY","ERROR",JOptionPane.ERROR_MESSAGE);
+                removeSelectedFile();
+            }else {
+                selectedVoice.setText("Selected Voice:"+fileComboBox.getSelectedItem().toString());
+                JDialog progressDialog = createProgressDialog();
+
+                SwingWorker<Void, Void> worker = new SwingWorker<>() {
+                    @Override
+                    protected Void doInBackground() {
+                        try {
+                            VoiceCaller voiceCaller = new VoiceCaller(fileComboBox.getSelectedItem().toString());
+                            if (fileComboBox.getSelectedItem() != fileComboBoxModel.getElementAt(0)) {
+                                copyFileToFolder((File) fileComboBox.getSelectedItem(), voicesFile);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        progressDialog.dispose();
+                    }
+                };
+
+                worker.execute();
+                progressDialog.setVisible(true);
             }
         });
         topPanel.add(fileComboBox);
@@ -73,6 +101,7 @@ public class Voices extends JFrame {
 
     private void addFile() {
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new VoiceFilters());
         int option = fileChooser.showOpenDialog(this);
         if (option == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
@@ -141,4 +170,31 @@ public class Voices extends JFrame {
         }
         return false;
     }
+    public static boolean isAudioOrVideoFile(File file) {
+        if (file == null || !file.isFile()) return false;
+
+        String name = file.getName().toLowerCase();
+        for (String ext : AUDIO_EXTENSIONS) {
+            if (name.endsWith(ext)) return true;
+        }
+        for (String ext : VIDEO_EXTENSIONS) {
+            if (name.endsWith(ext)) return true;
+        }
+        return false;
+    }
+    private JDialog createProgressDialog() {
+        JDialog dialog = new JDialog(this, "Processing Voice...", Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.setSize(300, 100);
+        dialog.setLocationRelativeTo(this);
+
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setString("Processing... It may take a while...");
+        progressBar.setStringPainted(true);
+
+        dialog.getContentPane().add(progressBar, BorderLayout.CENTER);
+        return dialog;
+    }
+
 }

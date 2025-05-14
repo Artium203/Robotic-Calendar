@@ -1,8 +1,11 @@
 package org.example;
 
+import org.example.VoiceHandler.VoiceManager;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
@@ -59,6 +62,17 @@ public class InfoPanel extends JLayeredPane {
         infoButton.setPreferredSize(new Dimension((int) (50*scaleX), (int) (50*scaleY)));
         infoButton.setOpaque(false);
         infoButton.setBorderPainted(false);
+        for (ActionListener al : infoButton.getActionListeners()) {
+            infoButton.removeActionListener(al);
+        }
+        infoButton.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound((long) 18000*1000,26000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         givenScaleX = scaleX;
         givenScaleY = scaleY;
         chosenYear=year;

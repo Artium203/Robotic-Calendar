@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.VoiceHandler.VoiceManager;
 import org.example.cosmetics.ImageBorder;
 
 import javax.imageio.ImageIO;
@@ -112,14 +113,69 @@ public class TimeSet extends JPanel {
         givenScaleY = scaleY;
         Image image = icon.getImage().getScaledInstance((int) (icon.getIconWidth()*scaleX), (int) (icon.getIconHeight()*scaleY), Image.SCALE_SMOOTH);
         setInfoButton(infoButtonPer, image);
+        for (ActionListener al : infoButtonPer.getActionListeners()) {
+            infoButtonPer.removeActionListener(al);
+        }
+        infoButtonPer.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(68000*1000,75000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonPer.setBounds((int) (305*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonDate, image);
+        for (ActionListener al : infoButtonDate.getActionListeners()) {
+            infoButtonDate.removeActionListener(al);
+        }
+        infoButtonDate.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(41000*1000,51000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonDate.setBounds((int) (305*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonTime, image);
+        for (ActionListener al : infoButtonTime.getActionListeners()) {
+            infoButtonTime.removeActionListener(al);
+        }
+        infoButtonTime.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(51000*1000,68000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonTime.setBounds((int) (305*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonAorR, image);
+        for (ActionListener al : infoButtonAorR.getActionListeners()) {
+            infoButtonAorR.removeActionListener(al);
+        }
+        infoButtonAorR.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(75000*1000,89000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonAorR.setBounds((int) (305*givenScaleX),0,(int) (30*givenScaleX), (int) (30*givenScaleY));
         setInfoButton(infoButtonList, image);
+        for (ActionListener al : infoButtonList.getActionListeners()) {
+            infoButtonList.removeActionListener(al);
+        }
+        infoButtonList.addActionListener(e -> {
+            VoiceManager voiceManager=new VoiceManager();
+            try {
+                voiceManager.playSound(89000*1000,106000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         infoButtonList.setBounds((int) (315*givenScaleX), (int) (45*scaleY),(int) (50*givenScaleX), (int) (50*givenScaleY));
         confirm.setFont(new Font("Colonna MT", Font.BOLD, (int)(33*scaleY)));
         confirm.setVerticalAlignment(SwingConstants.NORTH);

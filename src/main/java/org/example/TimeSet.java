@@ -515,6 +515,7 @@ public class TimeSet extends JPanel {
             monthBox.setVisible(true);
             chosenYear = (int) yearBox.getSelectedItem();
         }
+        System.out.println(yearBox.getActionListeners().length);
     }
     private void monthSelection() {
         if (!Objects.equals(monthBox.getSelectedItem(), 0) && !Objects.equals(yearBox.getSelectedItem(), 0)) {
@@ -565,27 +566,6 @@ public class TimeSet extends JPanel {
 
         return jSpinner;
     }
-
-    //Making/Drawing the fences
-//    public void drawRectangles(Graphics g) {
-//
-//        Graphics2D graphics2D = (Graphics2D) g; // Makes the graphics be more advanced as Graphics2D to make implementations in 2D
-//        Stroke borderStroke = new BasicStroke(6);
-//
-//        JPanel[] panels = {dateBox, performanceBox, timeBox, addOrRemoveBox};
-//        for(JPanel panel : panels) {
-//            Stroke boringStroke = graphics2D.getStroke();
-//
-//            graphics2D.setStroke(borderStroke);
-//            graphics2D.drawRect(panel.getX() + 2, panel.getY() + 1, panel.getWidth(), panel.getHeight());
-//            graphics2D.setStroke(boringStroke);
-//        }
-//    }
-//    public void paint(Graphics g) {
-//        super.paint(g);
-//        drawRectangles(g);
-//    }
-
     //Getters
     public static int getChosenDay() {return chosenDay;}
 
@@ -706,13 +686,4 @@ public class TimeSet extends JPanel {
         button.setOpaque(false);
         button.setBorderPainted(false);
     }
-
-//    public void setTodefult(){
-//        dateBox.removeAll();
-//        addOrRemoveBox.removeAll();
-//        timeBox.removeAll();
-//        listBox.removeAll();
-//        boxOfBoxes.removeAll();
-//        this.removeAll();
-//    }
 }

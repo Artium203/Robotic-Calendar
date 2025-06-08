@@ -109,6 +109,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         //Sets "info point" button
+        infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0",scaleX,scaleY);
         infoPoint.setIcon(icon);
         infoPoint.setPreferredSize(new Dimension((windowWidth/6)-4,icon.getIconHeight()-5));
         infoPoint.setIconTextGap((int)(-55*scaleY));
@@ -169,6 +170,7 @@ public class Window extends JFrame implements ActionListener,Utils {
 //        boxOfWindowOp.setBackground(Color.gray);
         boxOfWindowOp.setPreferredSize(new Dimension((windowWidth/2)-8,icon.getIconHeight()-5));
         boxOfWindowOp.setLayout(new FlowLayout(FlowLayout.RIGHT,5,1));
+        boxOfWindowOp.add(localClock);
         boxOfWindowOp.add(goDown);
         boxOfWindowOp.add(exit);
 
@@ -206,14 +208,16 @@ public class Window extends JFrame implements ActionListener,Utils {
         expirationDate();
         this.add(boxOfWindowOp);
         timer = new TimeSet(windowWidth,windowHeight,confirmOption,scaleX,scaleY);
-        infoPanel = new InfoPanel(windowWidth,windowHeight,"",0,0,0,"0","0","0",scaleX,scaleY);
+        infoPanel.setVisible(true);
         this.add(timer);
         this.calendar = new CalendarForProject(windowWidth,windowHeight,"", 0, 0 , 0,scaleX,scaleY);
+        this.calendar.setVisible(true);
         this.action =new MAM(windowWidth,windowHeight,listOfAction, Integer.parseInt(startHour),Integer.parseInt(startMinute),
                 Integer.parseInt(startSecond),Integer.parseInt(endHour),Integer.parseInt(endMinute),Integer.parseInt(endSecond)
                 ,this,confirmSelection,scaleX,scaleY);
         this.add(action);
         instructions = new Instructions(windowWidth,windowHeight,startButton,scaleX,scaleY);
+        instructions.setVisible(true);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
@@ -345,6 +349,8 @@ public class Window extends JFrame implements ActionListener,Utils {
             this.calendar = new CalendarForProject(windowWidth,windowHeight,dataContainers.get(i).getNameOf(), dataContainers.get(i).getDateATime().get(YEAR),
                     dataContainers.get(i).getDateATime().get(MOUNTH) , dataContainers.get(i).getDateATime().get(DAY),scaleX,scaleY);
         }
+        infoPanel.setVisible(true);
+        this.calendar.setVisible(true);
         //Adds/makes the operations
 //        this.add(boxOfNavigation);
         this.add(boxOfWindowOp);
@@ -354,6 +360,7 @@ public class Window extends JFrame implements ActionListener,Utils {
                 ,this,confirmSelection,scaleX,scaleY);
         this.add(action);
         instructions = new Instructions(windowWidth,windowHeight,startButton,scaleX,scaleY);
+        instructions.setVisible(true);
         panel.add(calendar);
         panel.add(infoPanel);
         panel.add(instructions);
@@ -380,7 +387,7 @@ public class Window extends JFrame implements ActionListener,Utils {
         }
         timer.setVisible(e.getSource() == timingPoint);
         confirmOption.setVisible(e.getSource() == timingPoint);
-        confirmSelection.setVisible(e.getSource()==actionPoint);
+        confirmSelection.setVisible(e.getSource()==actionPoint || actionPoint.isVisible());
         calendar.setVisible(e.getSource() == infoPoint);
         infoPanel.setVisible(e.getSource() == infoPoint);
         instructions.setVisible(e.getSource() == infoPoint);
@@ -425,6 +432,7 @@ public class Window extends JFrame implements ActionListener,Utils {
             this.remove(timer);
             timer=new TimeSet(windowWidth,windowHeight,confirmOption,scaleX,scaleY);
             this.add(timer);
+            action.setVisible(true);
         }
         else if (e.getSource() == confirmOption && !isFull()) { //!timer.isTimeValid() &&
             JOptionPane.showMessageDialog(null,"ERROR IN TIME INPUT","ERROR",JOptionPane.ERROR_MESSAGE);

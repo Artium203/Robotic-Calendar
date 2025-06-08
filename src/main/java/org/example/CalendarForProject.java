@@ -203,7 +203,7 @@ public class CalendarForProject extends JPanel {
                     jj=j;
                 }
             }
-            tasks =names.get(jj)+"\n"+tasks;
+            if (!names.isEmpty()){tasks =names.get(jj)+"\n"+tasks;}
             if (there){
                 mtblCalendar.setValueAt(names.get(jj) , row , column);
                 there=false;

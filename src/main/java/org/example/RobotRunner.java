@@ -1,6 +1,8 @@
 package org.example;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.sql.Time;
 import java.util.Calendar;
@@ -8,7 +10,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
-public class RobotRunner {
+public class RobotRunner extends Thread {
     private Point actLocation;
     private boolean isLoop;
     private int repeater;
@@ -23,7 +25,9 @@ public class RobotRunner {
     private boolean isPress;
     private volatile boolean running;
     private volatile boolean paused;
+    private volatile boolean finished = false;
     int iTheRunner;
+
 
     public RobotRunner(List<Integer> actions,int whoruns){
             if (actions.get(0)==11){
@@ -48,19 +52,18 @@ public class RobotRunner {
             paused=false;
             this.iTheRunner = whoruns;
     }
-    public void execute(){
+    public void run(){
         try {
             Robot robot = new Robot();
             Calendar calendar = new GregorianCalendar();
             Time time = new Time(calendar.getTime().getHours(),calendar.getTime().getMinutes(),calendar.getTime().getSeconds());
             Time givenTime = new Time(calendar.getTime().getHours()+HOL,calendar.getTime().getMinutes()+MOL,calendar.getTime().getSeconds()+SOL);
             System.out.println("The "+ iTheRunner+ " is running");
+            System.out.println("The given time is "+givenTime+" and is: "+time);
             int delay = (HOR*60*60+MOR*60+SOR)*1000;
             if (isLoop){
                 robot.mouseMove(actLocation.x, actLocation.y);
-                while (running && (time.toLocalTime().getHour() != givenTime.toLocalTime().getHour() ||
-                        time.toLocalTime().getMinute() != givenTime.toLocalTime().getMinute() ||
-                        time.toLocalTime().getSecond() != givenTime.toLocalTime().getSecond())){
+                while (running && (time.getTime()<givenTime.getTime())){
                     synchronized (this) {
                         while (paused) {
                             wait();
@@ -97,21 +100,23 @@ public class RobotRunner {
         } catch (AWTException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        finished = true;
     }
-    public void stop() {
+    public void stopR() {
         running = false;
         System.out.println("The "+ iTheRunner+" has stopped");
     }
-    public synchronized void pause() {
+    public synchronized void pauseR() {
         paused = true;
     }
-    public synchronized void resume() {
+    public synchronized void resumeR() {
         paused = false;
         notify();
     }
-    public boolean isPaused() {
+    public boolean isPausedR() {
         return paused;
     }
-    public boolean isRunning(){return running;}
-    public void runAgain(){running=true;}
+    public boolean isRunningR(){return running;}
+    public boolean isFinished(){return finished;}
+    public void runAgainR(){running=true;}
 }

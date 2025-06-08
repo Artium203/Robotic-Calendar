@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ActionWindow extends JFrame {
     private RobotRunner[] operations;
@@ -19,10 +20,14 @@ public class ActionWindow extends JFrame {
     //►
     private final JButton PAUSE_RESUME= new JButton("⏸");
     private int index;
-    private int currenIndex=0;
+    private static int currenIndex=0;
     private Thread currentThread = null;
-    private boolean pressedForward=false,pressedBackward=false;
-
+    private final AtomicBoolean pressedForward = new AtomicBoolean(false);
+    private final AtomicBoolean pressedBackward = new AtomicBoolean(false);
+    private static final AtomicBoolean pressedPause = new AtomicBoolean(false);
+    private static final AtomicBoolean pressedResume = new AtomicBoolean(false);
+    private final AtomicBoolean stop = new AtomicBoolean(false);
+    private Thread thread;
 
     public ActionWindow(Map<Integer,List<Integer>> map,int windowWidth,int windowHeight,Window window,int index,double scaleX,double scaleY){
         this.window=window;
@@ -30,7 +35,7 @@ public class ActionWindow extends JFrame {
         this.setTitle("Actions");
         this.setLayout(new GridLayout());
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setLocationRelativeTo(null);
+//        this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setSize(windowWidth/4,windowHeight/8);
         this.setLocation((windowWidth-this.getWidth())/2,0);
@@ -39,15 +44,26 @@ public class ActionWindow extends JFrame {
         BACKWARD.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
         PAUSE_RESUME.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
         FORWARD.setFont(new Font("SansSerif", Font.PLAIN, (int)(12*scaleY)));
+
         this.add(BACKWARD);
         this.add(PAUSE_RESUME);
         this.add(FORWARD);
         BACKWARD.setEnabled(currenIndex>0);
         FORWARD.setEnabled(currenIndex<map.size()-1);
+        for (ActionListener al : BACKWARD.getActionListeners()){
+            BACKWARD.removeActionListener(al);
+        }
+        for (ActionListener al : FORWARD.getActionListeners()){
+            FORWARD.removeActionListener(al);
+        }
+        for (ActionListener al : PAUSE_RESUME.getActionListeners()){
+            PAUSE_RESUME.removeActionListener(al);
+        }
 
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                System.out.println("windowClosing");
                 stopAllOperations();
                 DataHandler dataHandler =new DataHandler();
                 dataHandler.removeDataFromFile(index);
@@ -55,96 +71,97 @@ public class ActionWindow extends JFrame {
                 dispose();
             }
         });
-        System.out.println(map);
-        operations= new RobotRunner[map.size()];
-        for (int i = 0; i < map.size(); i++) {
-            operations[i]=new RobotRunner(map.get(i),i);
-            System.out.println(i);
-        }
-        runCurrentTask();
-
         PAUSE_RESUME.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (operations[currenIndex].isPaused()) {
-                    operations[currenIndex].resume();
-                    PAUSE_RESUME.setText("⏸");
-                } else {
-                    operations[currenIndex].pause();
+                if (PAUSE_RESUME.getText().equals("⏸")){
+                    pressedPause.set(true);
                     PAUSE_RESUME.setText("►");
+                }else {
+                    pressedResume.set(true);
+                    PAUSE_RESUME.setText("⏸");
                 }
             }
         });
         FORWARD.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currenIndex < operations.length - 1) {
-                    operations[currenIndex].stop();
-                    currenIndex++;
-                    if (!operations[currenIndex].isRunning()) {
-                        operations[currenIndex].runAgain();
-                    }
-                    runCurrentTask();
-                    updateButtonStates();
-                }
+                pressedForward.set(true);
+                updateButtonStates();
             }
         });
 
         BACKWARD.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currenIndex > 0) {
-                    operations[currenIndex].stop();
-                    currenIndex--;
-                    if (!operations[currenIndex].isRunning()) {
-                        operations[currenIndex].runAgain();
+                pressedBackward.set(true);
+                updateButtonStates();
+            }
+        });
+        System.out.println(map);
+        operations= new RobotRunner[map.size()];
+        thread =new Thread(() -> {
+            for (int i = 0; i < map.size() && !stop.get();) {
+                currenIndex = i;
+                operations[i]=new RobotRunner(map.get(i),i);
+                operations[i].start();
+                while (!operations[i].isFinished()) {
+                    if (pressedPause.getAndSet(false)) {
+                        System.out.println("paused");
+                        operations[i].pauseR();
                     }
-                    runCurrentTask();
+                    if (pressedResume.getAndSet(false)) {
+                        operations[i].resumeR();
+                    }
+                    if (pressedForward.getAndSet(false)) {
+                        operations[i].stopR();
+                        i++; break;
+                    }
+                    if (pressedBackward.getAndSet(false)) {
+                        operations[i].stopR();
+                        i = Math.max(0, i - 1); break;
+                    }
+                    try {
+                        Thread.sleep(100); // Let other events run
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if (operations[i]!=null && operations[i].isFinished()) {
+                    i++;
                     updateButtonStates();
                 }
+                System.out.println("Using index: "+i);
             }
         });
-    }
-    private void runCurrentTask() {
-
-        currentThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                operations[currenIndex].execute();
-                if (currenIndex+1 < operations.length ){
-                    if (!pressedForward && !pressedBackward) {
-                        currenIndex++;
-                    }
-                    pressedBackward = false;pressedForward = false;
-                    SwingUtilities.invokeLater(()->{runCurrentTask();});
-                }else {
-                    SwingUtilities.invokeLater(() -> {
-                        DataHandler dataHandler =new DataHandler();
-                        dataHandler.removeDataFromFile(index);
-                        stopAllOperations();
-                        window.setVisible(true);
-                        dispose();
-                    });
-                }
-            }
-        });
-        currentThread.start();
+        thread.start();
     }
     private void updateButtonStates() {
         BACKWARD.setEnabled(currenIndex > 0);
         FORWARD.setEnabled(currenIndex < operations.length - 1);
     }
     private void stopAllOperations() {
-        for (RobotRunner operation : operations) {
-            if (operation != null) {
-                operation.stop();
+        stop.set(true);
+
+        for (RobotRunner runner : operations) {
+            if (runner != null && runner.isAlive()) {
+                runner.stopR();
+                try {
+                    runner.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-
-        }
-        if (currentThread != null && currentThread.isAlive()) {
-            currentThread.interrupt();
         }
 
+        if (thread != null && thread.isAlive()) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 
 }

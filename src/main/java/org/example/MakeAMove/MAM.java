@@ -439,6 +439,19 @@ public class MAM extends JPanel implements ButtonPlace {
         instructionsText.setFont(new Font("SansSerif", Font.BOLD, (int) (12*scaleY)));
         instructionsText.setPreferredSize(new Dimension(windowWidth / 3,windowHeight/4));
         instructionsText.setHorizontalAlignment(SwingConstants.CENTER);
+        for (ActionListener al : next.getActionListeners()){
+            next.removeActionListener(al);
+        }
+        for (ActionListener al : previous.getActionListeners()){
+            previous.removeActionListener(al);
+        }
+//        for (ActionListener al : pointLocation.getActionListeners()){
+//            pointLocation.removeActionListener(al);
+//        }
+//        for (ActionListener al : confirmSelection.getActionListeners()){
+//            confirmSelection.removeActionListener(al);
+//        }
+
 
         if (!actionList.isEmpty()) {
             for (int i = 0; i < actionList.size(); i++) { // Creation of check boxes and his settings
@@ -458,10 +471,8 @@ public class MAM extends JPanel implements ButtonPlace {
                     isSelectedOnThePast.add(i, false);
                 }
             }
-            for (ActionListener al : next.getActionListeners()){
-                next.removeActionListener(al);
-            }
             next.addActionListener(e -> {
+                    System.out.println("Amount of actions: "+next.getActionListeners().length);
                     System.out.println(currentIndex < actionList.size() - 1 && isFull());
                     System.out.println("List Size: "+ sizeOfList);
                     System.out.println(currentIndex);
@@ -547,10 +558,8 @@ public class MAM extends JPanel implements ButtonPlace {
                     }
                 });
             //<-- Have to fix this button
-            for (ActionListener al : previous.getActionListeners()){
-                pointLocation.removeActionListener(al);
-            }
                 previous.addActionListener(e -> {
+                    System.out.println("Amount of actions: "+previous.getActionListeners().length);
                     if (!savingsMap.containsKey(currentIndex) && isFull()) {
                         if (performanceList.get(currentIndex).getText().equals("[Scroll]")) {
                             saveDataOfIndex.add(10);

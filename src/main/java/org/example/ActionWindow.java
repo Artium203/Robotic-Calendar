@@ -21,7 +21,6 @@ public class ActionWindow extends JFrame {
     private final JButton PAUSE_RESUME= new JButton("⏸");
     private int index;
     private static int currenIndex=0;
-    private Thread currentThread = null;
     private final AtomicBoolean pressedForward = new AtomicBoolean(false);
     private final AtomicBoolean pressedBackward = new AtomicBoolean(false);
     private static final AtomicBoolean pressedPause = new AtomicBoolean(false);
@@ -153,7 +152,6 @@ public class ActionWindow extends JFrame {
                 }
             }
         }
-
         if (thread != null && thread.isAlive()) {
             try {
                 thread.join();
@@ -162,6 +160,4 @@ public class ActionWindow extends JFrame {
             }
         }
     }
-
-
 }
